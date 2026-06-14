@@ -128,7 +128,7 @@ export default function Lobby({ game }) {
               </div>
             </div>
             <button className="btn--start-game" onClick={actions.startGame} disabled={!canStart(players)}>
-              {canStart(players) ? '▶ Lancer la partie' : '2 joueurs min. par équipe'}
+              {canStart(players) ? '▶ Lancer la partie' : '1 joueur min. par équipe'}
             </button>
           </div>
         )}
@@ -148,8 +148,8 @@ export default function Lobby({ game }) {
 }
 
 function canStart(players) {
-  return players.filter(p => p.team === 'A').length >= 2
-      && players.filter(p => p.team === 'B').length >= 2;
+  return players.filter(p => p.team === 'A').length >= 1
+      && players.filter(p => p.team === 'B').length >= 1;
 }
 
 function RoleSlot({ label, player, myId, onClick, isActive }) {

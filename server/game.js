@@ -81,7 +81,7 @@ class GameRoom {
 
   canStart() {
     const a = this.getTeamMembers('A'), b = this.getTeamMembers('B');
-    if (a.length < 2 || b.length < 2) return { ok: false, reason: 'Chaque équipe doit avoir au moins 2 joueurs.' };
+    if (a.length < 1 || b.length < 1) return { ok: false, reason: 'Chaque équipe doit avoir au moins 1 joueur.' };
     return { ok: true };
   }
 
@@ -101,26 +101,32 @@ class GameRoom {
 
     this.activeTeam = this.currentRound % 2 === 0 ? 'A' : 'B';
     const members = this.getTeamMembers(this.activeTeam);
+    const opponentTeam = this.activeTeam === 'A' ? 'B' : 'A';
+    const opponents = this.getTeamMembers(opponentTeam);
 
-    const wantsIndiceur = members.find(p => p.preferredRole === 'indiceur');
-    const wantsDevineur = members.find(p => p.preferredRole === 'devineur');
-    const conflict = wantsIndiceur && wantsDevineur && wantsIndiceur.id === wantsDevineur.id;
-
-    if (!conflict && wantsIndiceur && wantsDevineur && wantsIndiceur.id !== wantsDevineur.id) {
-      // Les deux ont des préférences compatibles
-      this.indiceurId = wantsIndiceur.id;
-      this.devineurId = wantsDevineur.id;
-    } else if (!conflict && wantsIndiceur) {
-      this.indiceurId = wantsIndiceur.id;
-      this.devineurId = members.find(p => p.id !== wantsIndiceur.id)?.id ?? null;
-    } else if (!conflict && wantsDevineur) {
-      this.devineurId = wantsDevineur.id;
-      this.indiceurId = members.find(p => p.id !== wantsDevineur.id)?.id ?? null;
+    if (members.length === 1) {
+      // Mode 1v1 : l'indiceur est l'équipe active, le devineur est l'adversaire
+      this.indiceurId = members[0].id;
+      this.devineurId = opponents[0]?.id ?? null;
     } else {
-      // Pas de préférence ou conflit → rotation automatique
-      const idx = this.teamPlayCount[this.activeTeam] % members.length;
-      this.indiceurId = members[idx].id;
-      this.devineurId = members.find(p => p.id !== this.indiceurId)?.id ?? null;
+      const wantsIndiceur = members.find(p => p.preferredRole === 'indiceur');
+      const wantsDevineur = members.find(p => p.preferredRole === 'devineur');
+      const conflict = wantsIndiceur && wantsDevineur && wantsIndiceur.id === wantsDevineur.id;
+
+      if (!conflict && wantsIndiceur && wantsDevineur && wantsIndiceur.id !== wantsDevineur.id) {
+        this.indiceurId = wantsIndiceur.id;
+        this.devineurId = wantsDevineur.id;
+      } else if (!conflict && wantsIndiceur) {
+        this.indiceurId = wantsIndiceur.id;
+        this.devineurId = members.find(p => p.id !== wantsIndiceur.id)?.id ?? null;
+      } else if (!conflict && wantsDevineur) {
+        this.devineurId = wantsDevineur.id;
+        this.indiceurId = members.find(p => p.id !== wantsDevineur.id)?.id ?? null;
+      } else {
+        const idx = this.teamPlayCount[this.activeTeam] % members.length;
+        this.indiceurId = members[idx].id;
+        this.devineurId = members.find(p => p.id !== this.indiceurId)?.id ?? null;
+      }
     }
 
     this.teamPlayCount[this.activeTeam]++;

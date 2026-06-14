@@ -3,56 +3,206 @@
     "sport": [
       "football", "tennis", "natation", "cyclisme", "basketball", "volleyball",
       "rugby", "golf", "boxe", "judo", "ski", "surf", "escalade", "marathon",
-      "badminton", "handball", "athletisme", "plongee", "equitation", "karate"
+      "badminton", "handball", "athletisme", "plongee", "equitation", "karate",
+      "cricket", "bowling", "escrime", "lutte", "biathlon", "luge", "bobsleigh",
+      "curling", "hockey", "parachutisme", "voile", "aviron", "ping-pong",
+      "patin", "taekwondo", "halteres", "pentathlon", "triathlon", "squash",
+      "petanque", "flechettes", "billard", "paintball", "tir-a-l-arc", "capoeira",
+      "wakeboard", "kitesurf", "snowboard", "ski-de-fond", "patinage", "saut-en-hauteur",
+      "lancers", "marche-nordique", "crossfit", "yoga", "pilates", "gym"
     ],
     "nourriture": [
       "pizza", "fromage", "croissant", "chocolat", "soupe", "salade", "poulet",
       "baguette", "crepe", "sushi", "hamburger", "tarte", "glace", "yaourt",
       "omelette", "raclette", "fondue", "camembert", "beurre", "confiture",
-      "miel", "jambon", "sardine", "huître", "macaron"
+      "miel", "jambon", "sardine", "huitre", "macaron",
+      "ananas", "mangue", "pasteque", "framboise", "fraise", "cerise",
+      "peche", "abricot", "raisin", "kiwi", "noix", "amande", "noisette",
+      "cacahuete", "potiron", "courgette", "aubergine", "brocoli", "epinard",
+      "poireau", "celeri", "fenouil", "artichaut", "piment", "olive",
+      "citron", "orange", "pamplemousse", "litchi", "coco", "banane",
+      "quiche", "lasagne", "paella", "couscous", "tajine", "saumon",
+      "crevette", "homard", "calmar", "moule", "crabe", "thon",
+      "steak", "cote", "gigot", "roti", "brochette", "tartiflette",
+      "brioche", "madeleine", "eclair", "mille-feuille", "religieuse",
+      "tiramisu", "mousse", "compote", "chutney", "guacamole", "houmous"
     ],
     "animaux": [
       "chien", "chat", "lion", "elephant", "girafe", "pingouin", "dauphin",
       "perroquet", "serpent", "tortue", "koala", "panda", "renard", "loup",
       "cochon", "vache", "cheval", "lapin", "hamster", "aigle",
-      "flamant", "baleine", "requin", "pieuvre", "hippopotame"
+      "flamant", "baleine", "requin", "pieuvre", "hippopotame",
+      "gorille", "chimpanze", "ours", "castor", "loutre", "blaireau",
+      "sanglier", "cerf", "chevreuil", "bison", "zebre", "rhinoceros",
+      "coyote", "lynx", "jaguar", "leopard", "guepard", "crocodile",
+      "cameleon", "iguane", "anaconda", "cobra", "vipere", "grenouille",
+      "axolotl", "meduse", "otarie", "morse", "phoque", "beluga",
+      "pelican", "cigogne", "heron", "autruche", "toucan", "canard",
+      "cygne", "oie", "dindon", "faisan", "paon", "vautour",
+      "taupe", "herisson", "ecureuil", "marmotte", "belette", "putois",
+      "ara", "cacatoes", "ibis", "colibri", "hirondelle", "rossignol",
+      "raton-laveur", "ours-polaire", "lama", "alpaga", "yak", "buffle",
+      "poulpe", "etoile-de-mer", "hippocampe", "raie", "espadon", "pieuvre"
     ],
     "objets": [
       "parapluie", "bouteille", "miroir", "horloge", "lampe", "coussin",
       "valise", "brosse", "clavier", "casque", "lunettes", "ceinture",
       "portefeuille", "bougie", "aspirateur", "cafetiere", "calculatrice",
-      "dictionnaire", "agenda", "thermometre"
+      "dictionnaire", "agenda", "thermometre",
+      "montre", "bague", "collier", "bracelet", "sac", "chapeau",
+      "echarpe", "gant", "chaussure", "cravate", "manteau",
+      "cle", "cadenas", "cadre", "tableau", "sculpture", "vase",
+      "pot", "boite", "tiroir", "commode", "fauteuil", "canape",
+      "matelas", "oreiller", "rideau", "tapis", "robinet",
+      "rasoir", "brosse-a-dents", "peigne", "seche-cheveux",
+      "marteau", "tournevis", "perceuse", "pince", "ciseau", "scie",
+      "echelle", "arrosoir", "brouette", "loupe", "jumelles", "boussole",
+      "microscope", "telescope", "chronometre", "balance", "thermometre",
+      "megaphone", "lanterne", "torche", "briquet", "allumette",
+      "parachute", "filet", "hamecon", "canne-a-peche", "arc"
     ],
     "metiers": [
       "pompier", "chirurgien", "architecte", "boulanger", "astronaute",
       "plombier", "journaliste", "chanteur", "pilote", "veterinaire",
       "photographe", "cuisinier", "professeur", "avocat", "facteur",
-      "magicien", "plongeur", "garagiste", "jardinier", "comedien"
+      "magicien", "garagiste", "jardinier", "comedien",
+      "infirmier", "kinesitherapeute", "psychologue", "dentiste",
+      "pharmacien", "ingenieur", "programmeur", "designer", "graphiste",
+      "musicien", "acteur", "danseur", "peintre", "sculpteur",
+      "ecrivain", "traducteur", "policier", "soldat", "ambulancier",
+      "chauffeur", "livreur", "agent-immobilier", "notaire", "comptable",
+      "banquier", "biologiste", "chimiste", "physicien", "astronome",
+      "geologue", "archeologue", "sociologue", "philosophe", "geologue",
+      "bucheron", "mineur", "pecheur", "eleveur", "vigneron", "menuisier",
+      "charpentier", "macon", "electricien", "soudeur", "couturier",
+      "coiffeur", "estheticien", "tatoueur", "sommelier", "patissier"
     ],
     "lieux": [
       "plage", "montagne", "foret", "desert", "volcan", "ile", "phare",
       "casino", "stade", "musee", "cathedrale", "marche", "bibliotheque",
-      "piscine", "hopital", "cinema", "aeroport", "gare", "cirque", "zoo"
+      "piscine", "hopital", "cinema", "aeroport", "gare", "cirque", "zoo",
+      "chateau", "temple", "mosquee", "synagogue", "eglise", "chapelle",
+      "couvent", "monastere", "abbaye", "cimetiere", "parc", "jardin",
+      "fontaine", "place", "avenue", "autoroute", "tunnel", "pont",
+      "barrage", "centrale", "usine", "entrepot", "quai", "mine",
+      "prison", "caserne", "commissariat", "tribunal", "parlement",
+      "ambassade", "universite", "lycee", "creche", "camping", "auberge",
+      "villa", "chalet", "igloo", "pyramide", "grotte", "caverne",
+      "falaise", "cascade", "canyon", "lagune", "marais", "oasis",
+      "ruelle", "quartier", "banlieue", "metropole", "village", "hameau",
+      "palais", "manoir", "donjon", "forteresse", "citadelle", "rempart"
     ],
     "transports": [
       "avion", "bateau", "helicoptere", "scooter", "tramway", "fusee",
-      "sous-marin", "tracteur", "ambulance", "gondole", "cable", "metro",
-      "montgolfiere", "jet", "ferry", "kayak", "moto", "skateboard"
+      "sous-marin", "tracteur", "ambulance", "gondole", "metro",
+      "montgolfiere", "ferry", "kayak", "moto", "skateboard",
+      "parachute", "deltaplane", "planeur", "zeppelin", "dirigeable",
+      "hovercraft", "jetski", "catamaran", "triporteur", "trottinette",
+      "quad", "buggy", "camping-car", "caravane", "remorque",
+      "funiculaire", "telesiege", "telechariot", "navette", "train",
+      "tgv", "locomotive", "wagon", "barge", "galere", "caravelle",
+      "canoe", "pirogue", "planche", "voilier", "paquebot", "porte-avion",
+      "patinette", "velo", "tandem", "sidecar", "formule1", "karting"
     ],
     "nature": [
       "arc-en-ciel", "avalanche", "tornade", "glacier", "cascade", "oasis",
       "grotte", "falaise", "marais", "mangrove", "recif", "geyser",
-      "delta", "toundra", "savane", "canyon", "lagon", "tourbiere"
+      "delta", "toundra", "savane", "canyon", "lagon", "tourbiere",
+      "seisme", "tsunami", "cyclone", "ouragan", "typhon", "blizzard",
+      "tempete", "brouillard", "rosee", "verglas", "inondation",
+      "vallee", "col", "sommet", "colline", "dune", "atoll",
+      "fjord", "estuaire", "detroit", "baie", "peninsule", "presqu-ile",
+      "volcan", "cratere", "caldera", "basalte", "granite", "stalactite",
+      "stalactite", "stalagmite", "lave", "magma", "geyser", "source",
+      "ruisseau", "riviere", "fleuve", "lac", "etang", "mare",
+      "jungle", "taiga", "prairie", "bocage", "vignoble", "verger"
     ],
     "pop_culture": [
       "vampire", "zombie", "pirate", "ninja", "cowboy", "robot", "dinosaure",
       "chevalier", "sorcier", "superheros", "detective", "fantome",
-      "sirene", "dragon", "alien", "momie", "gladiateur", "viking"
+      "sirene", "dragon", "alien", "momie", "gladiateur", "viking",
+      "magicien", "sorciere", "elfe", "nain", "hobbit", "goblin",
+      "troll", "ogre", "fee", "lutin", "gnome", "centaure",
+      "sphinx", "griffon", "phoenix", "licorne", "pegase", "golem",
+      "loup-garou", "frankenstein", "squelette", "diable", "ange",
+      "samurai", "shogun", "samourai", "ninja", "geisha", "ronin",
+      "barde", "troubadour", "moine", "templier", "croise", "roi",
+      "reine", "princesse", "prince", "jester", "bourreau", "alchimiste"
     ],
     "maison": [
       "escalier", "fenetre", "balcon", "grenier", "cave", "garage",
       "terrasse", "couloir", "salon", "baignoire", "radiateur", "parquet",
-      "volet", "portail", "boite", "sonnette", "interphone", "cheminee"
+      "volet", "portail", "sonnette", "interphone", "cheminee",
+      "veranda", "pergola", "piscine", "jacuzzi", "sauna", "cave-a-vin",
+      "buanderie", "garde-robe", "dressing", "atelier",
+      "abri", "serre", "poulailler", "etable", "ecurie", "pigeonnier",
+      "puits", "composteur", "ruche", "boite-aux-lettres", "portique",
+      "placard", "commode", "bureau", "fauteuil", "canape", "lit",
+      "matelas", "oreiller", "couette", "rideau", "tapis", "robinet",
+      "lavabo", "douche", "toilettes", "four", "refrigerateur", "congelateur",
+      "lave-linge", "lave-vaisselle", "table-de-cuisson", "hotte", "micro-ondes"
+    ],
+    "musique": [
+      "guitare", "piano", "violon", "trompette", "saxophone", "flute",
+      "clarinette", "hautbois", "basson", "tuba", "trombone", "cor",
+      "accordeon", "harpe", "ukulele", "mandoline", "banjo", "basse",
+      "batterie", "xylophone", "marimba", "vibraphone", "orgue", "clavecin",
+      "sitar", "djembe", "didgeridoo", "balalaika", "cornemuse", "theremin",
+      "synthese", "microphone", "concert", "festival", "opera", "ballet",
+      "karaoké", "discoteque", "studio", "vinyle", "cassette", "partition",
+      "gamme", "accord", "melodie", "rythme", "refrain", "couplet",
+      "choeur", "orchestre", "quatuor", "duo", "soliste", "chef-d-orchestre"
+    ],
+    "vetements": [
+      "manteau", "blouson", "veste", "costume", "smoking", "robe",
+      "jupe", "chemise", "chemisier", "pull", "sweat", "hoodie",
+      "debardeur", "collant", "chaussette", "pantalon", "jean",
+      "bermuda", "short", "legging", "salopette", "combinaison",
+      "pyjama", "robe-de-chambre", "maillot-de-bain", "bikini",
+      "casquette", "beret", "bonnet", "echarpe", "mitaine",
+      "cravate", "noeud-papillon", "bretelles", "sandales", "bottes",
+      "talons", "chaussures-de-sport", "mocassin", "ballerine",
+      "espadrille", "sabots", "botte-en-caoutchouc", "pantoufle",
+      "imperméable", "cirés", "anorak", "doudoune", "gilet", "poncho"
+    ],
+    "technologie": [
+      "ordinateur", "portable", "tablette", "smartphone", "ecran",
+      "clavier", "souris", "imprimante", "scanner", "webcam",
+      "casque", "haut-parleur", "television", "telecommande",
+      "console", "manette", "robot", "drone", "satellite", "antenne",
+      "radar", "sonar", "radiographie", "microscope", "telescope",
+      "fusee", "capsule", "combinaison-spatiale", "station-spatiale",
+      "batterie", "chargeur", "cable", "disque-dur", "cle-usb",
+      "routeur", "serveur", "data-center", "algorithme", "intelligence-artificielle",
+      "hologramme", "realite-virtuelle", "capteur", "puce", "processeur",
+      "ecran-tactile", "montre-connectee", "lunettes-connectees"
+    ],
+    "corps": [
+      "cerveau", "coeur", "poumon", "foie", "rein", "estomac",
+      "squelette", "crane", "colonne", "cote", "epaule", "coude",
+      "poignet", "doigt", "genou", "cheville", "talon", "orteil",
+      "tempe", "nuque", "cou", "menton", "joue", "sourcil",
+      "paupiere", "cil", "narine", "oreille", "front", "langue",
+      "dent", "gencive", "gorge", "amygdale", "ventre", "nombril",
+      "hanche", "fesse", "mollet", "tibia", "biceps", "triceps",
+      "muscle", "tendon", "ligament", "artere", "veine", "nerf"
+    ],
+    "emotions_sensations": [
+      "bonheur", "tristesse", "colere", "peur", "surprise", "degout",
+      "nostalgie", "melancolie", "euphorie", "angoisse", "jalousie",
+      "honte", "fierte", "culpabilite", "compassion", "emerveillement",
+      "solitude", "tendresse", "admiration", "mepris", "rancune",
+      "espoir", "desespoir", "soulagement", "frustration", "ennui",
+      "curiosite", "confiance", "trahison", "gratitude", "amour"
+    ],
+    "cinema_tv": [
+      "vampire", "cowboy", "astronaute", "detektive", "espion",
+      "zombie", "superheros", "sorcier", "pirate", "robot",
+      "tournage", "clap", "scenario", "realisateur", "acteur",
+      "cascadeur", "decor", "costume", "maquillage", "effets-speciaux",
+      "bande-annonce", "affiche", "oscar", "festival", "avant-premiere",
+      "documentaire", "comedie", "thriller", "horreur", "western",
+      "animation", "serie", "episode", "saison", "generique", "binge-watching"
     ]
   }
 }
