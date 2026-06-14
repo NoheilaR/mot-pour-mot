@@ -4,24 +4,24 @@ let instanceId = null;
 let discordUser = null;
 
 export async function initDiscord() {
-  const clientId = import.meta.env.VITE_DISCORD_CLIENT_ID;
-  if (!clientId) return;
-
   try {
-    const sdk = new DiscordSDK(clientId);
+    // Récupère le client ID depuis le serveur (plus fiable que le build-time env var)
+    const configRes = await fetch('/api/config');
+    const { discordClientId } = await configRes.json();
+    if (!discordClientId) return;
+
+    const sdk = new DiscordSDK(discordClientId);
     await sdk.ready();
     instanceId = sdk.instanceId;
 
-    // Demande l'autorisation (silencieuse si déjà autorisé)
     const { code } = await sdk.commands.authorize({
-      client_id: clientId,
+      client_id: discordClientId,
       response_type: 'code',
       state: '',
       prompt: 'none',
       scope: ['identify'],
     });
 
-    // Échange le code contre un access token via notre serveur
     const tokenRes = await fetch('/api/discord/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -29,7 +29,6 @@ export async function initDiscord() {
     });
     const { access_token } = await tokenRes.json();
 
-    // Authentifie le SDK et récupère les infos utilisateur
     const auth = await sdk.commands.authenticate({ access_token });
     discordUser = auth.user;
   } catch (e) {

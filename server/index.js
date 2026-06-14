@@ -16,6 +16,11 @@ app.use(express.json());
 
 app.get('/health', (_, res) => res.json({ ok: true }));
 
+// Expose la config publique au client (évite le baking de l'env var dans Vite)
+app.get('/api/config', (_, res) => {
+  res.json({ discordClientId: process.env.DISCORD_CLIENT_ID || '' });
+});
+
 // Échange le code OAuth2 Discord contre un access token
 app.post('/api/discord/token', async (req, res) => {
   try {
