@@ -4,8 +4,9 @@ const TEAM_NAMES = { A: 'Équipe Rouge', B: 'Équipe Bleue' };
 const DURATIONS = [30, 45, 60, 90, 120];
 
 export default function Lobby({ game }) {
-  const { roomCode, players, mode, totalRounds, roundDuration, isHost, myId, shareUrl, actions } = game;
+  const { roomCode, players, mode, totalRounds, roundDuration, isHost, myId, shareUrl, discordInstanceId, actions } = game;
   const [copied, setCopied] = useState(false);
+  const isDiscord = !!discordInstanceId;
 
   const unassigned = players.filter(p => !p.team);
   const me = players.find(p => p.id === myId);
@@ -30,19 +31,23 @@ export default function Lobby({ game }) {
         {/* Top bar */}
         <div className="lobby-top">
           <h2 className="lobby-title">Salon</h2>
-          <div className="room-badge">
-            <span className="room-badge-label">Code</span>
-            <span className="room-badge-code">{roomCode}</span>
-          </div>
+          {!isDiscord && (
+            <div className="room-badge">
+              <span className="room-badge-label">Code</span>
+              <span className="room-badge-code">{roomCode}</span>
+            </div>
+          )}
         </div>
 
-        {/* Share URL */}
-        <div className="share-row">
-          <span className="share-url">{shareUrl}</span>
-          <button className={`btn--copy${copied ? ' btn--copy--done' : ''}`} onClick={copyLink}>
-            {copied ? '✓ Copié' : 'Copier le lien'}
-          </button>
-        </div>
+        {/* Share URL — caché en mode Discord Activity */}
+        {!isDiscord && (
+          <div className="share-row">
+            <span className="share-url">{shareUrl}</span>
+            <button className={`btn--copy${copied ? ' btn--copy--done' : ''}`} onClick={copyLink}>
+              {copied ? '✓ Copié' : 'Copier le lien'}
+            </button>
+          </div>
+        )}
 
         {/* Teams — 2 cards côte à côte */}
         <div className="teams-grid">
