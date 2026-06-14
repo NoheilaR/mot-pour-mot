@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Timer from './Timer';
 import IndiceurView from './IndiceurView';
 import DevineurView from './DevineurView';
@@ -10,6 +10,12 @@ const TEAM_NAMES = { A: 'Équipe Rouge', B: 'Équipe Bleue' };
 
 export default function Game({ game }) {
   const { scores, activeTeam, currentRound, totalRounds, roundDuration, timeLeft, paused, roundSummary, myRole, wordHistory, buzzPending, buzzTeam, buzzer, isHost, actions } = game;
+  const [confirmAbandon, setConfirmAbandon] = useState(false);
+
+  function handleAbandon() {
+    actions.abandonGame();
+    setConfirmAbandon(false);
+  }
 
   return (
     <div className="screen screen--game">
@@ -30,7 +36,22 @@ export default function Game({ game }) {
           )}
         </div>
 
-        <Timer timeLeft={timeLeft} roundDuration={roundDuration} />
+        <div className="header-right">
+          <Timer timeLeft={timeLeft} roundDuration={roundDuration} />
+          {isHost && (
+            confirmAbandon ? (
+              <div className="abandon-confirm">
+                <span className="abandon-confirm-label">Fin ?</span>
+                <button className="btn--abandon-yes" onClick={handleAbandon}>Oui</button>
+                <button className="btn--abandon-no" onClick={() => setConfirmAbandon(false)}>Non</button>
+              </div>
+            ) : (
+              <button className="btn--abandon" onClick={() => setConfirmAbandon(true)} title="Abandonner la partie">
+                ✕
+              </button>
+            )
+          )}
+        </div>
       </div>
 
       {paused && !buzzPending && <div className="pause-banner">⏸ Pause — joueur déconnecté</div>}
@@ -48,7 +69,7 @@ export default function Game({ game }) {
 
       {roundSummary && <RoundSummary summary={roundSummary} />}
 
-      {/* Buzz overlay — visible par tous quand un buzz est en cours */}
+      {/* Buzz overlay */}
       {buzzPending && (
         <div className="buzz-overlay">
           <div className="buzz-overlay-card">

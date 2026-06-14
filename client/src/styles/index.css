@@ -526,6 +526,72 @@ html, body, #root {
 .header-team-badge--A { color: var(--team-a); background: var(--red-dim); }
 .header-team-badge--B { color: var(--team-b); background: rgba(58,134,255,.18); }
 
+/* Partie droite du header (timer + abandon) */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  flex-shrink: 0;
+}
+
+/* Bouton abandonner */
+.btn--abandon {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--grey-dim);
+  border-radius: var(--r);
+  font-family: var(--f);
+  font-size: .85rem;
+  font-weight: 800;
+  padding: .3rem .6rem;
+  cursor: pointer;
+  transition: border-color .15s, color .15s;
+  line-height: 1;
+}
+.btn--abandon:hover { border-color: var(--red); color: var(--red); }
+
+.abandon-confirm {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+}
+.abandon-confirm-label {
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--grey);
+  white-space: nowrap;
+}
+.btn--abandon-yes {
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: var(--r);
+  font-family: var(--f);
+  font-size: .72rem;
+  font-weight: 800;
+  padding: .3rem .65rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  transition: opacity .15s;
+}
+.btn--abandon-yes:hover { opacity: .85; }
+.btn--abandon-no {
+  background: var(--border);
+  color: var(--grey);
+  border: none;
+  border-radius: var(--r);
+  font-family: var(--f);
+  font-size: .72rem;
+  font-weight: 800;
+  padding: .3rem .65rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  transition: background .15s, color .15s;
+}
+.btn--abandon-no:hover { background: var(--grey-dim); color: var(--white); }
+
 /* Timer dans le header */
 .header-timer {
   display: flex;

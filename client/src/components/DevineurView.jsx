@@ -114,6 +114,9 @@ export default function DevineurView({ game }) {
           />
           <button className="btn--guess" type="submit" disabled={!guess.trim() || !currentClue}>→</button>
         </form>
+        <div className="skip-btn-row">
+          <button className="btn--skip" onClick={actions.skipWord} disabled={!currentWord}>Passer (−1)</button>
+        </div>
       </div>
     </div>
   );

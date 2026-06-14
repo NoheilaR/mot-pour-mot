@@ -223,6 +223,7 @@ export function useGame() {
     socket.on('gameResumed', ({ timeLeft }) => dispatch({ type: 'GAME_RESUMED', timeLeft }));
     socket.on('buzzStarted', ({ buzzTeam, buzzer }) => dispatch({ type: 'BUZZ_STARTED', buzzTeam, buzzer }));
     socket.on('buzzResolved', ({ confirmed, scores, buzzTeam }) => dispatch({ type: 'BUZZ_RESOLVED', confirmed, scores, buzzTeam }));
+    socket.on('gameAbandoned', () => dispatch({ type: 'BACK_TO_LOBBY' }));
 
     return () => socket.disconnect();
   }, []);
@@ -279,6 +280,11 @@ export function useGame() {
       dispatch({ type: 'BACK_TO_LOBBY' });
     });
   }, []);
+  const abandonGame = useCallback(() => {
+    socket.emit('abandonGame', {}, (res) => {
+      if (res?.error) dispatch({ type: 'SET_ERROR', message: res.error });
+    });
+  }, []);
   const buzz = useCallback(() => {
     socket.emit('buzz', {}, (res) => {
       if (res?.error) dispatch({ type: 'SET_ERROR', message: res.error });
@@ -305,6 +311,6 @@ export function useGame() {
     myTeam,
     isHost,
     shareUrl,
-    actions: { createRoom, joinRoom, joinOrCreate, chooseTeam, updateSettings, startGame, submitClue, submitGuess, markResult, skipWord, swapRoles, setPreferredRole, playAgain, buzz, confirmBuzz, denyBuzz, clearError },
+    actions: { createRoom, joinRoom, joinOrCreate, chooseTeam, updateSettings, startGame, submitClue, submitGuess, markResult, skipWord, swapRoles, setPreferredRole, playAgain, abandonGame, buzz, confirmBuzz, denyBuzz, clearError },
   };
 }

@@ -111,6 +111,11 @@ class GameRoom {
     if (members.length === 1) {
       this.indiceurId = members[0].id;
       this.devineurId = opponents[0]?.id ?? null;
+    } else if (this.mode === 'tabou') {
+      // Tabou : alternance forcée, on ignore les préférences de rôle
+      const idx = this.teamPlayCount[this.activeTeam] % members.length;
+      this.indiceurId = members[idx].id;
+      this.devineurId = members.find(p => p.id !== this.indiceurId)?.id ?? null;
     } else {
       const wantsIndiceur = members.find(p => p.preferredRole === 'indiceur');
       const wantsDevineur = members.find(p => p.preferredRole === 'devineur');
@@ -252,7 +257,7 @@ class GameRoom {
   // ─── Passer ─────────────────────────────────────────────────────
   skipWord(socketId) {
     if (this.phase !== 'round_active') return { ok: false, reason: 'Pas en cours de round.' };
-    if (socketId !== this.indiceurId) return { ok: false, reason: 'Seul l\'indiceur peut passer.' };
+    if (socketId !== this.indiceurId && socketId !== this.devineurId) return { ok: false, reason: 'Seul un joueur actif peut passer.' };
 
     const prevWord = this.currentWord;
     const exchange = [...this.currentExchange];

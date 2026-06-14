@@ -342,6 +342,17 @@ io.on('connection', (socket) => {
     io.to(room.roomCode).emit('buzzResolved', { confirmed: false });
   });
 
+  // ── abandonGame (hôte abandonne la partie en cours) ─────────────
+  socket.on('abandonGame', (_, cb) => {
+    const room = getRoomOf(socket.id);
+    if (!room) return cb?.({ error: 'Pas dans un salon.' });
+    if (socket.id !== room.hostId) return cb?.({ error: 'Hôte uniquement.' });
+    room.resetToLobby();
+    cb?.({ ok: true });
+    io.to(room.roomCode).emit('gameAbandoned');
+    emitRoomUpdate(room);
+  });
+
   // ── playAgain ───────────────────────────────────────────────────
   socket.on('playAgain', (_, cb) => {
     const room = getRoomOf(socket.id);

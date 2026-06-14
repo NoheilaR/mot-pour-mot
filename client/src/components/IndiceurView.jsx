@@ -97,7 +97,7 @@ export default function IndiceurView({ game }) {
           )
         )}
 
-        {mode === 'text' && currentClue !== null && (
+        {mode === 'text' && currentWord && (
           <div className="skip-btn-row">
             <button className="btn--skip" onClick={actions.skipWord}>Passer (−1)</button>
           </div>
