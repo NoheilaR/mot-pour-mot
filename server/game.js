@@ -80,12 +80,20 @@ class GameRoom {
   }
 
   canStart() {
-    const a = this.getTeamMembers('A'), b = this.getTeamMembers('B');
-    if (a.length < 1 || b.length < 1) return { ok: false, reason: 'Chaque équipe doit avoir au moins 1 joueur.' };
+    const total = Object.keys(this.players).length;
+    if (total < 2) return { ok: false, reason: 'Il faut au moins 2 joueurs.' };
     return { ok: true };
   }
 
   startGame() {
+    // Auto-split si tous les joueurs sont dans la même équipe ou sans équipe
+    const a = this.getTeamMembers('A'), b = this.getTeamMembers('B');
+    if (a.length === 0 || b.length === 0) {
+      const all = Object.values(this.players);
+      for (let i = 0; i < all.length; i++) {
+        all[i].team = i % 2 === 0 ? 'A' : 'B';
+      }
+    }
     this.wordPool = buildWordPool();
     this.wordPoolIndex = 0;
     this.scores = { A: 0, B: 0 };
