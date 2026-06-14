@@ -20,45 +20,47 @@ function clearRoomFromURL() {
   window.history.replaceState({}, '', url);
 }
 
-const initialState = {
-  connected: false,
-  screen: 'home',
-  roomCode: null,
-  myId: null,
-  pseudo: null,
-  discordInstanceId: getDiscordInstanceId(),
-  discordUser: getDiscordUser(),
-  urlRoomCode: getDiscordInstanceId() || getRoomCodeFromURL(),
+// Lazy init — appelé au premier render (après initDiscord().finally()), pas à l'import du module
+function makeInitialState() {
+  const discordInstanceId = getDiscordInstanceId();
+  const discordUser = getDiscordUser();
+  return {
+    connected: false,
+    screen: 'home',
+    roomCode: null,
+    myId: null,
+    pseudo: null,
+    discordInstanceId,
+    discordUser,
+    urlRoomCode: discordInstanceId || getRoomCodeFromURL(),
 
-  // Snapshot serveur
-  hostId: null,
-  players: [],
-  mode: 'text',
-  totalRounds: 4,
-  roundDuration: 30,
-  phase: 'lobby',
-  scores: { A: 0, B: 0 },
-  currentRound: -1,
-  activeTeam: null,
-  indiceurId: null,
-  devineurId: null,
-  currentClue: null,
-  timeLeft: 30,
-  paused: false,
-  wordHistory: [],
+    // Snapshot serveur
+    hostId: null,
+    players: [],
+    mode: 'text',
+    totalRounds: 4,
+    roundDuration: 30,
+    phase: 'lobby',
+    scores: { A: 0, B: 0 },
+    currentRound: -1,
+    activeTeam: null,
+    indiceurId: null,
+    devineurId: null,
+    currentClue: null,
+    timeLeft: 30,
+    paused: false,
+    wordHistory: [],
 
-  // État client
-  currentWord: null,
-  // Échange en cours sur le mot actif : [{ clue, guess }]
-  // guess === null = indice actif, pas encore tenté
-  // guess === string = tentative échouée, indiceur peut redonner un indice
-  currentExchange: [],
-  lastGuessResult: null,
-  clueError: null,
-  roundSummary: null,
-  gameResult: null,
-  error: null,
-};
+    // État client
+    currentWord: null,
+    currentExchange: [],
+    lastGuessResult: null,
+    clueError: null,
+    roundSummary: null,
+    gameResult: null,
+    error: null,
+  };
+}
 
 function reducer(state, action) {
   switch (action.type) {
@@ -169,7 +171,7 @@ function reducer(state, action) {
     case 'GAME_RESUMED':
       return { ...state, paused: false, timeLeft: action.timeLeft };
     case 'BACK_TO_LOBBY':
-      return { ...initialState, connected: state.connected, myId: state.myId, screen: 'lobby', roomCode: state.roomCode, pseudo: state.pseudo };
+      return { ...makeInitialState(), connected: state.connected, myId: state.myId, screen: 'lobby', roomCode: state.roomCode, pseudo: state.pseudo, discordInstanceId: state.discordInstanceId, discordUser: state.discordUser };
     case 'SET_ERROR':
       return { ...state, error: action.message };
     case 'CLEAR_ERROR':
@@ -180,7 +182,7 @@ function reducer(state, action) {
 }
 
 export function useGame() {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, undefined, makeInitialState);
 
   useEffect(() => {
     socket.connect();
