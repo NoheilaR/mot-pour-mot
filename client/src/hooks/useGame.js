@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useCallback } from 'react';
 import socket from '../socket';
-import { getDiscordInstanceId } from '../discord';
+import { getDiscordInstanceId, getDiscordUser } from '../discord';
 
 function getRoomCodeFromURL() {
   const params = new URLSearchParams(window.location.search);
@@ -27,6 +27,7 @@ const initialState = {
   myId: null,
   pseudo: null,
   discordInstanceId: getDiscordInstanceId(),
+  discordUser: getDiscordUser(),
   urlRoomCode: getDiscordInstanceId() || getRoomCodeFromURL(),
 
   // Snapshot serveur

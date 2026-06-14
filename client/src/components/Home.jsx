@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function Home({ game }) {
   const [pseudo, setPseudo] = useState('');
   const [roomCode, setRoomCode] = useState(game.urlRoomCode || '');
   const [tab, setTab] = useState(game.urlRoomCode ? 'join' : 'create');
 
-  // Mode Discord Activity : juste un pseudo, la room est gérée par l'instanceId
-  if (game.discordInstanceId) {
+  // Mode Discord Activity avec pseudo récupéré automatiquement → auto-join
+  useEffect(() => {
+    if (game.discordInstanceId && game.discordUser && game.connected) {
+      const name = game.discordUser.global_name || game.discordUser.username;
+      game.actions.joinOrCreate(game.discordInstanceId, name);
+    }
+  }, [game.connected, game.discordInstanceId, game.discordUser]);
+
+  // Mode Discord sans pseudo récupéré → formulaire simple
+  if (game.discordInstanceId && !game.discordUser) {
     function handleDiscordJoin(e) {
       e.preventDefault();
       if (!pseudo.trim()) return;
@@ -41,6 +49,16 @@ export default function Home({ game }) {
           </form>
           {!game.connected && <p className="hint">Connexion…</p>}
         </div>
+      </div>
+    );
+  }
+
+  // Mode Discord avec pseudo → affiche un écran de chargement (auto-join en cours)
+  if (game.discordInstanceId && game.discordUser) {
+    return (
+      <div className="screen screen--home">
+        <div className="home-logo">MOT <span>pour</span> MOT</div>
+        <p className="home-sub">Connexion en cours…</p>
       </div>
     );
   }
