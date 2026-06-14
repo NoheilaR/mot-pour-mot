@@ -161,7 +161,19 @@ class GameRoom {
   }
 
   _getBlacklistFor(word) {
-    return blacklistData[word] ? [...blacklistData[word]] : [];
+    if (blacklistData[word]) return [...blacklistData[word]];
+    // Fallback : 5 mots de la même catégorie (aléatoirement)
+    for (const words of Object.values(wordsData.categories)) {
+      if (words.includes(word)) {
+        const pool = words.filter(w => w !== word);
+        for (let i = pool.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [pool[i], pool[j]] = [pool[j], pool[i]];
+        }
+        return pool.slice(0, 5);
+      }
+    }
+    return [];
   }
 
   _drawNextWord() {
