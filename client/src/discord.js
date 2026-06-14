@@ -4,18 +4,17 @@ let instanceId = null;
 let discordUser = null;
 
 export async function initDiscord() {
-  try {
-    // Récupère le client ID depuis le serveur (plus fiable que le build-time env var)
-    const configRes = await fetch('/api/config');
-    const { discordClientId } = await configRes.json();
-    if (!discordClientId) return;
+  // __DISCORD_CLIENT_ID__ est injecté par vite.config.js depuis DISCORD_CLIENT_ID sur Render
+  const clientId = __DISCORD_CLIENT_ID__;
+  if (!clientId) return;
 
-    const sdk = new DiscordSDK(discordClientId);
+  try {
+    const sdk = new DiscordSDK(clientId);
     await sdk.ready();
     instanceId = sdk.instanceId;
 
     const { code } = await sdk.commands.authorize({
-      client_id: discordClientId,
+      client_id: clientId,
       response_type: 'code',
       state: '',
       prompt: 'none',
@@ -32,7 +31,7 @@ export async function initDiscord() {
     const auth = await sdk.commands.authenticate({ access_token });
     discordUser = auth.user;
   } catch (e) {
-    console.warn('Discord init failed:', e);
+    console.warn('Discord init:', e.message);
   }
 }
 
