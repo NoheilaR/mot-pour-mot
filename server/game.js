@@ -1,4 +1,5 @@
 const wordsData = require('./data/words.json');
+const blacklistData = require('./data/blacklist.json');
 const { matchAnswer } = require('./utils/matchAnswer');
 const { validateClue } = require('./utils/validateClue');
 
@@ -22,7 +23,7 @@ class GameRoom {
     this.players = {};
     this.mode = 'text';
     this.totalRounds = 4;
-    this.roundDuration = 30; // secondes, configurable par l'hôte
+    this.roundDuration = 30;
     this.phase = 'lobby';
     this.scores = { A: 0, B: 0 };
     this.currentRound = -1;
@@ -31,17 +32,13 @@ class GameRoom {
     this.indiceurId = null;
     this.devineurId = null;
     this.currentWord = null;
-
-    // Indice actuel (null = en attente d'un indice)
     this.currentClue = null;
-    // Tous les indices donnés pour le mot en cours : [{ clue, guess|null }]
-    // guess est null si l'indice est actif (pas encore de tentative)
     this.currentExchange = [];
-
+    this.currentBlacklist = [];
+    this.buzzPending = false;
+    this.buzzTeam = null;
     this.roundScore = 0;
-    // Historique des mots complétés ce round : [{ word, result, exchange }]
     this.wordHistory = [];
-
     this.wordPool = [];
     this.wordPoolIndex = 0;
     this.timeLeft = ROUND_DURATION;
@@ -68,7 +65,7 @@ class GameRoom {
   }
 
   updateSettings({ mode, totalRounds, roundDuration }) {
-    if (mode === 'text' || mode === 'vocal') this.mode = mode;
+    if (mode === 'text' || mode === 'tabou') this.mode = mode;
     if (Number.isInteger(totalRounds) && totalRounds >= 2 && totalRounds <= 12) this.totalRounds = totalRounds;
     if (Number.isInteger(roundDuration) && roundDuration >= 20 && roundDuration <= 180) this.roundDuration = roundDuration;
   }
@@ -86,7 +83,6 @@ class GameRoom {
   }
 
   startGame() {
-    // Auto-split si tous les joueurs sont dans la même équipe ou sans équipe
     const a = this.getTeamMembers('A'), b = this.getTeamMembers('B');
     if (a.length === 0 || b.length === 0) {
       const all = Object.values(this.players);
@@ -113,7 +109,6 @@ class GameRoom {
     const opponents = this.getTeamMembers(opponentTeam);
 
     if (members.length === 1) {
-      // Mode 1v1 : l'indiceur est l'équipe active, le devineur est l'adversaire
       this.indiceurId = members[0].id;
       this.devineurId = opponents[0]?.id ?? null;
     } else {
@@ -138,12 +133,13 @@ class GameRoom {
     }
 
     this.teamPlayCount[this.activeTeam]++;
-
     this.roundScore = 0;
     this.wordHistory = [];
     this.timeLeft = this.roundDuration;
     this._paused = false;
     this._pausedBy = null;
+    this.buzzPending = false;
+    this.buzzTeam = null;
     this.phase = 'round_active';
     this._drawNextWord();
     this._startTimer();
@@ -154,10 +150,13 @@ class GameRoom {
   swapRoles(socketId) {
     if (this.phase !== 'round_active') return { ok: false, reason: 'Pas en cours de round.' };
     if (socketId !== this.indiceurId && socketId !== this.devineurId) return { ok: false, reason: 'Tu n\'es pas dans l\'équipe active.' };
-    // Swap autorisé tant qu'aucun indice n'a été donné pour ce mot
     if (this.currentExchange.length > 0) return { ok: false, reason: 'L\'échange a déjà commencé.' };
     [this.indiceurId, this.devineurId] = [this.devineurId, this.indiceurId];
     return { ok: true, indiceurId: this.indiceurId, devineurId: this.devineurId };
+  }
+
+  _getBlacklistFor(word) {
+    return blacklistData[word] ? [...blacklistData[word]] : [];
   }
 
   _drawNextWord() {
@@ -168,6 +167,7 @@ class GameRoom {
     this.currentWord = this.wordPool[this.wordPoolIndex++];
     this.currentClue = null;
     this.currentExchange = [];
+    this.currentBlacklist = this.mode === 'tabou' ? this._getBlacklistFor(this.currentWord) : [];
   }
 
   _startTimer() {
@@ -194,32 +194,62 @@ class GameRoom {
     this._paused = false; this._pausedBy = null; return true;
   }
 
-  // ─── Indiceur : soumettre un indice ─────────────────────────────
-  // Autorisé quand currentClue === null (début de mot ou après mauvaise réponse)
+  // ─── Mode texte : soumettre un indice ───────────────────────────
   submitClue(socketId, clue) {
     if (this.phase !== 'round_active') return { ok: false, reason: 'Pas en cours de round.' };
     if (socketId !== this.indiceurId) return { ok: false, reason: 'Tu n\'es pas l\'indiceur.' };
+    if (this.mode !== 'text') return { ok: false, reason: 'Réservé au mode texte.' };
     if (this.currentClue !== null) return { ok: false, reason: 'Attends la tentative du devineur.' };
 
     const v = validateClue(clue, this.currentWord);
     if (!v.valid) return { ok: false, reason: v.reason };
 
     this.currentClue = clue.trim();
-    // Ajoute l'entrée dans l'échange courant (guess null = pas encore tenté)
     this.currentExchange.push({ clue: this.currentClue, guess: null });
     return { ok: true, clue: this.currentClue };
   }
 
-  // ─── Indiceur : valider en mode vocal ───────────────────────────
+  // ─── Mode tabou : indiceur valide le mot deviné ─────────────────
   markResult(socketId, result) {
     if (this.phase !== 'round_active') return { ok: false, reason: 'Pas en cours de round.' };
-    if (socketId !== this.indiceurId) return { ok: false, reason: 'Seul l\'indiceur peut valider en mode vocal.' };
-    if (this.mode !== 'vocal') return { ok: false, reason: 'Réservé au mode vocal.' };
-    if (!this.currentClue) return { ok: false, reason: 'Pas d\'indice actif.' };
-    return this._applyResult(result === 'correct', '[vocal]');
+    if (socketId !== this.indiceurId) return { ok: false, reason: 'Seul l\'indiceur peut valider.' };
+    if (this.mode !== 'tabou') return { ok: false, reason: 'Réservé au mode tabou.' };
+    return this._applyResult(result === 'correct', '[tabou]');
   }
 
-  // ─── Indiceur : passer ──────────────────────────────────────────
+  // ─── Buzz (équipe adverse signale un mot interdit) ───────────────
+  buzz(socketId) {
+    if (this.phase !== 'round_active') return { ok: false, reason: 'Pas en cours de round.' };
+    if (this.mode !== 'tabou') return { ok: false, reason: 'Réservé au mode tabou.' };
+    if (this.buzzPending) return { ok: false, reason: 'Un buzz est déjà en cours.' };
+    const player = this.players[socketId];
+    if (!player) return { ok: false };
+    if (!player.team || player.team === this.activeTeam) return { ok: false, reason: 'Seule l\'équipe adverse peut buzzer.' };
+    this.buzzPending = true;
+    this.buzzTeam = player.team;
+    this._paused = true;
+    return { ok: true, buzzTeam: player.team, buzzer: player.pseudo };
+  }
+
+  confirmBuzz() {
+    if (!this.buzzPending) return { ok: false };
+    const buzzTeam = this.buzzTeam;
+    this.scores[buzzTeam]++;
+    this.buzzPending = false;
+    this.buzzTeam = null;
+    this._paused = false;
+    return { ok: true, scores: { ...this.scores }, buzzTeam };
+  }
+
+  denyBuzz() {
+    if (!this.buzzPending) return { ok: false };
+    this.buzzPending = false;
+    this.buzzTeam = null;
+    this._paused = false;
+    return { ok: true };
+  }
+
+  // ─── Passer ─────────────────────────────────────────────────────
   skipWord(socketId) {
     if (this.phase !== 'round_active') return { ok: false, reason: 'Pas en cours de round.' };
     if (socketId !== this.indiceurId) return { ok: false, reason: 'Seul l\'indiceur peut passer.' };
@@ -234,7 +264,7 @@ class GameRoom {
     return { ok: true, skipped: prevWord, penalty: SKIP_PENALTY, scores: { ...this.scores }, wordHistory: [...this.wordHistory] };
   }
 
-  // ─── Devineur : soumettre une réponse ───────────────────────────
+  // ─── Mode texte : devineur soumet une réponse ───────────────────
   submitGuess(socketId, guess) {
     if (this.phase !== 'round_active') return { ok: false, reason: 'Pas en cours de round.' };
     if (socketId !== this.devineurId) return { ok: false, reason: 'Tu n\'es pas le devineur.' };
@@ -246,8 +276,6 @@ class GameRoom {
 
   _applyResult(correct, guessText) {
     const prevWord = this.currentWord;
-
-    // Mise à jour de l'entrée en cours dans l'échange
     const last = this.currentExchange[this.currentExchange.length - 1];
     if (last) last.guess = guessText;
 
@@ -259,7 +287,6 @@ class GameRoom {
       this._drawNextWord();
       return { ok: true, correct: true, word: prevWord, scores: { ...this.scores }, wordHistory: [...this.wordHistory] };
     } else {
-      // Mauvaise réponse : reset currentClue pour permettre un nouvel indice
       this.currentClue = null;
       return { ok: true, correct: false, word: prevWord, scores: { ...this.scores }, currentExchange: [...this.currentExchange] };
     }
@@ -292,6 +319,9 @@ class GameRoom {
     this.currentWord = null;
     this.currentClue = null;
     this.currentExchange = [];
+    this.currentBlacklist = [];
+    this.buzzPending = false;
+    this.buzzTeam = null;
     this.roundScore = 0;
     this.wordHistory = [];
     this.wordPool = [];
@@ -319,6 +349,8 @@ class GameRoom {
       timeLeft: this.timeLeft,
       paused: this._paused,
       wordHistory: [...this.wordHistory],
+      buzzPending: this.buzzPending,
+      buzzTeam: this.buzzTeam,
     };
   }
 }

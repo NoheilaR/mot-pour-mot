@@ -8,11 +8,11 @@ export default function DevineurView({ game }) {
   const inputRef = useRef(null);
 
   useEffect(() => {
-    if (currentClue) {
+    if (currentClue && mode === 'text') {
       setGuess('');
       setTimeout(() => inputRef.current?.focus(), 50);
     }
-  }, [currentClue]);
+  }, [currentClue, mode]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -24,16 +24,32 @@ export default function DevineurView({ game }) {
   const indiceurPseudo = players.find(p => p.id === indiceurId)?.pseudo;
   const devineurPseudo = players.find(p => p.id === devineurId)?.pseudo;
 
-  // Après un mauvais essai : promouvoir la dernière tentative en affichage principal
+  // Mode tabou : devineur écoute sans voir le mot ni la blacklist
+  if (mode === 'tabou') {
+    return (
+      <div className="game-card">
+        <div className="role-strip">
+          <div className="role-strip-left">
+            <span className="role-pill role-pill--devineur">Devineur</span>
+            <span className="role-name">{devineurPseudo}</span>
+          </div>
+        </div>
+        <div className="word-area">
+          <div className="current-word current-word--empty">?</div>
+          <p className="clue-waiting">Écoute bien et devine le mot…</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Mode texte
   const lastFailed =
     currentClue === null &&
     currentExchange.length > 0 &&
-    currentExchange[currentExchange.length - 1].guess !== null &&
-    currentExchange[currentExchange.length - 1].guess !== '[vocal]'
+    currentExchange[currentExchange.length - 1].guess !== null
       ? currentExchange[currentExchange.length - 1]
       : null;
 
-  // Tentatives plus anciennes (pas celle déjà affichée en grand)
   const olderExchange = lastFailed ? currentExchange.slice(0, -1) : currentExchange;
 
   return (
@@ -83,25 +99,21 @@ export default function DevineurView({ game }) {
       <CurrentExchange exchange={olderExchange} />
 
       <div className="action-area">
-        {mode === 'text' ? (
-          <form className="guess-form" onSubmit={handleSubmit}>
-            <input
-              ref={inputRef}
-              className="field-input field-input--guess"
-              type="text"
-              value={guess}
-              onChange={e => setGuess(e.target.value)}
-              placeholder="Ton mot…"
-              disabled={!currentClue}
-              maxLength={40}
-              autoComplete="off"
-              autoFocus
-            />
-            <button className="btn--guess" type="submit" disabled={!guess.trim() || !currentClue}>→</button>
-          </form>
-        ) : (
-          <p className="hint">Réponds à l'oral — {indiceurPseudo} valide.</p>
-        )}
+        <form className="guess-form" onSubmit={handleSubmit}>
+          <input
+            ref={inputRef}
+            className="field-input field-input--guess"
+            type="text"
+            value={guess}
+            onChange={e => setGuess(e.target.value)}
+            placeholder="Ton mot…"
+            disabled={!currentClue}
+            maxLength={40}
+            autoComplete="off"
+            autoFocus
+          />
+          <button className="btn--guess" type="submit" disabled={!guess.trim() || !currentClue}>→</button>
+        </form>
       </div>
     </div>
   );

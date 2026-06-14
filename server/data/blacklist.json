@@ -1,0 +1,4734 @@
+{
+  "football": [
+    "ballon",
+    "but",
+    "stade",
+    "équipe",
+    "arbitre"
+  ],
+  "tennis": [
+    "raquette",
+    "balle",
+    "filet",
+    "service",
+    "point"
+  ],
+  "natation": [
+    "piscine",
+    "nage",
+    "eau",
+    "couloir",
+    "crawl"
+  ],
+  "cyclisme": [
+    "vélo",
+    "peloton",
+    "tour",
+    "montagne",
+    "vitesse"
+  ],
+  "basketball": [
+    "panier",
+    "dribble",
+    "rebond",
+    "terrain",
+    "équipe"
+  ],
+  "volleyball": [
+    "filet",
+    "service",
+    "plage",
+    "set",
+    "équipe"
+  ],
+  "rugby": [
+    "mêlée",
+    "essai",
+    "plaquage",
+    "ovale",
+    "terrain"
+  ],
+  "golf": [
+    "club",
+    "trou",
+    "green",
+    "parcours",
+    "swing"
+  ],
+  "boxe": [
+    "ring",
+    "gant",
+    "coup",
+    "arbitre",
+    "combat"
+  ],
+  "judo": [
+    "tatami",
+    "ceinture",
+    "prise",
+    "chute",
+    "kimono"
+  ],
+  "ski": [
+    "neige",
+    "piste",
+    "montagne",
+    "slalom",
+    "descente"
+  ],
+  "surf": [
+    "vague",
+    "planche",
+    "mer",
+    "équilibre",
+    "océan"
+  ],
+  "escalade": [
+    "rocher",
+    "corde",
+    "prise",
+    "paroi",
+    "hauteur"
+  ],
+  "marathon": [
+    "course",
+    "endurance",
+    "route",
+    "podium",
+    "kilomètre"
+  ],
+  "badminton": [
+    "volant",
+    "raquette",
+    "filet",
+    "smash",
+    "court"
+  ],
+  "handball": [
+    "but",
+    "gardien",
+    "pivot",
+    "terrain",
+    "lancé"
+  ],
+  "athletisme": [
+    "piste",
+    "saut",
+    "lancer",
+    "sprint",
+    "record"
+  ],
+  "plongee": [
+    "bouteille",
+    "masque",
+    "fond",
+    "profondeur",
+    "mer"
+  ],
+  "equitation": [
+    "cheval",
+    "selle",
+    "galop",
+    "écurie",
+    "cavalier"
+  ],
+  "karate": [
+    "ceinture",
+    "kata",
+    "coup",
+    "dojo",
+    "arts-martiaux"
+  ],
+  "cricket": [
+    "batte",
+    "wicket",
+    "Angleterre",
+    "balle",
+    "terrain"
+  ],
+  "bowling": [
+    "quille",
+    "boule",
+    "piste",
+    "strike",
+    "lancer"
+  ],
+  "escrime": [
+    "fleuret",
+    "masque",
+    "touche",
+    "duel",
+    "piste"
+  ],
+  "lutte": [
+    "corps",
+    "prise",
+    "tapis",
+    "force",
+    "combat"
+  ],
+  "hockey": [
+    "palet",
+    "glace",
+    "crosse",
+    "gardien",
+    "but"
+  ],
+  "voile": [
+    "vent",
+    "mer",
+    "bateau",
+    "régate",
+    "marin"
+  ],
+  "aviron": [
+    "rame",
+    "rivière",
+    "eau",
+    "équipe",
+    "barque"
+  ],
+  "ping-pong": [
+    "balle",
+    "raquette",
+    "table",
+    "filet",
+    "rebond"
+  ],
+  "taekwondo": [
+    "pied",
+    "coup",
+    "kimono",
+    "ceinture",
+    "combat"
+  ],
+  "squash": [
+    "raquette",
+    "mur",
+    "balle",
+    "indoor",
+    "court"
+  ],
+  "petanque": [
+    "boule",
+    "cochonnet",
+    "lancer",
+    "France",
+    "terrain"
+  ],
+  "flechettes": [
+    "cible",
+    "bar",
+    "lancer",
+    "pointe",
+    "précision"
+  ],
+  "billard": [
+    "queue",
+    "boule",
+    "tapis",
+    "triangle",
+    "table"
+  ],
+  "yoga": [
+    "souplesse",
+    "méditation",
+    "posture",
+    "respiration",
+    "équilibre"
+  ],
+  "skateboard": [
+    "planche",
+    "roue",
+    "trick",
+    "rampe",
+    "skater"
+  ],
+  "patinage": [
+    "glace",
+    "lame",
+    "saut",
+    "artistique",
+    "équilibre"
+  ],
+  "pizza": [
+    "fromage",
+    "tomate",
+    "four",
+    "pâte",
+    "italienne"
+  ],
+  "fromage": [
+    "lait",
+    "croûte",
+    "cave",
+    "vache",
+    "affinage"
+  ],
+  "croissant": [
+    "beurre",
+    "boulangerie",
+    "feuilleté",
+    "café",
+    "matin"
+  ],
+  "chocolat": [
+    "cacao",
+    "tablette",
+    "sucre",
+    "noir",
+    "suisse"
+  ],
+  "soupe": [
+    "bouillon",
+    "légume",
+    "chaud",
+    "cuillère",
+    "bol"
+  ],
+  "salade": [
+    "laitue",
+    "vinaigrette",
+    "feuille",
+    "vert",
+    "crudité"
+  ],
+  "poulet": [
+    "rôti",
+    "plume",
+    "ferme",
+    "grillé",
+    "basse-cour"
+  ],
+  "baguette": [
+    "farine",
+    "boulangerie",
+    "mie",
+    "croustillant",
+    "française"
+  ],
+  "crepe": [
+    "Bretagne",
+    "farine",
+    "beurre",
+    "citron",
+    "retourner"
+  ],
+  "sushi": [
+    "poisson",
+    "riz",
+    "japon",
+    "algue",
+    "wasabi"
+  ],
+  "hamburger": [
+    "pain",
+    "bœuf",
+    "américain",
+    "sauce",
+    "fast-food"
+  ],
+  "tarte": [
+    "pâte",
+    "four",
+    "fruit",
+    "sucré",
+    "moule"
+  ],
+  "glace": [
+    "froid",
+    "crème",
+    "parfum",
+    "été",
+    "boule"
+  ],
+  "yaourt": [
+    "lait",
+    "ferment",
+    "pot",
+    "fruit",
+    "dessert"
+  ],
+  "omelette": [
+    "œuf",
+    "poêle",
+    "battu",
+    "jambon",
+    "fromage"
+  ],
+  "raclette": [
+    "Savoie",
+    "charcuterie",
+    "hiver",
+    "fonte",
+    "pomme"
+  ],
+  "fondue": [
+    "suisse",
+    "chalet",
+    "pain",
+    "fromage",
+    "montagne"
+  ],
+  "camembert": [
+    "Normandie",
+    "vache",
+    "lait",
+    "odeur",
+    "blanc"
+  ],
+  "beurre": [
+    "lait",
+    "tartine",
+    "crème",
+    "fondu",
+    "jaune"
+  ],
+  "confiture": [
+    "fruit",
+    "sucre",
+    "pot",
+    "tartine",
+    "bocal"
+  ],
+  "miel": [
+    "abeille",
+    "ruche",
+    "sucré",
+    "doré",
+    "fleur"
+  ],
+  "jambon": [
+    "cochon",
+    "charcuterie",
+    "tranché",
+    "fumé",
+    "sel"
+  ],
+  "sardine": [
+    "mer",
+    "boîte",
+    "huile",
+    "poisson",
+    "conserve"
+  ],
+  "huitre": [
+    "mer",
+    "coquille",
+    "perle",
+    "sel",
+    "plateau"
+  ],
+  "macaron": [
+    "sucre",
+    "ganache",
+    "paris",
+    "couleur",
+    "pâtisserie"
+  ],
+  "ananas": [
+    "tropical",
+    "jus",
+    "épineux",
+    "hawaii",
+    "sucré"
+  ],
+  "mangue": [
+    "tropical",
+    "sucré",
+    "jaune",
+    "jus",
+    "asie"
+  ],
+  "framboise": [
+    "rouge",
+    "acidulé",
+    "jardin",
+    "confiture",
+    "fruit"
+  ],
+  "fraise": [
+    "rouge",
+    "crème",
+    "printemps",
+    "jardin",
+    "dessert"
+  ],
+  "cerise": [
+    "rouge",
+    "noyau",
+    "gâteau",
+    "arbre",
+    "clafoutis"
+  ],
+  "peche": [
+    "noyau",
+    "sucré",
+    "velours",
+    "été",
+    "arbre"
+  ],
+  "abricot": [
+    "orange",
+    "noyau",
+    "Provence",
+    "confiture",
+    "sec"
+  ],
+  "raisin": [
+    "grappe",
+    "vin",
+    "vigne",
+    "sucré",
+    "vendange"
+  ],
+  "kiwi": [
+    "vert",
+    "poilu",
+    "vitamine",
+    "acidulé",
+    "fruit"
+  ],
+  "noix": [
+    "coquille",
+    "cerneaux",
+    "bois",
+    "huile",
+    "gâteau"
+  ],
+  "amande": [
+    "dur",
+    "noyau",
+    "pâte",
+    "gâteau",
+    "arbre"
+  ],
+  "noisette": [
+    "chocolat",
+    "arbre",
+    "bois",
+    "praline",
+    "café"
+  ],
+  "cacahuete": [
+    "sel",
+    "beurre",
+    "apéro",
+    "Amérique",
+    "arachide"
+  ],
+  "potiron": [
+    "orange",
+    "Halloween",
+    "soupe",
+    "hiver",
+    "graines"
+  ],
+  "courgette": [
+    "verte",
+    "légume",
+    "jardin",
+    "été",
+    "ratatouille"
+  ],
+  "aubergine": [
+    "violette",
+    "légume",
+    "ratatouille",
+    "grillé",
+    "méditerranée"
+  ],
+  "brocoli": [
+    "vert",
+    "chou",
+    "vapeur",
+    "légume",
+    "santé"
+  ],
+  "artichaut": [
+    "cœur",
+    "feuille",
+    "beurre",
+    "fond",
+    "Bretagne"
+  ],
+  "olive": [
+    "huile",
+    "méditerranée",
+    "apéro",
+    "arbre",
+    "verte"
+  ],
+  "citron": [
+    "acide",
+    "jaune",
+    "zeste",
+    "pressé",
+    "agrume"
+  ],
+  "orange": [
+    "agrume",
+    "jus",
+    "vitamine",
+    "peau",
+    "matin"
+  ],
+  "banane": [
+    "jaune",
+    "tropical",
+    "doux",
+    "singe",
+    "potassium"
+  ],
+  "quiche": [
+    "lorraine",
+    "œuf",
+    "four",
+    "tourte",
+    "salée"
+  ],
+  "lasagne": [
+    "pâtes",
+    "bœuf",
+    "bechamel",
+    "four",
+    "italienne"
+  ],
+  "paella": [
+    "riz",
+    "espagne",
+    "safran",
+    "moule",
+    "crevette"
+  ],
+  "couscous": [
+    "semoule",
+    "maghreb",
+    "légume",
+    "agneau",
+    "orient"
+  ],
+  "tajine": [
+    "maroc",
+    "citron",
+    "agneau",
+    "épices",
+    "cône"
+  ],
+  "saumon": [
+    "poisson",
+    "rose",
+    "atlantique",
+    "fumé",
+    "mer"
+  ],
+  "crevette": [
+    "mer",
+    "cocktail",
+    "rose",
+    "carapace",
+    "plateau"
+  ],
+  "homard": [
+    "mer",
+    "rouge",
+    "pince",
+    "luxe",
+    "plateau"
+  ],
+  "calmar": [
+    "tentacule",
+    "mer",
+    "encre",
+    "friture",
+    "anneau"
+  ],
+  "moule": [
+    "mer",
+    "coquille",
+    "marinière",
+    "frites",
+    "beurre"
+  ],
+  "crabe": [
+    "mer",
+    "pince",
+    "orange",
+    "sable",
+    "marée"
+  ],
+  "thon": [
+    "boîte",
+    "mer",
+    "salade",
+    "pêche",
+    "rouge"
+  ],
+  "tiramisu": [
+    "italie",
+    "mascarpone",
+    "café",
+    "dessert",
+    "biscuit"
+  ],
+  "chien": [
+    "aboyer",
+    "laisse",
+    "os",
+    "fidèle",
+    "poil"
+  ],
+  "chat": [
+    "miauler",
+    "griffes",
+    "ronronner",
+    "souris",
+    "poil"
+  ],
+  "lion": [
+    "savane",
+    "crinière",
+    "rugissement",
+    "chasseur",
+    "roi"
+  ],
+  "elephant": [
+    "trompe",
+    "défense",
+    "savane",
+    "Afrique",
+    "gris"
+  ],
+  "girafe": [
+    "cou",
+    "Afrique",
+    "tacheté",
+    "savane",
+    "grand"
+  ],
+  "pingouin": [
+    "glace",
+    "antarctique",
+    "manchot",
+    "poisson",
+    "nager"
+  ],
+  "dauphin": [
+    "mer",
+    "intelligence",
+    "saut",
+    "sonar",
+    "mammifère"
+  ],
+  "perroquet": [
+    "plume",
+    "parole",
+    "tropical",
+    "cage",
+    "coloré"
+  ],
+  "serpent": [
+    "venin",
+    "reptile",
+    "glisser",
+    "langue",
+    "écaille"
+  ],
+  "tortue": [
+    "carapace",
+    "lenteur",
+    "mer",
+    "longévité",
+    "coquille"
+  ],
+  "koala": [
+    "eucalyptus",
+    "australie",
+    "arbre",
+    "sommeil",
+    "marsupial"
+  ],
+  "panda": [
+    "bambou",
+    "chine",
+    "noir-blanc",
+    "menacé",
+    "ours"
+  ],
+  "renard": [
+    "ruse",
+    "forêt",
+    "queue",
+    "terrier",
+    "astucieux"
+  ],
+  "loup": [
+    "meute",
+    "hurlement",
+    "forêt",
+    "croc",
+    "sauvage"
+  ],
+  "cochon": [
+    "groin",
+    "ferme",
+    "grognement",
+    "lard",
+    "rose"
+  ],
+  "vache": [
+    "lait",
+    "pré",
+    "ferme",
+    "corne",
+    "meugler"
+  ],
+  "cheval": [
+    "galop",
+    "selle",
+    "crinière",
+    "sabot",
+    "écurie"
+  ],
+  "lapin": [
+    "oreilles",
+    "carotte",
+    "terrier",
+    "doux",
+    "blanc"
+  ],
+  "hamster": [
+    "cage",
+    "roue",
+    "ronger",
+    "joue",
+    "poil"
+  ],
+  "aigle": [
+    "plume",
+    "altitude",
+    "serres",
+    "vue",
+    "nid"
+  ],
+  "baleine": [
+    "mer",
+    "chant",
+    "nageoire",
+    "grand",
+    "souffleur"
+  ],
+  "requin": [
+    "dents",
+    "nager",
+    "chasseur",
+    "blanc",
+    "attaque"
+  ],
+  "hippopotame": [
+    "rivière",
+    "Afrique",
+    "bouche",
+    "gros",
+    "dents"
+  ],
+  "gorille": [
+    "forêt",
+    "fort",
+    "Afrique",
+    "grand",
+    "singe"
+  ],
+  "ours": [
+    "forêt",
+    "miel",
+    "hibernation",
+    "griffes",
+    "brun"
+  ],
+  "castor": [
+    "barrage",
+    "rivière",
+    "bois",
+    "queue",
+    "dents"
+  ],
+  "zebre": [
+    "rayure",
+    "Afrique",
+    "savane",
+    "troupeau",
+    "cheval"
+  ],
+  "rhinoceros": [
+    "corne",
+    "Afrique",
+    "peau",
+    "lourd",
+    "cuir"
+  ],
+  "crocodile": [
+    "dents",
+    "rivière",
+    "reptile",
+    "dangereux",
+    "mâchoire"
+  ],
+  "grenouille": [
+    "mare",
+    "coasser",
+    "vert",
+    "saut",
+    "nénuphar"
+  ],
+  "meduse": [
+    "mer",
+    "tentacule",
+    "transparent",
+    "piquer",
+    "eau"
+  ],
+  "jaguar": [
+    "jungle",
+    "tacheté",
+    "félin",
+    "rapide",
+    "Amérique"
+  ],
+  "leopard": [
+    "tacheté",
+    "Afrique",
+    "arbre",
+    "félin",
+    "chasseur"
+  ],
+  "guepard": [
+    "vitesse",
+    "tacheté",
+    "Afrique",
+    "course",
+    "félin"
+  ],
+  "cameleon": [
+    "couleur",
+    "langue",
+    "lézard",
+    "camoufler",
+    "vert"
+  ],
+  "cobra": [
+    "venin",
+    "siffler",
+    "Inde",
+    "serpent",
+    "dangereux"
+  ],
+  "vipere": [
+    "venin",
+    "serpent",
+    "dangereux",
+    "morsure",
+    "triangle"
+  ],
+  "otarie": [
+    "mer",
+    "nager",
+    "balle",
+    "zoo",
+    "nageoire"
+  ],
+  "pelican": [
+    "bec",
+    "mer",
+    "poche",
+    "plonger",
+    "oiseau"
+  ],
+  "cigogne": [
+    "bébé",
+    "migration",
+    "nid",
+    "blanc",
+    "printemps"
+  ],
+  "autruche": [
+    "sable",
+    "grande",
+    "africaine",
+    "œuf",
+    "courir"
+  ],
+  "toucan": [
+    "bec",
+    "coloré",
+    "tropical",
+    "forêt",
+    "oiseau"
+  ],
+  "raton-laveur": [
+    "rayure",
+    "forêt",
+    "Amérique",
+    "masque",
+    "lavage"
+  ],
+  "cygne": [
+    "blanc",
+    "beau",
+    "lac",
+    "plume",
+    "grâce"
+  ],
+  "flamant": [
+    "rose",
+    "pattes",
+    "lac",
+    "Afrique",
+    "plume"
+  ],
+  "canard": [
+    "coin-coin",
+    "plume",
+    "mare",
+    "bec",
+    "nager"
+  ],
+  "ecureuil": [
+    "noisette",
+    "arbre",
+    "queue",
+    "roux",
+    "sauter"
+  ],
+  "herisson": [
+    "piquant",
+    "rouler",
+    "nuit",
+    "jardin",
+    "boule"
+  ],
+  "cerf": [
+    "bois",
+    "forêt",
+    "brame",
+    "sabot",
+    "majestueux"
+  ],
+  "sanglier": [
+    "défense",
+    "forêt",
+    "groin",
+    "sauvage",
+    "Astérix"
+  ],
+  "pompier": [
+    "feu",
+    "camion",
+    "casque",
+    "tuyau",
+    "urgence"
+  ],
+  "chirurgien": [
+    "bloc",
+    "scalpel",
+    "opération",
+    "gants",
+    "hôpital"
+  ],
+  "architecte": [
+    "plan",
+    "bâtiment",
+    "dessin",
+    "construction",
+    "projet"
+  ],
+  "boulanger": [
+    "pain",
+    "four",
+    "farine",
+    "levure",
+    "matin"
+  ],
+  "astronaute": [
+    "espace",
+    "fusée",
+    "combinaison",
+    "lune",
+    "nasa"
+  ],
+  "plombier": [
+    "tuyau",
+    "fuite",
+    "eau",
+    "robinet",
+    "réparer"
+  ],
+  "journaliste": [
+    "article",
+    "presse",
+    "interview",
+    "information",
+    "caméra"
+  ],
+  "chanteur": [
+    "scène",
+    "micro",
+    "chanson",
+    "concert",
+    "voix"
+  ],
+  "pilote": [
+    "avion",
+    "cockpit",
+    "altitude",
+    "commande",
+    "vol"
+  ],
+  "veterinaire": [
+    "animal",
+    "soigner",
+    "clinique",
+    "chien",
+    "médecin"
+  ],
+  "photographe": [
+    "appareil",
+    "objectif",
+    "lumière",
+    "photo",
+    "flash"
+  ],
+  "cuisinier": [
+    "cuisine",
+    "casserole",
+    "recette",
+    "couteau",
+    "four"
+  ],
+  "professeur": [
+    "école",
+    "cours",
+    "tableau",
+    "élève",
+    "savoir"
+  ],
+  "avocat": [
+    "tribunal",
+    "droit",
+    "défense",
+    "robe",
+    "plaidoyer"
+  ],
+  "facteur": [
+    "courrier",
+    "boîte",
+    "timbre",
+    "tournée",
+    "vélo"
+  ],
+  "magicien": [
+    "tour",
+    "illusion",
+    "chapeau",
+    "lapin",
+    "baguette"
+  ],
+  "garagiste": [
+    "voiture",
+    "moteur",
+    "réparation",
+    "outil",
+    "huile"
+  ],
+  "jardinier": [
+    "plante",
+    "arrosoir",
+    "tondeuse",
+    "fleur",
+    "jardin"
+  ],
+  "comedien": [
+    "théâtre",
+    "rôle",
+    "scène",
+    "texte",
+    "public"
+  ],
+  "ingenieur": [
+    "calcul",
+    "projet",
+    "technique",
+    "conception",
+    "bureau"
+  ],
+  "musicien": [
+    "instrument",
+    "concert",
+    "note",
+    "scène",
+    "mélodie"
+  ],
+  "acteur": [
+    "rôle",
+    "caméra",
+    "film",
+    "scène",
+    "réplique"
+  ],
+  "danseur": [
+    "scène",
+    "chorégraphie",
+    "rythme",
+    "corps",
+    "musique"
+  ],
+  "peintre": [
+    "toile",
+    "pinceau",
+    "couleur",
+    "tableau",
+    "palette"
+  ],
+  "policier": [
+    "uniforme",
+    "badge",
+    "menotte",
+    "loi",
+    "patrouille"
+  ],
+  "soldat": [
+    "armée",
+    "guerre",
+    "uniforme",
+    "arme",
+    "combat"
+  ],
+  "ambulancier": [
+    "urgence",
+    "civière",
+    "sirène",
+    "secours",
+    "hôpital"
+  ],
+  "infirmier": [
+    "soigner",
+    "hôpital",
+    "seringue",
+    "soin",
+    "patient"
+  ],
+  "dentiste": [
+    "dent",
+    "perceuse",
+    "carie",
+    "fauteuil",
+    "bouche"
+  ],
+  "pharmacien": [
+    "médicament",
+    "ordonnance",
+    "officine",
+    "pilule",
+    "santé"
+  ],
+  "patissier": [
+    "gâteau",
+    "four",
+    "sucre",
+    "crème",
+    "décoration"
+  ],
+  "coiffeur": [
+    "ciseau",
+    "cheveux",
+    "salon",
+    "coupe",
+    "miroir"
+  ],
+  "plage": [
+    "sable",
+    "mer",
+    "soleil",
+    "vague",
+    "parasol"
+  ],
+  "montagne": [
+    "sommet",
+    "neige",
+    "altitude",
+    "randonnée",
+    "pic"
+  ],
+  "foret": [
+    "arbre",
+    "feuille",
+    "champignon",
+    "ombre",
+    "sauvage"
+  ],
+  "desert": [
+    "sable",
+    "chaleur",
+    "dune",
+    "soif",
+    "chameau"
+  ],
+  "volcan": [
+    "lave",
+    "éruption",
+    "feu",
+    "cendre",
+    "danger"
+  ],
+  "ile": [
+    "mer",
+    "plage",
+    "isolé",
+    "palmier",
+    "naufragé"
+  ],
+  "phare": [
+    "lumière",
+    "mer",
+    "nuit",
+    "guide",
+    "bateau"
+  ],
+  "casino": [
+    "jeu",
+    "roulette",
+    "carte",
+    "argent",
+    "chance"
+  ],
+  "stade": [
+    "tribune",
+    "terrain",
+    "spectateur",
+    "match",
+    "sport"
+  ],
+  "musee": [
+    "art",
+    "tableau",
+    "exposition",
+    "culture",
+    "visite"
+  ],
+  "cathedrale": [
+    "gothique",
+    "vitrail",
+    "tour",
+    "clocher",
+    "messe"
+  ],
+  "marche": [
+    "stand",
+    "légume",
+    "vendeur",
+    "halle",
+    "frais"
+  ],
+  "bibliotheque": [
+    "livre",
+    "silence",
+    "rayons",
+    "emprunt",
+    "lire"
+  ],
+  "piscine": [
+    "eau",
+    "nager",
+    "couloir",
+    "plonger",
+    "maillot"
+  ],
+  "hopital": [
+    "médecin",
+    "patient",
+    "soin",
+    "blanc",
+    "urgence"
+  ],
+  "cinema": [
+    "film",
+    "projecteur",
+    "salle",
+    "acteur",
+    "popcorn"
+  ],
+  "aeroport": [
+    "avion",
+    "décollage",
+    "terminal",
+    "passeport",
+    "bagage"
+  ],
+  "gare": [
+    "train",
+    "quai",
+    "billet",
+    "horaire",
+    "voyage"
+  ],
+  "zoo": [
+    "animal",
+    "cage",
+    "visite",
+    "gardien",
+    "safari"
+  ],
+  "chateau": [
+    "tour",
+    "moyen-âge",
+    "roi",
+    "fossé",
+    "rempart"
+  ],
+  "temple": [
+    "religion",
+    "colonne",
+    "statue",
+    "antique",
+    "prière"
+  ],
+  "eglise": [
+    "religion",
+    "clocher",
+    "croix",
+    "messe",
+    "vitrail"
+  ],
+  "pont": [
+    "traverser",
+    "eau",
+    "arche",
+    "construction",
+    "passage"
+  ],
+  "prison": [
+    "cellule",
+    "gardien",
+    "barreaux",
+    "peine",
+    "enfermé"
+  ],
+  "universite": [
+    "études",
+    "campus",
+    "cours",
+    "diplôme",
+    "amphithéâtre"
+  ],
+  "camping": [
+    "tente",
+    "nature",
+    "feu",
+    "randonnée",
+    "plein-air"
+  ],
+  "chalet": [
+    "montagne",
+    "bois",
+    "hiver",
+    "ski",
+    "cosy"
+  ],
+  "pyramide": [
+    "égypte",
+    "pharaon",
+    "sable",
+    "construction",
+    "mystère"
+  ],
+  "grotte": [
+    "obscurité",
+    "stalactite",
+    "caverne",
+    "rocher",
+    "chauve-souris"
+  ],
+  "cascade": [
+    "eau",
+    "chute",
+    "rocher",
+    "rivière",
+    "fraîcheur"
+  ],
+  "palais": [
+    "roi",
+    "luxe",
+    "doré",
+    "grande",
+    "résidence"
+  ],
+  "avion": [
+    "vol",
+    "aile",
+    "pilote",
+    "décollage",
+    "nuage"
+  ],
+  "bateau": [
+    "mer",
+    "voile",
+    "capitaine",
+    "eau",
+    "ancre"
+  ],
+  "helicoptere": [
+    "rotor",
+    "vol",
+    "sauvetage",
+    "bruit",
+    "hélice"
+  ],
+  "scooter": [
+    "route",
+    "casque",
+    "deux-roues",
+    "moteur",
+    "urbain"
+  ],
+  "tramway": [
+    "rails",
+    "ville",
+    "passager",
+    "câble",
+    "station"
+  ],
+  "fusee": [
+    "espace",
+    "décollage",
+    "nasa",
+    "propulseur",
+    "orbite"
+  ],
+  "sous-marin": [
+    "eau",
+    "profondeur",
+    "torpille",
+    "sonar",
+    "hublot"
+  ],
+  "tracteur": [
+    "champ",
+    "ferme",
+    "roue",
+    "agricole",
+    "moteur"
+  ],
+  "ambulance": [
+    "urgence",
+    "sirène",
+    "blessé",
+    "secours",
+    "rouge"
+  ],
+  "metro": [
+    "souterrain",
+    "rame",
+    "tunnel",
+    "station",
+    "ville"
+  ],
+  "montgolfiere": [
+    "ballon",
+    "flamme",
+    "ciel",
+    "panier",
+    "air"
+  ],
+  "ferry": [
+    "mer",
+    "traversée",
+    "voiture",
+    "port",
+    "billet"
+  ],
+  "kayak": [
+    "pagaie",
+    "rivière",
+    "rapides",
+    "eau",
+    "sport"
+  ],
+  "moto": [
+    "casque",
+    "route",
+    "moteur",
+    "vitesse",
+    "deux-roues"
+  ],
+  "velo": [
+    "pédale",
+    "roue",
+    "selle",
+    "chaine",
+    "route"
+  ],
+  "train": [
+    "gare",
+    "rails",
+    "wagon",
+    "sifflet",
+    "voyage"
+  ],
+  "arc-en-ciel": [
+    "couleur",
+    "pluie",
+    "soleil",
+    "ciel",
+    "spectre"
+  ],
+  "avalanche": [
+    "neige",
+    "montagne",
+    "danger",
+    "descente",
+    "blanc"
+  ],
+  "tornade": [
+    "vent",
+    "destruction",
+    "tourbillon",
+    "USA",
+    "catastrophe"
+  ],
+  "glacier": [
+    "glace",
+    "neige",
+    "montagne",
+    "fonte",
+    "altitude"
+  ],
+  "oasis": [
+    "désert",
+    "palmier",
+    "eau",
+    "verdure",
+    "sable"
+  ],
+  "geyser": [
+    "eau",
+    "chaud",
+    "jaillir",
+    "islande",
+    "vapeur"
+  ],
+  "seisme": [
+    "tremblement",
+    "terre",
+    "destruction",
+    "richter",
+    "catastrophe"
+  ],
+  "tsunami": [
+    "vague",
+    "mer",
+    "destruction",
+    "japon",
+    "eau"
+  ],
+  "cyclone": [
+    "vent",
+    "mer",
+    "tropical",
+    "destruction",
+    "pluie"
+  ],
+  "tempete": [
+    "vent",
+    "mer",
+    "pluie",
+    "danger",
+    "orage"
+  ],
+  "falaise": [
+    "mer",
+    "bord",
+    "rocher",
+    "blanc",
+    "Normandie"
+  ],
+  "canyon": [
+    "rocher",
+    "USA",
+    "profond",
+    "fleuve",
+    "grand"
+  ],
+  "jungle": [
+    "tropical",
+    "dense",
+    "animal",
+    "humide",
+    "forêt"
+  ],
+  "savane": [
+    "Afrique",
+    "sec",
+    "herbe",
+    "animal",
+    "chaud"
+  ],
+  "vampire": [
+    "sang",
+    "nuit",
+    "cercueil",
+    "transylvanie",
+    "cape"
+  ],
+  "zombie": [
+    "mort",
+    "cerveau",
+    "horreur",
+    "lent",
+    "apocalypse"
+  ],
+  "pirate": [
+    "mer",
+    "trésor",
+    "drapeau",
+    "rhum",
+    "épée"
+  ],
+  "ninja": [
+    "japon",
+    "ombre",
+    "katana",
+    "discret",
+    "combat"
+  ],
+  "cowboy": [
+    "chapeau",
+    "cheval",
+    "revolver",
+    "far-west",
+    "ranch"
+  ],
+  "robot": [
+    "métal",
+    "programme",
+    "bras",
+    "usine",
+    "artificiel"
+  ],
+  "dinosaure": [
+    "extinction",
+    "préhistoire",
+    "fossile",
+    "reptile",
+    "grand"
+  ],
+  "chevalier": [
+    "armure",
+    "épée",
+    "château",
+    "moyen-âge",
+    "cheval"
+  ],
+  "sorcier": [
+    "baguette",
+    "magie",
+    "chapeau",
+    "potion",
+    "sortilège"
+  ],
+  "superheros": [
+    "cape",
+    "pouvoir",
+    "masque",
+    "sauver",
+    "comics"
+  ],
+  "dragon": [
+    "feu",
+    "aile",
+    "écaille",
+    "trésor",
+    "mythique"
+  ],
+  "alien": [
+    "espace",
+    "extraterrestre",
+    "ovni",
+    "planète",
+    "vaisseau"
+  ],
+  "sirene": [
+    "mer",
+    "chant",
+    "queue",
+    "poisson",
+    "mythe"
+  ],
+  "licorne": [
+    "corne",
+    "magie",
+    "arc-en-ciel",
+    "cheval",
+    "fée"
+  ],
+  "viking": [
+    "nord",
+    "hache",
+    "bateau",
+    "casque",
+    "pillage"
+  ],
+  "sorciere": [
+    "chapeau",
+    "chaudron",
+    "balai",
+    "potion",
+    "malédiction"
+  ],
+  "elfe": [
+    "oreilles",
+    "forêt",
+    "arc",
+    "tolkien",
+    "magie"
+  ],
+  "hobbit": [
+    "petit",
+    "anneau",
+    "pieds",
+    "tolkien",
+    "trou"
+  ],
+  "escalier": [
+    "marche",
+    "montée",
+    "rampe",
+    "étage",
+    "descente"
+  ],
+  "fenetre": [
+    "verre",
+    "vue",
+    "lumière",
+    "rideau",
+    "ouvrir"
+  ],
+  "balcon": [
+    "vue",
+    "extérieur",
+    "fleur",
+    "terrasse",
+    "garde-corps"
+  ],
+  "grenier": [
+    "poussière",
+    "rangement",
+    "vieux",
+    "toit",
+    "boite"
+  ],
+  "garage": [
+    "voiture",
+    "outil",
+    "porte",
+    "mécanicien",
+    "rangement"
+  ],
+  "cheminee": [
+    "feu",
+    "bûche",
+    "chaleur",
+    "fumée",
+    "Noël"
+  ],
+  "jacuzzi": [
+    "bulles",
+    "eau",
+    "relaxation",
+    "chaud",
+    "bain"
+  ],
+  "sauna": [
+    "chaleur",
+    "vapeur",
+    "bois",
+    "transpiration",
+    "relaxation"
+  ],
+  "serre": [
+    "plante",
+    "verre",
+    "chaleur",
+    "jardin",
+    "tropical"
+  ],
+  "guitare": [
+    "corde",
+    "rock",
+    "accord",
+    "mélodie",
+    "gratter"
+  ],
+  "piano": [
+    "touche",
+    "noir-blanc",
+    "classique",
+    "concert",
+    "clavier"
+  ],
+  "violon": [
+    "archet",
+    "corde",
+    "classique",
+    "orchestre",
+    "bois"
+  ],
+  "trompette": [
+    "cuivre",
+    "jazz",
+    "fanfare",
+    "son",
+    "souffle"
+  ],
+  "saxophone": [
+    "jazz",
+    "cuivre",
+    "note",
+    "blues",
+    "souffle"
+  ],
+  "flute": [
+    "bois",
+    "souffle",
+    "doigt",
+    "doux",
+    "orchestral"
+  ],
+  "accordeon": [
+    "soufflet",
+    "musette",
+    "touche",
+    "bal",
+    "bretagne"
+  ],
+  "harpe": [
+    "corde",
+    "classique",
+    "angélique",
+    "doigt",
+    "céleste"
+  ],
+  "batterie": [
+    "rythme",
+    "baguette",
+    "cymbale",
+    "caisse",
+    "percussion"
+  ],
+  "orgue": [
+    "église",
+    "tuyau",
+    "classique",
+    "touche",
+    "clavecin"
+  ],
+  "ukulele": [
+    "hawaii",
+    "corde",
+    "petit",
+    "tropical",
+    "plage"
+  ],
+  "mandoline": [
+    "corde",
+    "italie",
+    "plectre",
+    "folk",
+    "petit"
+  ],
+  "banjo": [
+    "corde",
+    "country",
+    "bluegrass",
+    "plectre",
+    "USA"
+  ],
+  "concert": [
+    "scène",
+    "public",
+    "applaudissement",
+    "artiste",
+    "spectacle"
+  ],
+  "festival": [
+    "musique",
+    "été",
+    "scène",
+    "foule",
+    "extérieur"
+  ],
+  "opera": [
+    "chant",
+    "classique",
+    "aria",
+    "soprano",
+    "drame"
+  ],
+  "manteau": [
+    "hiver",
+    "chaud",
+    "long",
+    "bouton",
+    "laine"
+  ],
+  "veste": [
+    "habit",
+    "bouton",
+    "poche",
+    "élégant",
+    "vêtement"
+  ],
+  "costume": [
+    "habit",
+    "cravate",
+    "pantalon",
+    "élégant",
+    "homme"
+  ],
+  "robe": [
+    "femme",
+    "élégant",
+    "tissu",
+    "cérémonie",
+    "couleur"
+  ],
+  "jupe": [
+    "femme",
+    "tissu",
+    "jambe",
+    "mode",
+    "court"
+  ],
+  "chemise": [
+    "col",
+    "bouton",
+    "tissu",
+    "repassé",
+    "homme"
+  ],
+  "pull": [
+    "laine",
+    "chaud",
+    "tricot",
+    "hiver",
+    "col"
+  ],
+  "jean": [
+    "denim",
+    "bleu",
+    "pantalon",
+    "mode",
+    "rivets"
+  ],
+  "short": [
+    "été",
+    "jambe",
+    "léger",
+    "plage",
+    "bermuda"
+  ],
+  "pyjama": [
+    "nuit",
+    "dormir",
+    "confort",
+    "chambre",
+    "tissu"
+  ],
+  "casquette": [
+    "visière",
+    "sport",
+    "mode",
+    "soleil",
+    "tête"
+  ],
+  "beret": [
+    "france",
+    "artiste",
+    "laine",
+    "tête",
+    "chapeau"
+  ],
+  "echarpe": [
+    "cou",
+    "hiver",
+    "laine",
+    "chaud",
+    "tissu"
+  ],
+  "gant": [
+    "main",
+    "hiver",
+    "doigt",
+    "froid",
+    "protection"
+  ],
+  "sandales": [
+    "pied",
+    "été",
+    "lanière",
+    "plage",
+    "cuir"
+  ],
+  "bottes": [
+    "pied",
+    "hiver",
+    "cuir",
+    "long",
+    "cheville"
+  ],
+  "hoodie": [
+    "capuche",
+    "confort",
+    "sport",
+    "coton",
+    "casual"
+  ],
+  "legging": [
+    "collant",
+    "sport",
+    "femme",
+    "tissu",
+    "stretch"
+  ],
+  "bikini": [
+    "mer",
+    "été",
+    "plage",
+    "bain",
+    "maillot"
+  ],
+  "bonnet": [
+    "hiver",
+    "laine",
+    "oreilles",
+    "chaud",
+    "tricot"
+  ],
+  "ordinateur": [
+    "écran",
+    "clavier",
+    "internet",
+    "programme",
+    "données"
+  ],
+  "smartphone": [
+    "écran",
+    "tactile",
+    "appel",
+    "application",
+    "connecté"
+  ],
+  "tablette": [
+    "écran",
+    "tactile",
+    "numérique",
+    "portable",
+    "stylet"
+  ],
+  "drone": [
+    "voler",
+    "caméra",
+    "télécommande",
+    "hélice",
+    "air"
+  ],
+  "satellite": [
+    "orbite",
+    "espace",
+    "signal",
+    "antenne",
+    "communication"
+  ],
+  "radar": [
+    "onde",
+    "détection",
+    "signal",
+    "vitesse",
+    "aviation"
+  ],
+  "microscope": [
+    "laboratoire",
+    "lentille",
+    "cellule",
+    "zoom",
+    "science"
+  ],
+  "telescope": [
+    "étoile",
+    "nuit",
+    "espace",
+    "lentille",
+    "observation"
+  ],
+  "television": [
+    "écran",
+    "chaîne",
+    "télécommande",
+    "programme",
+    "regarder"
+  ],
+  "console": [
+    "jeu",
+    "manette",
+    "écran",
+    "gaming",
+    "salon"
+  ],
+  "cerveau": [
+    "pensée",
+    "neurone",
+    "intelligence",
+    "crâne",
+    "mémoire"
+  ],
+  "coeur": [
+    "battement",
+    "sang",
+    "amour",
+    "organe",
+    "rythme"
+  ],
+  "poumon": [
+    "respiration",
+    "air",
+    "organe",
+    "souffle",
+    "poitrine"
+  ],
+  "squelette": [
+    "os",
+    "crâne",
+    "mort",
+    "Halloween",
+    "articulation"
+  ],
+  "bonheur": [
+    "joie",
+    "sourire",
+    "bien-être",
+    "paix",
+    "épanouissement"
+  ],
+  "tristesse": [
+    "larme",
+    "pleur",
+    "peine",
+    "mélancolie",
+    "blues"
+  ],
+  "colere": [
+    "crier",
+    "rouge",
+    "énervement",
+    "explosion",
+    "rage"
+  ],
+  "peur": [
+    "frisson",
+    "fuite",
+    "cauchemar",
+    "danger",
+    "angoisse"
+  ],
+  "jalousie": [
+    "envie",
+    "vert",
+    "rival",
+    "sentiment",
+    "amour"
+  ],
+  "biathlon": [
+    "ski",
+    "fusil",
+    "cible",
+    "neige",
+    "nordique"
+  ],
+  "luge": [
+    "glace",
+    "vitesse",
+    "piste",
+    "descente",
+    "hiver"
+  ],
+  "bobsleigh": [
+    "glace",
+    "vitesse",
+    "équipe",
+    "piste",
+    "descente"
+  ],
+  "curling": [
+    "glace",
+    "pierre",
+    "balai",
+    "équipe",
+    "cible"
+  ],
+  "parachutisme": [
+    "avion",
+    "chute",
+    "ciel",
+    "altitude",
+    "voile"
+  ],
+  "patin": [
+    "glace",
+    "lame",
+    "glisser",
+    "vitesse",
+    "équilibre"
+  ],
+  "halteres": [
+    "poids",
+    "barre",
+    "musculation",
+    "force",
+    "olympique"
+  ],
+  "pentathlon": [
+    "cinq",
+    "équitation",
+    "natation",
+    "course",
+    "sport"
+  ],
+  "triathlon": [
+    "natation",
+    "vélo",
+    "course",
+    "endurance",
+    "sport"
+  ],
+  "paintball": [
+    "bille",
+    "masque",
+    "terrain",
+    "équipe",
+    "forêt"
+  ],
+  "tir-a-l-arc": [
+    "flèche",
+    "cible",
+    "arc",
+    "précision",
+    "bouclier"
+  ],
+  "capoeira": [
+    "brésil",
+    "danse",
+    "combat",
+    "musique",
+    "cercle"
+  ],
+  "wakeboard": [
+    "eau",
+    "vague",
+    "bateau",
+    "planche",
+    "trick"
+  ],
+  "kitesurf": [
+    "vent",
+    "mer",
+    "cerf-volant",
+    "eau",
+    "planche"
+  ],
+  "snowboard": [
+    "neige",
+    "montagne",
+    "planche",
+    "piste",
+    "trick"
+  ],
+  "ski-de-fond": [
+    "neige",
+    "piste",
+    "endurance",
+    "classique",
+    "longueur"
+  ],
+  "saut-en-hauteur": [
+    "barre",
+    "saut",
+    "athlétisme",
+    "hauteur",
+    "perche"
+  ],
+  "lancers": [
+    "disque",
+    "poids",
+    "javelot",
+    "marteau",
+    "force"
+  ],
+  "marche-nordique": [
+    "bâton",
+    "forêt",
+    "endurance",
+    "nature",
+    "sport"
+  ],
+  "crossfit": [
+    "musculation",
+    "intensité",
+    "circuit",
+    "entraînement",
+    "sport"
+  ],
+  "gym": [
+    "salle",
+    "appareil",
+    "musculation",
+    "sport",
+    "entraînement"
+  ],
+  "natation-synchronisee": [
+    "eau",
+    "piscine",
+    "équipe",
+    "musicale",
+    "nageur"
+  ],
+  "plongeon": [
+    "piscine",
+    "tremplin",
+    "saut",
+    "eau",
+    "acrobatie"
+  ],
+  "haltérophilie": [
+    "barre",
+    "poids",
+    "force",
+    "olympique",
+    "musculation"
+  ],
+  "parapluie": [
+    "pluie",
+    "protection",
+    "ouverture",
+    "poignée",
+    "imperméable"
+  ],
+  "bouteille": [
+    "eau",
+    "verre",
+    "bouchon",
+    "liquide",
+    "plastique"
+  ],
+  "miroir": [
+    "reflet",
+    "image",
+    "verre",
+    "mur",
+    "visage"
+  ],
+  "horloge": [
+    "heure",
+    "aiguille",
+    "temps",
+    "pendule",
+    "carillon"
+  ],
+  "lampe": [
+    "lumière",
+    "électricité",
+    "ampoule",
+    "bureau",
+    "nuit"
+  ],
+  "coussin": [
+    "confort",
+    "canapé",
+    "mousse",
+    "doux",
+    "chambre"
+  ],
+  "valise": [
+    "voyage",
+    "bagage",
+    "roulette",
+    "fermeture",
+    "vacances"
+  ],
+  "brosse": [
+    "poils",
+    "nettoyer",
+    "cheveux",
+    "dents",
+    "peindre"
+  ],
+  "lunettes": [
+    "vue",
+    "verre",
+    "soleil",
+    "yeux",
+    "monture"
+  ],
+  "ceinture": [
+    "pantalon",
+    "taille",
+    "bouton",
+    "cuir",
+    "boucle"
+  ],
+  "portefeuille": [
+    "argent",
+    "carte",
+    "billet",
+    "poche",
+    "cuir"
+  ],
+  "bougie": [
+    "flamme",
+    "cire",
+    "lumière",
+    "anniversaire",
+    "allumer"
+  ],
+  "aspirateur": [
+    "poussière",
+    "sol",
+    "bruit",
+    "moteur",
+    "sac"
+  ],
+  "cafetiere": [
+    "café",
+    "eau",
+    "expresso",
+    "matin",
+    "machine"
+  ],
+  "calculatrice": [
+    "calcul",
+    "chiffre",
+    "addition",
+    "écran",
+    "touche"
+  ],
+  "dictionnaire": [
+    "mot",
+    "définition",
+    "langue",
+    "alphabet",
+    "livre"
+  ],
+  "agenda": [
+    "rendez-vous",
+    "date",
+    "calendrier",
+    "carnet",
+    "semaine"
+  ],
+  "thermometre": [
+    "température",
+    "fièvre",
+    "mercure",
+    "mesure",
+    "santé"
+  ],
+  "montre": [
+    "heure",
+    "bracelet",
+    "aiguille",
+    "poignet",
+    "temps"
+  ],
+  "bague": [
+    "doigt",
+    "or",
+    "mariage",
+    "bijou",
+    "diamant"
+  ],
+  "collier": [
+    "cou",
+    "bijou",
+    "or",
+    "chien",
+    "pendentif"
+  ],
+  "bracelet": [
+    "poignet",
+    "bijou",
+    "or",
+    "caoutchouc",
+    "argent"
+  ],
+  "sac": [
+    "transport",
+    "anse",
+    "tissu",
+    "fermeture",
+    "achats"
+  ],
+  "chapeau": [
+    "tête",
+    "bord",
+    "paille",
+    "feutre",
+    "soleil"
+  ],
+  "chaussure": [
+    "pied",
+    "semelle",
+    "lacet",
+    "cuir",
+    "marcher"
+  ],
+  "cravate": [
+    "cou",
+    "costume",
+    "nœud",
+    "tissu",
+    "élégant"
+  ],
+  "cle": [
+    "serrure",
+    "porte",
+    "ouvrir",
+    "anneau",
+    "métal"
+  ],
+  "cadenas": [
+    "serrure",
+    "fermé",
+    "combinaison",
+    "métal",
+    "chaîne"
+  ],
+  "cadre": [
+    "tableau",
+    "photo",
+    "mur",
+    "bois",
+    "accrocher"
+  ],
+  "sculpture": [
+    "art",
+    "argile",
+    "marbre",
+    "ciseau",
+    "forme"
+  ],
+  "vase": [
+    "fleur",
+    "eau",
+    "porcelaine",
+    "fragile",
+    "décoration"
+  ],
+  "pot": [
+    "fleur",
+    "plante",
+    "terre",
+    "jardinage",
+    "contenir"
+  ],
+  "boite": [
+    "carton",
+    "contenir",
+    "fermer",
+    "stockage",
+    "cadeau"
+  ],
+  "tiroir": [
+    "meuble",
+    "glisser",
+    "rangement",
+    "bois",
+    "ouvrir"
+  ],
+  "fauteuil": [
+    "s'asseoir",
+    "salon",
+    "confort",
+    "bras",
+    "tissu"
+  ],
+  "canape": [
+    "salon",
+    "asseoir",
+    "confort",
+    "tissu",
+    "coussins"
+  ],
+  "matelas": [
+    "lit",
+    "sommeil",
+    "mousse",
+    "ressort",
+    "confort"
+  ],
+  "oreiller": [
+    "sommeil",
+    "tête",
+    "plume",
+    "mousse",
+    "lit"
+  ],
+  "rideau": [
+    "fenêtre",
+    "tissu",
+    "obscurité",
+    "décoration",
+    "accroche"
+  ],
+  "tapis": [
+    "sol",
+    "tissu",
+    "laine",
+    "décoration",
+    "orient"
+  ],
+  "robinet": [
+    "eau",
+    "cuisine",
+    "tourner",
+    "fuite",
+    "métal"
+  ],
+  "rasoir": [
+    "barbe",
+    "lame",
+    "rasage",
+    "mousse",
+    "menton"
+  ],
+  "brosse-a-dents": [
+    "dents",
+    "hygiène",
+    "brossage",
+    "dentifrice",
+    "matin"
+  ],
+  "peigne": [
+    "cheveux",
+    "dents",
+    "démêler",
+    "plastique",
+    "coiffure"
+  ],
+  "seche-cheveux": [
+    "cheveux",
+    "souffle",
+    "chaleur",
+    "électrique",
+    "coiffure"
+  ],
+  "marteau": [
+    "clouer",
+    "bois",
+    "métal",
+    "frapper",
+    "construction"
+  ],
+  "tournevis": [
+    "vis",
+    "serrer",
+    "métal",
+    "outil",
+    "plat"
+  ],
+  "perceuse": [
+    "trou",
+    "mur",
+    "bruit",
+    "électrique",
+    "vis"
+  ],
+  "pince": [
+    "serrer",
+    "métal",
+    "outil",
+    "électrique",
+    "pincer"
+  ],
+  "ciseau": [
+    "couper",
+    "lame",
+    "tissu",
+    "tranchant",
+    "papier"
+  ],
+  "scie": [
+    "couper",
+    "bois",
+    "métal",
+    "lame",
+    "dents"
+  ],
+  "echelle": [
+    "grimper",
+    "hauteur",
+    "barreaux",
+    "aluminium",
+    "peindre"
+  ],
+  "arrosoir": [
+    "jardin",
+    "plante",
+    "eau",
+    "arroser",
+    "métal"
+  ],
+  "brouette": [
+    "jardin",
+    "terre",
+    "transporter",
+    "roue",
+    "jardinage"
+  ],
+  "loupe": [
+    "grossir",
+    "verre",
+    "regarder",
+    "détective",
+    "optique"
+  ],
+  "jumelles": [
+    "voir",
+    "loin",
+    "optique",
+    "safari",
+    "sport"
+  ],
+  "boussole": [
+    "nord",
+    "direction",
+    "aiguille",
+    "magnétique",
+    "navigation"
+  ],
+  "chronometre": [
+    "temps",
+    "mesurer",
+    "course",
+    "secondes",
+    "sport"
+  ],
+  "balance": [
+    "peser",
+    "poids",
+    "mesure",
+    "cuisine",
+    "justice"
+  ],
+  "megaphone": [
+    "voix",
+    "amplifier",
+    "manifester",
+    "bruit",
+    "discours"
+  ],
+  "lanterne": [
+    "lumière",
+    "feu",
+    "nuit",
+    "ancienne",
+    "allumer"
+  ],
+  "torche": [
+    "lumière",
+    "nuit",
+    "électrique",
+    "piles",
+    "explorer"
+  ],
+  "briquet": [
+    "feu",
+    "flamme",
+    "gaz",
+    "allumer",
+    "fumer"
+  ],
+  "allumette": [
+    "feu",
+    "flamme",
+    "bois",
+    "soufre",
+    "craquer"
+  ],
+  "parachute": [
+    "tomber",
+    "avion",
+    "ciel",
+    "sauter",
+    "sauvetage"
+  ],
+  "filet": [
+    "capturer",
+    "pêche",
+    "tennis",
+    "maille",
+    "attraper"
+  ],
+  "hamecon": [
+    "pêche",
+    "appât",
+    "ligne",
+    "poisson",
+    "métal"
+  ],
+  "canne-a-peche": [
+    "pêche",
+    "ligne",
+    "rivière",
+    "lancer",
+    "mouche"
+  ],
+  "arc": [
+    "flèche",
+    "cible",
+    "tension",
+    "bois",
+    "tirer"
+  ],
+  "clavier": [
+    "touche",
+    "ordinateur",
+    "taper",
+    "frappe",
+    "bureau"
+  ],
+  "foie": [
+    "organe",
+    "alcool",
+    "brun",
+    "bile",
+    "détoxifier"
+  ],
+  "rein": [
+    "organe",
+    "urine",
+    "filtrer",
+    "dos",
+    "paire"
+  ],
+  "estomac": [
+    "digestion",
+    "nourriture",
+    "ventre",
+    "acide",
+    "faim"
+  ],
+  "crane": [
+    "tête",
+    "os",
+    "cerveau",
+    "protection",
+    "mort"
+  ],
+  "colonne": [
+    "dos",
+    "vertèbre",
+    "droit",
+    "rachis",
+    "soutien"
+  ],
+  "cote": [
+    "poitrine",
+    "os",
+    "cage",
+    "protéger",
+    "respirer"
+  ],
+  "epaule": [
+    "bras",
+    "articuler",
+    "muscle",
+    "porter",
+    "dislocation"
+  ],
+  "coude": [
+    "bras",
+    "articuler",
+    "angle",
+    "tendon",
+    "plier"
+  ],
+  "poignet": [
+    "main",
+    "bracelet",
+    "os",
+    "fragile",
+    "articuler"
+  ],
+  "doigt": [
+    "main",
+    "nombre",
+    "phalange",
+    "bague",
+    "pointer"
+  ],
+  "genou": [
+    "jambe",
+    "articuler",
+    "ligament",
+    "plier",
+    "marcher"
+  ],
+  "cheville": [
+    "pied",
+    "os",
+    "entorse",
+    "bottes",
+    "articuler"
+  ],
+  "talon": [
+    "pied",
+    "arrière",
+    "chaussure",
+    "Achille",
+    "blesser"
+  ],
+  "orteil": [
+    "pied",
+    "chaussette",
+    "five",
+    "petits",
+    "ongle"
+  ],
+  "tempe": [
+    "tête",
+    "côté",
+    "crâne",
+    "battre",
+    "cerveau"
+  ],
+  "nuque": [
+    "cou",
+    "arrière",
+    "tête",
+    "massage",
+    "colonne"
+  ],
+  "cou": [
+    "tête",
+    "gorge",
+    "collier",
+    "vertèbre",
+    "écharpe"
+  ],
+  "menton": [
+    "visage",
+    "bas",
+    "barbe",
+    "mâchoire",
+    "saillant"
+  ],
+  "joue": [
+    "visage",
+    "rouge",
+    "embrasser",
+    "gonfler",
+    "bise"
+  ],
+  "sourcil": [
+    "yeux",
+    "poil",
+    "expression",
+    "froncer",
+    "épiler"
+  ],
+  "paupiere": [
+    "yeux",
+    "cligner",
+    "cil",
+    "fermer",
+    "dormir"
+  ],
+  "cil": [
+    "yeux",
+    "paupière",
+    "mascara",
+    "protéger",
+    "long"
+  ],
+  "narine": [
+    "nez",
+    "respiration",
+    "odorat",
+    "air",
+    "renifler"
+  ],
+  "oreille": [
+    "entendre",
+    "son",
+    "tympan",
+    "lobe",
+    "boucle"
+  ],
+  "front": [
+    "visage",
+    "haut",
+    "plisser",
+    "ride",
+    "tête"
+  ],
+  "langue": [
+    "goût",
+    "parler",
+    "bouche",
+    "lécher",
+    "salive"
+  ],
+  "dent": [
+    "bouche",
+    "mâcher",
+    "blanc",
+    "email",
+    "carie"
+  ],
+  "gencive": [
+    "dent",
+    "bouche",
+    "saigner",
+    "rose",
+    "dentiste"
+  ],
+  "gorge": [
+    "cou",
+    "avaler",
+    "mal",
+    "voix",
+    "amygdale"
+  ],
+  "amygdale": [
+    "gorge",
+    "infection",
+    "gonfler",
+    "angine",
+    "ablation"
+  ],
+  "ventre": [
+    "abdomen",
+    "digestion",
+    "nombril",
+    "centre",
+    "grossesse"
+  ],
+  "nombril": [
+    "ventre",
+    "centre",
+    "cordon",
+    "bébé",
+    "nœud"
+  ],
+  "hanche": [
+    "jambe",
+    "bassin",
+    "danser",
+    "os",
+    "rondeur"
+  ],
+  "fesse": [
+    "derrière",
+    "muscle",
+    "s'asseoir",
+    "arrière",
+    "pantalon"
+  ],
+  "mollet": [
+    "jambe",
+    "muscle",
+    "crampe",
+    "derrière",
+    "bas"
+  ],
+  "tibia": [
+    "jambe",
+    "os",
+    "avant",
+    "football",
+    "fracture"
+  ],
+  "biceps": [
+    "bras",
+    "muscle",
+    "gonfler",
+    "force",
+    "fort"
+  ],
+  "triceps": [
+    "bras",
+    "muscle",
+    "arrière",
+    "étendre",
+    "gym"
+  ],
+  "muscle": [
+    "force",
+    "mouvement",
+    "fibres",
+    "travailler",
+    "sport"
+  ],
+  "tendon": [
+    "articuler",
+    "ligament",
+    "relier",
+    "muscle",
+    "blessure"
+  ],
+  "ligament": [
+    "articuler",
+    "genou",
+    "blesser",
+    "tendon",
+    "os"
+  ],
+  "artere": [
+    "sang",
+    "cœur",
+    "rouge",
+    "oxygène",
+    "veine"
+  ],
+  "veine": [
+    "sang",
+    "bleu",
+    "retour",
+    "visible",
+    "piquer"
+  ],
+  "nerf": [
+    "signal",
+    "douleur",
+    "influx",
+    "neurologie",
+    "électrique"
+  ],
+  "surprise": [
+    "inattendu",
+    "choc",
+    "bonheur",
+    "fête",
+    "soudain"
+  ],
+  "degout": [
+    "nausée",
+    "répugnance",
+    "odeur",
+    "rejet",
+    "grimace"
+  ],
+  "nostalgie": [
+    "passé",
+    "souvenir",
+    "mélancolie",
+    "regret",
+    "avant"
+  ],
+  "melancolie": [
+    "tristesse",
+    "blues",
+    "rêve",
+    "lent",
+    "automne"
+  ],
+  "euphorie": [
+    "joie",
+    "bonheur",
+    "intense",
+    "légèreté",
+    "extrême"
+  ],
+  "angoisse": [
+    "peur",
+    "oppression",
+    "inquiétude",
+    "douleur",
+    "nuit"
+  ],
+  "honte": [
+    "gêne",
+    "rougeur",
+    "humiliation",
+    "caché",
+    "pudeur"
+  ],
+  "fierte": [
+    "satisfaction",
+    "réussite",
+    "accomplissement",
+    "honneur",
+    "orgueil"
+  ],
+  "culpabilite": [
+    "faute",
+    "remords",
+    "erreur",
+    "mauvais",
+    "conscience"
+  ],
+  "compassion": [
+    "empathie",
+    "aide",
+    "souffrance",
+    "solidarité",
+    "cœur"
+  ],
+  "emerveillement": [
+    "beauté",
+    "enfant",
+    "étonné",
+    "yeux",
+    "monde"
+  ],
+  "solitude": [
+    "seul",
+    "isolé",
+    "silence",
+    "manque",
+    "vide"
+  ],
+  "tendresse": [
+    "amour",
+    "douceur",
+    "câlin",
+    "affection",
+    "soin"
+  ],
+  "admiration": [
+    "respect",
+    "bravo",
+    "talent",
+    "estimer",
+    "modèle"
+  ],
+  "mepris": [
+    "dédain",
+    "supériorité",
+    "rejeter",
+    "attitude",
+    "hauteur"
+  ],
+  "rancune": [
+    "colère",
+    "rancœur",
+    "blessure",
+    "souvenir",
+    "pardonner"
+  ],
+  "espoir": [
+    "futur",
+    "positive",
+    "lumière",
+    "attendre",
+    "possible"
+  ],
+  "desespoir": [
+    "sombre",
+    "perdre",
+    "aucun",
+    "noir",
+    "impuissance"
+  ],
+  "soulagement": [
+    "tension",
+    "enfin",
+    "libéré",
+    "résoudre",
+    "ouf"
+  ],
+  "frustration": [
+    "bloquer",
+    "échouer",
+    "irritation",
+    "vouloir",
+    "impossible"
+  ],
+  "ennui": [
+    "vide",
+    "temps",
+    "lent",
+    "monotone",
+    "bâillement"
+  ],
+  "curiosite": [
+    "question",
+    "découvrir",
+    "explorer",
+    "savoir",
+    "intérêt"
+  ],
+  "confiance": [
+    "croire",
+    "certitude",
+    "relation",
+    "sécurité",
+    "foi"
+  ],
+  "trahison": [
+    "mensonge",
+    "confiance",
+    "tromperie",
+    "ami",
+    "blesser"
+  ],
+  "gratitude": [
+    "merci",
+    "don",
+    "apprécier",
+    "cadeau",
+    "reconnaître"
+  ],
+  "amour": [
+    "cœur",
+    "sentiment",
+    "affection",
+    "passion",
+    "couple"
+  ],
+  "cave": [
+    "sous-sol",
+    "vin",
+    "sombre",
+    "humide",
+    "stockage"
+  ],
+  "terrasse": [
+    "extérieur",
+    "plantes",
+    "été",
+    "barbecue",
+    "vue"
+  ],
+  "couloir": [
+    "passage",
+    "long",
+    "étroit",
+    "porte",
+    "hall"
+  ],
+  "salon": [
+    "canapé",
+    "télévision",
+    "invités",
+    "réunion",
+    "pièce"
+  ],
+  "baignoire": [
+    "bain",
+    "eau",
+    "savon",
+    "relaxation",
+    "salle-de-bain"
+  ],
+  "radiateur": [
+    "chaleur",
+    "hiver",
+    "chauffage",
+    "métal",
+    "thermostat"
+  ],
+  "parquet": [
+    "bois",
+    "sol",
+    "briller",
+    "lattes",
+    "chambre"
+  ],
+  "volet": [
+    "fenêtre",
+    "fermer",
+    "bois",
+    "nuit",
+    "store"
+  ],
+  "portail": [
+    "entrée",
+    "fer",
+    "sécurité",
+    "garage",
+    "maison"
+  ],
+  "sonnette": [
+    "appuyer",
+    "bruit",
+    "porte",
+    "annoncer",
+    "visiteur"
+  ],
+  "veranda": [
+    "verre",
+    "extérieur",
+    "lumière",
+    "plantes",
+    "jardin"
+  ],
+  "pergola": [
+    "bois",
+    "jardin",
+    "plante",
+    "terrasse",
+    "ombrage"
+  ],
+  "buanderie": [
+    "linge",
+    "machine",
+    "laver",
+    "sécher",
+    "rangement"
+  ],
+  "dressing": [
+    "vêtements",
+    "luxe",
+    "grand",
+    "miroir",
+    "chambre"
+  ],
+  "atelier": [
+    "créer",
+    "outils",
+    "fabriquer",
+    "artiste",
+    "garage"
+  ],
+  "placard": [
+    "rangement",
+    "porte",
+    "cuisine",
+    "étagère",
+    "armoire"
+  ],
+  "bureau": [
+    "travailler",
+    "ordinateur",
+    "meuble",
+    "chambre",
+    "écrire"
+  ],
+  "lit": [
+    "dormir",
+    "chambre",
+    "matelas",
+    "sommeil",
+    "couette"
+  ],
+  "douche": [
+    "eau",
+    "savon",
+    "hygiène",
+    "cabinet",
+    "jet"
+  ],
+  "four": [
+    "cuire",
+    "cuisine",
+    "chaleur",
+    "gaz",
+    "gratin"
+  ],
+  "refrigerateur": [
+    "froid",
+    "cuisine",
+    "nourriture",
+    "électrique",
+    "conserve"
+  ],
+  "congelateur": [
+    "surgelé",
+    "froid",
+    "glace",
+    "conservation",
+    "température"
+  ],
+  "lave-linge": [
+    "machine",
+    "linge",
+    "eau",
+    "laver",
+    "cycle"
+  ],
+  "lave-vaisselle": [
+    "vaisselle",
+    "nettoyer",
+    "eau",
+    "cuisine",
+    "programme"
+  ],
+  "micro-ondes": [
+    "réchauffer",
+    "rapide",
+    "cuisine",
+    "ondes",
+    "minute"
+  ],
+  "garde-robe": [
+    "vêtements",
+    "placard",
+    "armoire",
+    "chambre",
+    "penderie"
+  ],
+  "abri": [
+    "voiture",
+    "bois",
+    "pluie",
+    "garage",
+    "jardin"
+  ],
+  "portique": [
+    "enfant",
+    "balançoire",
+    "jardin",
+    "bois",
+    "glissière"
+  ],
+  "boite-aux-lettres": [
+    "courrier",
+    "porte",
+    "facteur",
+    "jaune",
+    "métal"
+  ],
+  "puits": [
+    "eau",
+    "profond",
+    "pierre",
+    "corde",
+    "ancienne"
+  ],
+  "ruche": [
+    "abeille",
+    "miel",
+    "jardin",
+    "hexagone",
+    "colonie"
+  ],
+  "composteur": [
+    "jardin",
+    "déchets",
+    "nature",
+    "terreau",
+    "végétaux"
+  ],
+  "toilettes": [
+    "wc",
+    "papier",
+    "hygiène",
+    "eau",
+    "rincer"
+  ],
+  "lavabo": [
+    "eau",
+    "savon",
+    "salle-de-bain",
+    "miroir",
+    "rincer"
+  ],
+  "commode": [
+    "meuble",
+    "tiroir",
+    "bois",
+    "rangement",
+    "chambre"
+  ],
+  "tournage": [
+    "film",
+    "caméra",
+    "plateau",
+    "acteur",
+    "réalisateur"
+  ],
+  "clap": [
+    "film",
+    "scène",
+    "plateau",
+    "démarrer",
+    "cinéma"
+  ],
+  "scenario": [
+    "histoire",
+    "dialogue",
+    "auteur",
+    "film",
+    "écriture"
+  ],
+  "realisateur": [
+    "film",
+    "diriger",
+    "plateau",
+    "Spielberg",
+    "cinéma"
+  ],
+  "cascadeur": [
+    "risque",
+    "action",
+    "remplacer",
+    "danger",
+    "film"
+  ],
+  "decor": [
+    "plateau",
+    "fond",
+    "peinture",
+    "construction",
+    "fiction"
+  ],
+  "maquillage": [
+    "acteur",
+    "transformer",
+    "palette",
+    "visage",
+    "studio"
+  ],
+  "bande-annonce": [
+    "trailer",
+    "film",
+    "sortie",
+    "cinéma",
+    "avant"
+  ],
+  "affiche": [
+    "film",
+    "poster",
+    "publicité",
+    "cinéma",
+    "sortie"
+  ],
+  "documentaire": [
+    "réel",
+    "témoignage",
+    "reportage",
+    "vérité",
+    "filmé"
+  ],
+  "comedie": [
+    "rire",
+    "humour",
+    "acteur",
+    "amusant",
+    "léger"
+  ],
+  "thriller": [
+    "suspens",
+    "peur",
+    "tension",
+    "mystère",
+    "enquête"
+  ],
+  "horreur": [
+    "peur",
+    "monstre",
+    "sang",
+    "nuit",
+    "frisson"
+  ],
+  "western": [
+    "cowboys",
+    "far-west",
+    "pistolet",
+    "désert",
+    "ranch"
+  ],
+  "animation": [
+    "dessin",
+    "studio",
+    "personnage",
+    "Disney",
+    "adulte"
+  ],
+  "serie": [
+    "épisode",
+    "saison",
+    "Netflix",
+    "personnages",
+    "histoire"
+  ],
+  "episode": [
+    "suite",
+    "série",
+    "chapitre",
+    "cliffhanger",
+    "prochain"
+  ],
+  "saison": [
+    "série",
+    "épisodes",
+    "Netflix",
+    "sortie",
+    "hiver"
+  ],
+  "generique": [
+    "début",
+    "fin",
+    "musique",
+    "acteurs",
+    "titre"
+  ],
+  "binge-watching": [
+    "Netflix",
+    "série",
+    "nuit",
+    "manger",
+    "regarder"
+  ],
+  "oscar": [
+    "récompense",
+    "Hollywood",
+    "statuette",
+    "cinéma",
+    "cérémonie"
+  ],
+  "comedie-musicale": [
+    "chanter",
+    "danser",
+    "Broadway",
+    "comédie",
+    "musique"
+  ],
+  "dessin-anime": [
+    "enfant",
+    "couleur",
+    "personnage",
+    "studio",
+    "Disney"
+  ],
+  "doublage": [
+    "voix",
+    "langue",
+    "acteur",
+    "film",
+    "studio"
+  ],
+  "sous-titres": [
+    "langue",
+    "texte",
+    "film",
+    "lire",
+    "écran"
+  ],
+  "marais": [
+    "eau",
+    "boue",
+    "roseaux",
+    "grenouille",
+    "humide"
+  ],
+  "mangrove": [
+    "tropique",
+    "eau",
+    "racines",
+    "côte",
+    "palétuvier"
+  ],
+  "recif": [
+    "corail",
+    "mer",
+    "plongée",
+    "poisson",
+    "barrière"
+  ],
+  "delta": [
+    "fleuve",
+    "mer",
+    "alluvions",
+    "estuaire",
+    "Nil"
+  ],
+  "lagon": [
+    "eau",
+    "calme",
+    "récif",
+    "île",
+    "turquoise"
+  ],
+  "ouragan": [
+    "vent",
+    "atlantique",
+    "destruction",
+    "pluie",
+    "tropique"
+  ],
+  "typhon": [
+    "vent",
+    "asie",
+    "destruction",
+    "pluie",
+    "mer"
+  ],
+  "blizzard": [
+    "neige",
+    "vent",
+    "froid",
+    "visibilité",
+    "hiver"
+  ],
+  "brouillard": [
+    "gris",
+    "visibilité",
+    "humide",
+    "matin",
+    "dense"
+  ],
+  "rosee": [
+    "matin",
+    "herbe",
+    "fraîcheur",
+    "eau",
+    "goutte"
+  ],
+  "verglas": [
+    "glace",
+    "route",
+    "danger",
+    "froid",
+    "hiver"
+  ],
+  "inondation": [
+    "eau",
+    "pluie",
+    "rivière",
+    "débordement",
+    "danger"
+  ],
+  "vallee": [
+    "montagne",
+    "fleuve",
+    "verdure",
+    "fond",
+    "culture"
+  ],
+  "col": [
+    "montagne",
+    "sommet",
+    "passage",
+    "altitude",
+    "randonnée"
+  ],
+  "sommet": [
+    "montagne",
+    "altitude",
+    "pic",
+    "grimper",
+    "vue"
+  ],
+  "colline": [
+    "montagne",
+    "herbe",
+    "douce",
+    "verdure",
+    "pente"
+  ],
+  "dune": [
+    "sable",
+    "désert",
+    "vent",
+    "forme",
+    "sahara"
+  ],
+  "atoll": [
+    "île",
+    "corail",
+    "mer",
+    "anneau",
+    "pacifique"
+  ],
+  "estuaire": [
+    "fleuve",
+    "mer",
+    "delta",
+    "large",
+    "marée"
+  ],
+  "detroit": [
+    "passage",
+    "mer",
+    "Gibraltar",
+    "étroit",
+    "relie"
+  ],
+  "baie": [
+    "mer",
+    "calme",
+    "arc",
+    "côte",
+    "ancrer"
+  ],
+  "peninsule": [
+    "terre",
+    "mer",
+    "entouré",
+    "Bretagne",
+    "côte"
+  ],
+  "cratere": [
+    "volcan",
+    "creux",
+    "lune",
+    "montagne",
+    "explosion"
+  ],
+  "stalactite": [
+    "grotte",
+    "calcaire",
+    "pendre",
+    "goutte",
+    "minéral"
+  ],
+  "stalagmite": [
+    "grotte",
+    "calcaire",
+    "sol",
+    "monter",
+    "minéral"
+  ],
+  "lave": [
+    "volcan",
+    "rouge",
+    "chaud",
+    "couler",
+    "détruire"
+  ],
+  "magma": [
+    "volcan",
+    "fondu",
+    "souterrain",
+    "roche",
+    "éruption"
+  ],
+  "source": [
+    "eau",
+    "naître",
+    "montagne",
+    "fraîche",
+    "origine"
+  ],
+  "ruisseau": [
+    "eau",
+    "petite",
+    "rivière",
+    "forêt",
+    "murmure"
+  ],
+  "riviere": [
+    "eau",
+    "couler",
+    "poisson",
+    "bateau",
+    "pont"
+  ],
+  "fleuve": [
+    "large",
+    "eau",
+    "mer",
+    "bateaux",
+    "delta"
+  ],
+  "lac": [
+    "eau",
+    "montagne",
+    "pêche",
+    "tranquille",
+    "reflet"
+  ],
+  "etang": [
+    "eau",
+    "grenouille",
+    "calme",
+    "petite",
+    "nénuphar"
+  ],
+  "mare": [
+    "eau",
+    "petite",
+    "grenouille",
+    "jardin",
+    "flaque"
+  ],
+  "taiga": [
+    "forêt",
+    "sibérie",
+    "conifères",
+    "froid",
+    "grand"
+  ],
+  "prairie": [
+    "herbe",
+    "vache",
+    "fleurs",
+    "verdure",
+    "champêtre"
+  ],
+  "bocage": [
+    "haies",
+    "champs",
+    "Normandie",
+    "forêt",
+    "campagne"
+  ],
+  "vignoble": [
+    "vigne",
+    "vin",
+    "raisin",
+    "sud",
+    "culture"
+  ],
+  "verger": [
+    "fruit",
+    "arbre",
+    "jardin",
+    "pommier",
+    "récolte"
+  ],
+  "presqu-ile": [
+    "terre",
+    "mer",
+    "entouré",
+    "côte",
+    "presque-île"
+  ],
+  "caldera": [
+    "volcan",
+    "cratère",
+    "effondrement",
+    "caldeira",
+    "île"
+  ],
+  "tourbiere": [
+    "marécage",
+    "tourbe",
+    "humide",
+    "brun",
+    "sphaigne"
+  ],
+  "gondole": [
+    "Venise",
+    "eau",
+    "pagaie",
+    "canal",
+    "noir"
+  ],
+  "deltaplane": [
+    "aile",
+    "vent",
+    "voler",
+    "montagne",
+    "courant"
+  ],
+  "planeur": [
+    "vol",
+    "sans-moteur",
+    "aile",
+    "thermique",
+    "silence"
+  ],
+  "zeppelin": [
+    "ballon",
+    "dirigeable",
+    "air",
+    "hydrogène",
+    "lent"
+  ],
+  "dirigeable": [
+    "ballon",
+    "air",
+    "moteur",
+    "gigantesque",
+    "ciel"
+  ],
+  "hovercraft": [
+    "air",
+    "glisser",
+    "coussin",
+    "amphibie",
+    "surface"
+  ],
+  "catamaran": [
+    "mer",
+    "deux-coques",
+    "voile",
+    "rapide",
+    "régate"
+  ],
+  "triporteur": [
+    "trois-roues",
+    "livraison",
+    "cargo",
+    "pédale",
+    "urbain"
+  ],
+  "trottinette": [
+    "roue",
+    "trottoir",
+    "pied",
+    "électrique",
+    "ville"
+  ],
+  "quad": [
+    "quatre-roues",
+    "tout-terrain",
+    "moto",
+    "dirt",
+    "puissant"
+  ],
+  "buggy": [
+    "sable",
+    "rapide",
+    "dune",
+    "tout-terrain",
+    "sport"
+  ],
+  "camping-car": [
+    "vacances",
+    "maison",
+    "route",
+    "lit",
+    "cuisine"
+  ],
+  "caravane": [
+    "vacances",
+    "camping",
+    "remorquer",
+    "maison",
+    "mobile"
+  ],
+  "remorque": [
+    "attacher",
+    "voiture",
+    "bateau",
+    "derrière",
+    "transporter"
+  ],
+  "funiculaire": [
+    "montagne",
+    "câble",
+    "Montmartre",
+    "pente",
+    "rail"
+  ],
+  "telesiege": [
+    "montagne",
+    "ski",
+    "remonter",
+    "assis",
+    "piste"
+  ],
+  "navette": [
+    "espace",
+    "transport",
+    "allers-retours",
+    "shuttle",
+    "nasa"
+  ],
+  "locomotive": [
+    "train",
+    "vapeur",
+    "diesel",
+    "puissante",
+    "rails"
+  ],
+  "wagon": [
+    "train",
+    "passager",
+    "marchandise",
+    "roue",
+    "compartiment"
+  ],
+  "barge": [
+    "eau",
+    "plat",
+    "lourde",
+    "rivière",
+    "transporter"
+  ],
+  "pirogue": [
+    "eau",
+    "creusé",
+    "pagaie",
+    "jungle",
+    "tradition"
+  ],
+  "paquebot": [
+    "mer",
+    "luxe",
+    "grand",
+    "croisière",
+    "passagers"
+  ],
+  "patinette": [
+    "enfant",
+    "roue",
+    "pied",
+    "trottoir",
+    "métal"
+  ],
+  "tandem": [
+    "deux",
+    "vélo",
+    "ensemble",
+    "pédaler",
+    "couple"
+  ],
+  "sidecar": [
+    "moto",
+    "passager",
+    "trois-roues",
+    "vintage",
+    "attaché"
+  ],
+  "formule1": [
+    "course",
+    "vitesse",
+    "circuit",
+    "voiture",
+    "pilote"
+  ],
+  "karting": [
+    "course",
+    "circuit",
+    "petite-voiture",
+    "vitesse",
+    "sport"
+  ],
+  "voilier": [
+    "voile",
+    "vent",
+    "mer",
+    "régate",
+    "naviguer"
+  ],
+  "canoe": [
+    "pagaie",
+    "rivière",
+    "eau",
+    "paddle",
+    "nature"
+  ],
+  "tgv": [
+    "rapide",
+    "rails",
+    "France",
+    "grande-vitesse",
+    "confort"
+  ],
+  "jetski": [
+    "eau",
+    "rapide",
+    "vague",
+    "mer",
+    "conducteur"
+  ],
+  "helicopter": [
+    "rotor",
+    "vol",
+    "sauvetage",
+    "bruit",
+    "hélice"
+  ],
+  "vibraphone": [
+    "métal",
+    "mallet",
+    "jazz",
+    "vibration",
+    "percussion"
+  ],
+  "sitar": [
+    "inde",
+    "corde",
+    "Ravi-Shankar",
+    "méditation",
+    "oriental"
+  ],
+  "djembe": [
+    "Afrique",
+    "percussion",
+    "peau",
+    "rythme",
+    "frapper"
+  ],
+  "didgeridoo": [
+    "Australie",
+    "vent",
+    "aborigène",
+    "long",
+    "souffle"
+  ],
+  "karaoké": [
+    "chant",
+    "micro",
+    "écran",
+    "paroles",
+    "ambiance"
+  ],
+  "choeur": [
+    "chant",
+    "groupe",
+    "voix",
+    "harmonie",
+    "ensemble"
+  ],
+  "orchestre": [
+    "symphonie",
+    "chef",
+    "instrument",
+    "salle",
+    "classique"
+  ],
+  "studio": [
+    "enregistrement",
+    "micro",
+    "casque",
+    "musique",
+    "professionnel"
+  ],
+  "basse": [
+    "grave",
+    "corde",
+    "groove",
+    "rock",
+    "amplificateur"
+  ],
+  "xylophone": [
+    "bois",
+    "mallet",
+    "frappe",
+    "percussion",
+    "note"
+  ],
+  "imprimante": [
+    "papier",
+    "encre",
+    "imprimer",
+    "laser",
+    "bureau"
+  ],
+  "scanner": [
+    "document",
+    "optique",
+    "lire",
+    "image",
+    "bureau"
+  ],
+  "manette": [
+    "bouton",
+    "jeu",
+    "joystick",
+    "gaming",
+    "console"
+  ],
+  "webcam": [
+    "caméra",
+    "vidéo",
+    "visage",
+    "enregistrer",
+    "streaming"
+  ],
+  "enceinte": [
+    "son",
+    "musique",
+    "bluetooth",
+    "amplifier",
+    "haut-parleur"
+  ],
+  "disque-dur": [
+    "données",
+    "stockage",
+    "ordinateur",
+    "Go",
+    "fichier"
+  ],
+  "clé-usb": [
+    "données",
+    "stocker",
+    "brancher",
+    "porteur",
+    "transfert"
+  ],
+  "écran": [
+    "afficher",
+    "lumineux",
+    "pixel",
+    "résolution",
+    "tactile"
+  ],
+  "serveur": [
+    "données",
+    "réseau",
+    "héberger",
+    "cloud",
+    "centre"
+  ],
+  "routeur": [
+    "wifi",
+    "réseau",
+    "internet",
+    "connexion",
+    "signal"
+  ],
+  "antenne": [
+    "signal",
+    "émission",
+    "réception",
+    "radio",
+    "toit"
+  ],
+  "puce": [
+    "micro",
+    "circuit",
+    "processeur",
+    "minuscule",
+    "intégré"
+  ],
+  "laser": [
+    "lumière",
+    "précision",
+    "médical",
+    "rayon",
+    "coupe"
+  ],
+  "hologramme": [
+    "projection",
+    "3D",
+    "lumière",
+    "futur",
+    "image"
+  ],
+  "batterie-lithium": [
+    "énergie",
+    "recharger",
+    "portable",
+    "voiture",
+    "autonomie"
+  ],
+  "algorithme": [
+    "code",
+    "calcul",
+    "étapes",
+    "informatique",
+    "solution"
+  ],
+  "intelligence-artificielle": [
+    "machine",
+    "apprentissage",
+    "données",
+    "robot",
+    "futur"
+  ],
+  "realite-virtuelle": [
+    "casque",
+    "immersion",
+    "jeu",
+    "simulation",
+    "3D"
+  ],
+  "salopette": [
+    "bretelle",
+    "travail",
+    "jean",
+    "enfant",
+    "poche"
+  ],
+  "combinaison": [
+    "pilote",
+    "astronaute",
+    "sport",
+    "protection",
+    "zip"
+  ],
+  "imperméable": [
+    "pluie",
+    "eau",
+    "protection",
+    "capuche",
+    "météo"
+  ],
+  "ballerine": [
+    "pied",
+    "danse",
+    "plat",
+    "femme",
+    "souple"
+  ],
+  "espadrille": [
+    "été",
+    "toile",
+    "corde",
+    "plat",
+    "basque"
+  ],
+  "manoir": [
+    "vieux",
+    "mystère",
+    "Angleterre",
+    "chambres",
+    "jardin"
+  ],
+  "forteresse": [
+    "mur",
+    "défense",
+    "château",
+    "rempart",
+    "militaire"
+  ],
+  "parc": [
+    "nature",
+    "banc",
+    "arbre",
+    "promenade",
+    "vert"
+  ],
+  "quartier": [
+    "ville",
+    "rue",
+    "voisins",
+    "immeubles",
+    "habiter"
+  ],
+  "banlieue": [
+    "ville",
+    "périphérie",
+    "maison",
+    "transport",
+    "résidentiel"
+  ],
+  "village": [
+    "campagne",
+    "mairie",
+    "église",
+    "habitants",
+    "petit"
+  ],
+  "metropole": [
+    "grande",
+    "ville",
+    "centre",
+    "urbain",
+    "dense"
+  ],
+  "port": [
+    "mer",
+    "bateau",
+    "ancre",
+    "quai",
+    "pêche"
+  ],
+  "marché": [
+    "vendeur",
+    "légumes",
+    "halle",
+    "fresh",
+    "samedi"
+  ],
+  "cimetière": [
+    "tombe",
+    "mort",
+    "fleur",
+    "silence",
+    "croix"
+  ],
+  "lycée": [
+    "adolescent",
+    "cours",
+    "professeur",
+    "diplôme",
+    "classe"
+  ],
+  "école": [
+    "enfant",
+    "élève",
+    "classe",
+    "apprendre",
+    "cartable"
+  ],
+  "pharmacie": [
+    "médicament",
+    "ordonnance",
+    "croix",
+    "pilule",
+    "santé"
+  ],
+  "supermarché": [
+    "course",
+    "caddie",
+    "rayon",
+    "caisse",
+    "aliment"
+  ],
+  "boulangerie": [
+    "pain",
+    "baguette",
+    "four",
+    "croissant",
+    "matin"
+  ],
+  "restaurant": [
+    "menu",
+    "cuisiner",
+    "table",
+    "serveur",
+    "dîner"
+  ],
+  "bar": [
+    "boisson",
+    "comptoir",
+    "alcool",
+    "tabouret",
+    "soirée"
+  ],
+  "mairie": [
+    "marie",
+    "vote",
+    "officiel",
+    "mariage",
+    "bâtiment"
+  ],
+  "ambassade": [
+    "pays",
+    "diplomatique",
+    "visa",
+    "drapeau",
+    "étranger"
+  ],
+  "consulat": [
+    "visa",
+    "passeport",
+    "étranger",
+    "pays",
+    "service"
+  ],
+  "poste": [
+    "courrier",
+    "colis",
+    "timbre",
+    "envoyer",
+    "guichet"
+  ],
+  "banque": [
+    "argent",
+    "compte",
+    "crédit",
+    "guichet",
+    "financier"
+  ],
+  "usine": [
+    "fabriquer",
+    "machines",
+    "ouvrier",
+    "production",
+    "industrie"
+  ],
+  "entrepôt": [
+    "stocker",
+    "marchandise",
+    "grand",
+    "hangar",
+    "logistique"
+  ]
+}

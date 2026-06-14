@@ -9,7 +9,7 @@ import HistorySidebar from './HistorySidebar';
 const TEAM_NAMES = { A: 'Équipe Rouge', B: 'Équipe Bleue' };
 
 export default function Game({ game }) {
-  const { scores, activeTeam, currentRound, totalRounds, roundDuration, timeLeft, paused, roundSummary, myRole, wordHistory } = game;
+  const { scores, activeTeam, currentRound, totalRounds, roundDuration, timeLeft, paused, roundSummary, myRole, wordHistory, buzzPending, buzzTeam, buzzer, isHost, actions } = game;
 
   return (
     <div className="screen screen--game">
@@ -33,7 +33,7 @@ export default function Game({ game }) {
         <Timer timeLeft={timeLeft} roundDuration={roundDuration} />
       </div>
 
-      {paused && <div className="pause-banner">⏸ Pause — joueur déconnecté</div>}
+      {paused && !buzzPending && <div className="pause-banner">⏸ Pause — joueur déconnecté</div>}
 
       {/* Corps : main + sidebar */}
       <div className="game-layout">
@@ -47,6 +47,31 @@ export default function Game({ game }) {
       </div>
 
       {roundSummary && <RoundSummary summary={roundSummary} />}
+
+      {/* Buzz overlay — visible par tous quand un buzz est en cours */}
+      {buzzPending && (
+        <div className="buzz-overlay">
+          <div className="buzz-overlay-card">
+            <div className="buzz-badge">BUZZ !</div>
+            <p className="buzz-info">
+              <span className={`buzz-team-name buzz-team-name--${buzzTeam}`}>{TEAM_NAMES[buzzTeam]}</span>
+              {' '}— {buzzer} signale un mot interdit.
+            </p>
+            {isHost ? (
+              <div className="buzz-actions">
+                <button className="btn--confirm-buzz" onClick={actions.confirmBuzz}>
+                  ✓ Confirmer (+1)
+                </button>
+                <button className="btn--deny-buzz" onClick={actions.denyBuzz}>
+                  ✗ Refuser
+                </button>
+              </div>
+            ) : (
+              <p className="buzz-waiting">L'hôte examine le buzz…</p>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

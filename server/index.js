@@ -4,7 +4,7 @@ const { Server } = require('socket.io');
 const { GameRoom } = require('./game');
 
 const PORT = process.env.PORT || 3001;
-const ROUND_END_DELAY = 3000; // ms avant de passer au round suivant
+const ROUND_END_DELAY = 3000;
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -16,12 +16,10 @@ app.use(express.json());
 
 app.get('/health', (_, res) => res.json({ ok: true }));
 
-// Expose la config publique au client (évite le baking de l'env var dans Vite)
 app.get('/api/config', (_, res) => {
   res.json({ discordClientId: process.env.DISCORD_CLIENT_ID || '' });
 });
 
-// Échange le code OAuth2 Discord contre un access token
 app.post('/api/discord/token', async (req, res) => {
   try {
     const { code } = req.body;
@@ -42,10 +40,7 @@ app.post('/api/discord/token', async (req, res) => {
   }
 });
 
-// rooms : { [roomCode]: GameRoom }
 const rooms = {};
-
-// socketToRoom : { [socketId]: roomCode }
 const socketToRoom = {};
 
 // ─── Utilitaires ────────────────────────────────────────────────────────────
@@ -68,38 +63,41 @@ function emitRoomUpdate(room) {
   io.to(room.roomCode).emit('roomUpdate', room.publicSnapshot());
 }
 
-function getRoleFor(room, socketId) {
-  if (socketId === room.indiceurId) return 'indiceur';
-  if (socketId === room.devineurId) return 'devineur';
-  return 'spectateur';
+// Révèle le mot selon le mode :
+// - texte : uniquement à l'indiceur
+// - tabou : à tout le monde sauf le devineur
+function revealWord(room) {
+  if (room.mode === 'tabou') {
+    for (const socketId of Object.keys(room.players)) {
+      if (socketId !== room.devineurId) {
+        const s = io.sockets.sockets.get(socketId);
+        if (s) s.emit('wordRevealed', { word: room.currentWord, blacklist: room.currentBlacklist });
+      }
+    }
+  } else {
+    const indiceurSocket = io.sockets.sockets.get(room.indiceurId);
+    if (indiceurSocket) indiceurSocket.emit('wordRevealed', { word: room.currentWord, blacklist: [] });
+  }
 }
 
 // ─── Gestion du début de round ──────────────────────────────────────────────
 
 function startRound(room, roundInfo) {
   if (roundInfo.scores) {
-    // C'est une fin de partie
     io.to(room.roomCode).emit('gameEnded', roundInfo);
     return;
   }
 
-  // Envoie roundStarted à tout le monde (sans le mot)
   io.to(room.roomCode).emit('roundStarted', {
     round: roundInfo.round,
     totalRounds: roundInfo.totalRounds,
     activeTeam: roundInfo.activeTeam,
     indiceurId: roundInfo.indiceurId,
     devineurId: roundInfo.devineurId,
-    // Chaque client recevra son rôle via getRoleFor dans le message complet
   });
 
-  // Révèle le mot cible uniquement à l'indiceur
-  const indiceurSocket = io.sockets.sockets.get(roundInfo.indiceurId);
-  if (indiceurSocket) {
-    indiceurSocket.emit('wordRevealed', { word: room.currentWord });
-  }
+  revealWord(room);
 
-  // Configure les callbacks timer
   room.onTick = (timeLeft) => {
     io.to(room.roomCode).emit('timerTick', { timeLeft });
   };
@@ -109,7 +107,7 @@ function startRound(room, roundInfo) {
     io.to(room.roomCode).emit('roundEnded', summary);
 
     setTimeout(() => {
-      if (!rooms[room.roomCode]) return; // room supprimée
+      if (!rooms[room.roomCode]) return;
       const next = room.advanceToNextRound();
       startRound(room, next);
     }, ROUND_END_DELAY);
@@ -150,7 +148,6 @@ io.on('connection', (socket) => {
   });
 
   // ── joinOrCreate (Discord Activity) ─────────────────────────────
-  // Rejoint la room si elle existe, la crée sinon — atomique pour éviter les races
   socket.on('joinOrCreate', ({ roomCode, pseudo }, cb) => {
     if (!pseudo?.trim()) return cb?.({ error: 'Pseudo requis.' });
     const code = (roomCode || '').trim();
@@ -165,8 +162,6 @@ io.on('connection', (socket) => {
     }
 
     room.addPlayer(socket.id, pseudo.trim());
-
-    // Auto-assign équipe la moins peuplée (balance automatique)
     const aCount = room.getTeamMembers('A').length;
     const bCount = room.getTeamMembers('B').length;
     room.setTeam(socket.id, aCount <= bCount ? 'A' : 'B');
@@ -247,9 +242,7 @@ io.on('connection', (socket) => {
       indiceurId: res.indiceurId,
       devineurId: res.devineurId,
     });
-    // Révèle le mot au nouvel indiceur
-    const indiceurSocket = io.sockets.sockets.get(res.indiceurId);
-    if (indiceurSocket) indiceurSocket.emit('wordRevealed', { word: room.currentWord });
+    revealWord(room);
   });
 
   // ── submitGuess ─────────────────────────────────────────────────
@@ -265,17 +258,14 @@ io.on('connection', (socket) => {
       correct: result.correct,
       word: result.word,
       scores: result.scores,
-      wordHistory: result.wordHistory,       // défini si correct (mot suivant)
-      currentExchange: result.currentExchange, // défini si incorrect (même mot)
+      wordHistory: result.wordHistory,
+      currentExchange: result.currentExchange,
     });
 
-    if (result.correct) {
-      const indiceurSocket = io.sockets.sockets.get(room.indiceurId);
-      if (indiceurSocket) indiceurSocket.emit('wordRevealed', { word: room.currentWord });
-    }
+    if (result.correct) revealWord(room);
   });
 
-  // ── markResult (mode vocal) ─────────────────────────────────────
+  // ── markResult (mode tabou — indiceur valide) ───────────────────
   socket.on('markResult', ({ result }, cb) => {
     const room = getRoomOf(socket.id);
     if (!room) return cb?.({ error: 'Pas dans un salon.' });
@@ -292,10 +282,7 @@ io.on('connection', (socket) => {
       currentExchange: res.currentExchange,
     });
 
-    if (res.correct) {
-      const indiceurSocket = io.sockets.sockets.get(room.indiceurId);
-      if (indiceurSocket) indiceurSocket.emit('wordRevealed', { word: room.currentWord });
-    }
+    if (res.correct) revealWord(room);
   });
 
   // ── skipWord ────────────────────────────────────────────────────
@@ -314,10 +301,45 @@ io.on('connection', (socket) => {
       wordHistory: res.wordHistory,
     });
 
-    const indiceurSocket = io.sockets.sockets.get(room.indiceurId);
-    if (indiceurSocket) {
-      indiceurSocket.emit('wordRevealed', { word: room.currentWord });
-    }
+    revealWord(room);
+  });
+
+  // ── buzz (équipe adverse) ───────────────────────────────────────
+  socket.on('buzz', (_, cb) => {
+    const room = getRoomOf(socket.id);
+    if (!room) return cb?.({ error: 'Pas dans un salon.' });
+
+    const res = room.buzz(socket.id);
+    if (!res.ok) return cb?.({ error: res.reason || 'Buzz impossible.' });
+
+    cb?.({ ok: true });
+    io.to(room.roomCode).emit('buzzStarted', { buzzTeam: res.buzzTeam, buzzer: res.buzzer });
+  });
+
+  // ── confirmBuzz (hôte confirme le buzz) ─────────────────────────
+  socket.on('confirmBuzz', (_, cb) => {
+    const room = getRoomOf(socket.id);
+    if (!room) return cb?.({ error: 'Pas dans un salon.' });
+    if (socket.id !== room.hostId) return cb?.({ error: 'Hôte uniquement.' });
+
+    const res = room.confirmBuzz();
+    if (!res.ok) return cb?.({ error: 'Pas de buzz en cours.' });
+
+    cb?.({ ok: true });
+    io.to(room.roomCode).emit('buzzResolved', { confirmed: true, scores: res.scores, buzzTeam: res.buzzTeam });
+  });
+
+  // ── denyBuzz (hôte refuse le buzz) ──────────────────────────────
+  socket.on('denyBuzz', (_, cb) => {
+    const room = getRoomOf(socket.id);
+    if (!room) return cb?.({ error: 'Pas dans un salon.' });
+    if (socket.id !== room.hostId) return cb?.({ error: 'Hôte uniquement.' });
+
+    const res = room.denyBuzz();
+    if (!res.ok) return cb?.({ error: 'Pas de buzz en cours.' });
+
+    cb?.({ ok: true });
+    io.to(room.roomCode).emit('buzzResolved', { confirmed: false });
   });
 
   // ── playAgain ───────────────────────────────────────────────────
@@ -340,7 +362,6 @@ io.on('connection', (socket) => {
     if (!room) return;
 
     if (room.phase === 'round_active') {
-      // Pause automatique si un joueur actif se déconnecte
       const isActive = socket.id === room.indiceurId || socket.id === room.devineurId;
       if (isActive) {
         room.pauseTimer(socket.id);
@@ -358,7 +379,6 @@ io.on('connection', (socket) => {
       return;
     }
 
-    // Transfère le host si nécessaire
     if (room.hostId === socket.id) {
       room.hostId = Object.keys(room.players)[0];
     }
@@ -366,9 +386,7 @@ io.on('connection', (socket) => {
     emitRoomUpdate(room);
   });
 
-  // ── reconnect (via joinRoom avec même pseudo) ────────────────────
-  // Un joueur peut rejoindre la room en cours avec son pseudo ; si la partie
-  // est en pause à cause de sa déco, on reprend.
+  // ── rejoinRoom ──────────────────────────────────────────────────
   socket.on('rejoinRoom', ({ roomCode, pseudo }, cb) => {
     const code = (roomCode || '').toUpperCase().trim();
     const room = rooms[code];
@@ -378,7 +396,7 @@ io.on('connection', (socket) => {
     socketToRoom[socket.id] = code;
     socket.join(code);
 
-    if (room._paused) {
+    if (room._paused && !room.buzzPending) {
       room.resumeTimer();
       io.to(room.roomCode).emit('gameResumed', { timeLeft: room.timeLeft });
     }

@@ -113,7 +113,7 @@ export default function Lobby({ game }) {
               <span className="settings-label">Mode de réponse</span>
               <div className="pill-group">
                 <button className={`pill${mode === 'text' ? ' pill--active' : ''}`} onClick={() => actions.updateSettings({ mode: 'text' })}>Texte</button>
-                <button className={`pill${mode === 'vocal' ? ' pill--active' : ''}`} onClick={() => actions.updateSettings({ mode: 'vocal' })}>Vocal</button>
+                <button className={`pill${mode === 'tabou' ? ' pill--active' : ''}`} onClick={() => actions.updateSettings({ mode: 'tabou' })}>Tabou</button>
               </div>
             </div>
             <div className="settings-row">
@@ -143,7 +143,7 @@ export default function Lobby({ game }) {
             <span className="settings-label">Durée</span>
             <span className="settings-value">{roundDuration}s</span>
             <span className="settings-label">Mode</span>
-            <span className="settings-value">{mode === 'text' ? 'Texte' : 'Vocal'}</span>
+            <span className="settings-value">{mode === 'text' ? 'Texte' : 'Tabou'}</span>
             <p className="hint">En attente que l'hôte lance la partie…</p>
           </div>
         )}

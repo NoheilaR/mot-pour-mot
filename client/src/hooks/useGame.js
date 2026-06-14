@@ -50,9 +50,13 @@ function makeInitialState() {
     timeLeft: 30,
     paused: false,
     wordHistory: [],
+    buzzPending: false,
+    buzzTeam: null,
+    buzzer: null,
 
     // État client
     currentWord: null,
+    currentBlacklist: [],
     currentExchange: [],
     lastGuessResult: null,
     clueError: null,
@@ -89,9 +93,11 @@ function reducer(state, action) {
         timeLeft: action.data.timeLeft,
         paused: action.data.paused,
         wordHistory: action.data.wordHistory ?? state.wordHistory,
+        buzzPending: action.data.buzzPending ?? state.buzzPending,
+        buzzTeam: action.data.buzzTeam ?? state.buzzTeam,
       };
     case 'GAME_STARTED':
-      return { ...state, screen: 'game', currentWord: null, lastGuessResult: null, roundSummary: null, gameResult: null, wordHistory: [] };
+      return { ...state, screen: 'game', currentWord: null, currentBlacklist: [], lastGuessResult: null, roundSummary: null, gameResult: null, wordHistory: [], buzzPending: false, buzzTeam: null, buzzer: null };
     case 'ROUND_STARTED':
       return {
         ...state,
@@ -100,12 +106,16 @@ function reducer(state, action) {
         indiceurId: action.data.indiceurId,
         devineurId: action.data.devineurId,
         currentWord: null,
+        currentBlacklist: [],
         currentClue: null,
         currentExchange: [],
         clueError: null,
         lastGuessResult: null,
         roundSummary: null,
         wordHistory: [],
+        buzzPending: false,
+        buzzTeam: null,
+        buzzer: null,
       };
     case 'ROLES_SWAPPED':
       return {
@@ -113,14 +123,13 @@ function reducer(state, action) {
         indiceurId: action.indiceurId,
         devineurId: action.devineurId,
         currentWord: action.indiceurId === state.myId ? state.currentWord : null,
+        currentBlacklist: action.indiceurId === state.myId ? state.currentBlacklist : [],
       };
     case 'WORD_REVEALED':
-      return { ...state, currentWord: action.word, clueError: null, currentExchange: [], currentClue: null };
+      return { ...state, currentWord: action.word, currentBlacklist: action.blacklist ?? [], clueError: null, currentExchange: [], currentClue: null };
     case 'CLUE_REVEALED': {
-      // Ajoute l'indice dans l'échange courant (côté client)
       const newEntry = { clue: action.clue, guess: null };
       const updatedExchange = [...state.currentExchange];
-      // Remplace la dernière entrée si elle n'a pas encore de guess (double submit guard)
       if (updatedExchange.length > 0 && updatedExchange[updatedExchange.length - 1].guess === null) {
         updatedExchange[updatedExchange.length - 1] = newEntry;
       } else {
@@ -132,7 +141,6 @@ function reducer(state, action) {
       return { ...state, clueError: action.message };
     case 'GUESS_RESULT':
       if (action.correct) {
-        // Mot suivant : reset de l'échange courant, mise à jour de l'historique
         return {
           ...state,
           lastGuessResult: { correct: true, word: action.word },
@@ -142,12 +150,11 @@ function reducer(state, action) {
           currentExchange: [],
         };
       } else {
-        // Mauvaise réponse : met à jour l'échange (serveur a réinitialisé currentClue)
         return {
           ...state,
           lastGuessResult: { correct: false, word: action.word },
           scores: action.scores,
-          currentClue: null,           // indiceur peut redonner un indice
+          currentClue: null,
           currentExchange: action.currentExchange ?? state.currentExchange,
         };
       }
@@ -157,6 +164,7 @@ function reducer(state, action) {
         scores: action.scores,
         wordHistory: action.wordHistory ?? state.wordHistory,
         currentClue: null,
+        currentBlacklist: [],
         currentExchange: [],
         lastGuessResult: null,
       };
@@ -170,6 +178,17 @@ function reducer(state, action) {
       return { ...state, paused: true };
     case 'GAME_RESUMED':
       return { ...state, paused: false, timeLeft: action.timeLeft };
+    case 'BUZZ_STARTED':
+      return { ...state, buzzPending: true, buzzTeam: action.buzzTeam, buzzer: action.buzzer, paused: true };
+    case 'BUZZ_RESOLVED':
+      return {
+        ...state,
+        buzzPending: false,
+        buzzTeam: null,
+        buzzer: null,
+        paused: false,
+        scores: action.confirmed ? (action.scores ?? state.scores) : state.scores,
+      };
     case 'BACK_TO_LOBBY':
       return { ...makeInitialState(), connected: state.connected, myId: state.myId, screen: 'lobby', roomCode: state.roomCode, pseudo: state.pseudo, discordInstanceId: state.discordInstanceId, discordUser: state.discordUser };
     case 'SET_ERROR':
@@ -193,7 +212,7 @@ export function useGame() {
     socket.on('gameStarted', () => dispatch({ type: 'GAME_STARTED' }));
     socket.on('roundStarted', (data) => dispatch({ type: 'ROUND_STARTED', data }));
     socket.on('rolesSwapped', ({ indiceurId, devineurId }) => dispatch({ type: 'ROLES_SWAPPED', indiceurId, devineurId }));
-    socket.on('wordRevealed', ({ word }) => dispatch({ type: 'WORD_REVEALED', word }));
+    socket.on('wordRevealed', ({ word, blacklist }) => dispatch({ type: 'WORD_REVEALED', word, blacklist }));
     socket.on('clueRevealed', ({ clue }) => dispatch({ type: 'CLUE_REVEALED', clue }));
     socket.on('guessResult', ({ correct, word, scores, wordHistory, currentExchange }) => dispatch({ type: 'GUESS_RESULT', correct, word, scores, wordHistory, currentExchange }));
     socket.on('wordSkipped', ({ scores, wordHistory }) => dispatch({ type: 'WORD_SKIPPED', scores, wordHistory }));
@@ -202,6 +221,8 @@ export function useGame() {
     socket.on('gameEnded', (data) => dispatch({ type: 'GAME_ENDED', data }));
     socket.on('gamePaused', () => dispatch({ type: 'GAME_PAUSED' }));
     socket.on('gameResumed', ({ timeLeft }) => dispatch({ type: 'GAME_RESUMED', timeLeft }));
+    socket.on('buzzStarted', ({ buzzTeam, buzzer }) => dispatch({ type: 'BUZZ_STARTED', buzzTeam, buzzer }));
+    socket.on('buzzResolved', ({ confirmed, scores, buzzTeam }) => dispatch({ type: 'BUZZ_RESOLVED', confirmed, scores, buzzTeam }));
 
     return () => socket.disconnect();
   }, []);
@@ -222,7 +243,6 @@ export function useGame() {
     });
   }, []);
 
-  // Discord Activity : crée la room si elle n'existe pas, la rejoint sinon
   const joinOrCreate = useCallback((roomCode, pseudo) => {
     socket.emit('joinOrCreate', { roomCode, pseudo }, (res) => {
       if (res.error) return dispatch({ type: 'SET_ERROR', message: res.error });
@@ -250,7 +270,6 @@ export function useGame() {
       if (res?.error) dispatch({ type: 'SET_ERROR', message: res.error });
     });
   }, []);
-
   const setPreferredRole = useCallback((role) => {
     socket.emit('setPreferredRole', { role });
   }, []);
@@ -260,6 +279,13 @@ export function useGame() {
       dispatch({ type: 'BACK_TO_LOBBY' });
     });
   }, []);
+  const buzz = useCallback(() => {
+    socket.emit('buzz', {}, (res) => {
+      if (res?.error) dispatch({ type: 'SET_ERROR', message: res.error });
+    });
+  }, []);
+  const confirmBuzz = useCallback(() => socket.emit('confirmBuzz', {}), []);
+  const denyBuzz = useCallback(() => socket.emit('denyBuzz', {}), []);
   const clearError = useCallback(() => dispatch({ type: 'CLEAR_ERROR' }), []);
 
   const myId = state.myId || socket.id;
@@ -279,6 +305,6 @@ export function useGame() {
     myTeam,
     isHost,
     shareUrl,
-    actions: { createRoom, joinRoom, joinOrCreate, chooseTeam, updateSettings, startGame, submitClue, submitGuess, markResult, skipWord, swapRoles, setPreferredRole, playAgain, clearError },
+    actions: { createRoom, joinRoom, joinOrCreate, chooseTeam, updateSettings, startGame, submitClue, submitGuess, markResult, skipWord, swapRoles, setPreferredRole, playAgain, buzz, confirmBuzz, denyBuzz, clearError },
   };
 }

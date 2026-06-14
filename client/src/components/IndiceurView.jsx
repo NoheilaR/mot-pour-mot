@@ -3,7 +3,7 @@ import CurrentExchange from './CurrentExchange';
 import { wordSizeClass } from '../utils/wordSize';
 
 export default function IndiceurView({ game }) {
-  const { currentWord, currentClue, clueError, mode, currentExchange, indiceurId, devineurId, players, actions } = game;
+  const { currentWord, currentClue, clueError, mode, currentExchange, currentBlacklist, indiceurId, devineurId, players, actions } = game;
   const [clue, setClue] = useState('');
   const [wordKey, setWordKey] = useState(0);
   const inputRef = useRef(null);
@@ -17,12 +17,11 @@ export default function IndiceurView({ game }) {
     }
   }, [currentWord]);
 
-  // Focus auto quand l'indiceur peut redonner un indice
   useEffect(() => {
-    if (currentClue === null && currentWord) {
+    if (mode === 'text' && currentClue === null && currentWord) {
       setTimeout(() => inputRef.current?.focus(), 50);
     }
-  }, [currentClue, currentWord]);
+  }, [currentClue, currentWord, mode]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -45,59 +44,73 @@ export default function IndiceurView({ game }) {
         </div>
       </div>
 
-      {/* Mot cible — visible uniquement par l'indiceur */}
+      {/* Mot cible */}
       <div className="word-area">
         <div className={`current-word ${wordSizeClass(currentWord)}`} key={wordKey}>
           {currentWord ? currentWord.toUpperCase() : '…'}
         </div>
       </div>
 
-      {/* Tentatives échouées pour ce mot */}
-      <CurrentExchange exchange={currentExchange} />
+      {/* Blacklist (mode tabou) */}
+      {mode === 'tabou' && currentBlacklist.length > 0 && (
+        <div className="blacklist-area">
+          <div className="blacklist-label">Mots interdits</div>
+          <div className="blacklist-grid">
+            {currentBlacklist.map((word, i) => (
+              <span key={i} className="blacklist-badge">{word.toUpperCase()}</span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Échange courant (mode texte) */}
+      {mode === 'text' && <CurrentExchange exchange={currentExchange} />}
 
       <div className="action-area">
         {clueError && (
           <div className="guess-feedback guess-feedback--wrong">{clueError}</div>
         )}
 
-        {currentClue === null ? (
-          /* L'indiceur peut donner (ou redonner) un indice */
-          <form className="clue-form" onSubmit={handleSubmit}>
-            <div className="clue-row">
-              <input
-                ref={inputRef}
-                className="field-input field-input--clue"
-                type="text"
-                value={clue}
-                onChange={e => setClue(e.target.value.replace(/\s/g, ''))}
-                placeholder={currentExchange.length > 0 ? 'Nouvel indice…' : 'Ton indice…'}
-                maxLength={40}
-                disabled={!currentWord}
-                autoComplete="off"
-              />
-              <button className="btn--send" type="submit" disabled={!clue.trim() || !currentWord}>→</button>
+        {mode === 'text' && (
+          currentClue === null ? (
+            <form className="clue-form" onSubmit={handleSubmit}>
+              <div className="clue-row">
+                <input
+                  ref={inputRef}
+                  className="field-input field-input--clue"
+                  type="text"
+                  value={clue}
+                  onChange={e => setClue(e.target.value.replace(/\s/g, ''))}
+                  placeholder={currentExchange.length > 0 ? 'Nouvel indice…' : 'Ton indice…'}
+                  maxLength={40}
+                  disabled={!currentWord}
+                  autoComplete="off"
+                />
+                <button className="btn--send" type="submit" disabled={!clue.trim() || !currentWord}>→</button>
+              </div>
+            </form>
+          ) : (
+            <div className="clue-submitted">
+              <span className="clue-submitted-label">Indice envoyé</span>
+              <span className="clue-submitted-value">{currentClue.toUpperCase()}</span>
             </div>
-          </form>
-        ) : (
-          /* Indice envoyé, en attente de la réponse du devineur */
-          <div className="clue-submitted">
-            <span className="clue-submitted-label">Indice envoyé</span>
-            <span className="clue-submitted-value">{currentClue.toUpperCase()}</span>
-          </div>
+          )
         )}
 
-        {/* Mode vocal : boutons correct/passer (seulement quand l'indice est actif) */}
-        {mode === 'vocal' && currentClue !== null && (
-          <div className="skip-btn-row">
-            <button className="btn--correct" onClick={() => actions.markResult('correct')}>✓ Correct</button>
-            <button className="btn--skip" onClick={actions.skipWord}>Passer (−1)</button>
-          </div>
-        )}
-
-        {/* Mode texte : passer disponible dès qu'un indice est actif */}
         {mode === 'text' && currentClue !== null && (
           <div className="skip-btn-row">
             <button className="btn--skip" onClick={actions.skipWord}>Passer (−1)</button>
+          </div>
+        )}
+
+        {mode === 'tabou' && (
+          <div className="skip-btn-row">
+            <button className="btn--correct" onClick={() => actions.markResult('correct')} disabled={!currentWord}>
+              ✓ Correct
+            </button>
+            <button className="btn--skip" onClick={actions.skipWord} disabled={!currentWord}>
+              Passer (−1)
+            </button>
           </div>
         )}
       </div>
