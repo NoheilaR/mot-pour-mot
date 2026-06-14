@@ -24,6 +24,7 @@ app.get('/api/config', (_, res) => {
 // Échange le code OAuth2 Discord contre un access token
 app.post('/api/discord/token', async (req, res) => {
   try {
+    const { code, redirectUri } = req.body;
     const response = await fetch('https://discord.com/api/oauth2/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -31,7 +32,8 @@ app.post('/api/discord/token', async (req, res) => {
         client_id: process.env.DISCORD_CLIENT_ID,
         client_secret: process.env.DISCORD_CLIENT_SECRET,
         grant_type: 'authorization_code',
-        code: req.body.code,
+        code,
+        redirect_uri: redirectUri,
       }),
     });
     const data = await response.json();

@@ -13,18 +13,21 @@ export async function initDiscord() {
     await sdk.ready();
     instanceId = sdk.instanceId;
 
+    const redirectUri = `https://${clientId}.discordsays.com`;
+
     const { code } = await sdk.commands.authorize({
       client_id: clientId,
       response_type: 'code',
       state: '',
       prompt: 'none',
       scope: ['identify'],
+      redirect_uri: redirectUri,
     });
 
     const tokenRes = await fetch('/api/discord/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code }),
+      body: JSON.stringify({ code, redirectUri }),
     });
     const { access_token } = await tokenRes.json();
 
