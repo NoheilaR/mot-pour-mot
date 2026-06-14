@@ -1,0 +1,58 @@
+{
+  "categories": {
+    "sport": [
+      "football", "tennis", "natation", "cyclisme", "basketball", "volleyball",
+      "rugby", "golf", "boxe", "judo", "ski", "surf", "escalade", "marathon",
+      "badminton", "handball", "athletisme", "plongee", "equitation", "karate"
+    ],
+    "nourriture": [
+      "pizza", "fromage", "croissant", "chocolat", "soupe", "salade", "poulet",
+      "baguette", "crepe", "sushi", "hamburger", "tarte", "glace", "yaourt",
+      "omelette", "raclette", "fondue", "camembert", "beurre", "confiture",
+      "miel", "jambon", "sardine", "huître", "macaron"
+    ],
+    "animaux": [
+      "chien", "chat", "lion", "elephant", "girafe", "pingouin", "dauphin",
+      "perroquet", "serpent", "tortue", "koala", "panda", "renard", "loup",
+      "cochon", "vache", "cheval", "lapin", "hamster", "aigle",
+      "flamant", "baleine", "requin", "pieuvre", "hippopotame"
+    ],
+    "objets": [
+      "parapluie", "bouteille", "miroir", "horloge", "lampe", "coussin",
+      "valise", "brosse", "clavier", "casque", "lunettes", "ceinture",
+      "portefeuille", "bougie", "aspirateur", "cafetiere", "calculatrice",
+      "dictionnaire", "agenda", "thermometre"
+    ],
+    "metiers": [
+      "pompier", "chirurgien", "architecte", "boulanger", "astronaute",
+      "plombier", "journaliste", "chanteur", "pilote", "veterinaire",
+      "photographe", "cuisinier", "professeur", "avocat", "facteur",
+      "magicien", "plongeur", "garagiste", "jardinier", "comedien"
+    ],
+    "lieux": [
+      "plage", "montagne", "foret", "desert", "volcan", "ile", "phare",
+      "casino", "stade", "musee", "cathedrale", "marche", "bibliotheque",
+      "piscine", "hopital", "cinema", "aeroport", "gare", "cirque", "zoo"
+    ],
+    "transports": [
+      "avion", "bateau", "helicoptere", "scooter", "tramway", "fusee",
+      "sous-marin", "tracteur", "ambulance", "gondole", "cable", "metro",
+      "montgolfiere", "jet", "ferry", "kayak", "moto", "skateboard"
+    ],
+    "nature": [
+      "arc-en-ciel", "avalanche", "tornade", "glacier", "cascade", "oasis",
+      "grotte", "falaise", "marais", "mangrove", "recif", "geyser",
+      "delta", "toundra", "savane", "canyon", "lagon", "tourbiere"
+    ],
+    "pop_culture": [
+      "vampire", "zombie", "pirate", "ninja", "cowboy", "robot", "dinosaure",
+      "chevalier", "sorcier", "superheros", "detective", "fantome",
+      "sirene", "dragon", "alien", "momie", "gladiateur", "viking"
+    ],
+    "maison": [
+      "escalier", "fenetre", "balcon", "grenier", "cave", "garage",
+      "terrasse", "couloir", "salon", "baignoire", "radiateur", "parquet",
+      "volet", "portail", "boite", "sonnette", "interphone", "cheminee"
+    ]
+  }
+}
