@@ -165,6 +165,12 @@ io.on('connection', (socket) => {
     }
 
     room.addPlayer(socket.id, pseudo.trim());
+
+    // Auto-assign équipe la moins peuplée (balance automatique)
+    const aCount = room.getTeamMembers('A').length;
+    const bCount = room.getTeamMembers('B').length;
+    room.setTeam(socket.id, aCount <= bCount ? 'A' : 'B');
+
     socketToRoom[socket.id] = code;
     socket.join(code);
     cb?.({ roomCode: code });
