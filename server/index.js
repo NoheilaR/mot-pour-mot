@@ -4,7 +4,7 @@ const { Server } = require('socket.io');
 const { GameRoom } = require('./game');
 
 const PORT = process.env.PORT || 3001;
-const ROUND_END_DELAY = 5500;
+const ROUND_END_DELAY = 15000;
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -72,7 +72,7 @@ function revealWord(room) {
       const s = io.sockets.sockets.get(socketId);
       if (!s) continue;
       if (socketId === room.devineurId) {
-        s.emit('devineurHint', { wordLength: room.currentWord.length, blacklist: room.currentBlacklist });
+        // le devineur ne voit rien en tabou
       } else {
         s.emit('wordRevealed', { word: room.currentWord, blacklist: room.currentBlacklist });
       }
@@ -109,7 +109,8 @@ function startRound(room, roundInfo) {
     const summary = room.endCurrentRound();
     io.to(room.roomCode).emit('roundEnded', summary);
 
-    setTimeout(() => {
+    room._roundEndTimer = setTimeout(() => {
+      room._roundEndTimer = null;
       if (!rooms[room.roomCode]) return;
       const next = room.advanceToNextRound();
       startRound(room, next);
@@ -345,11 +346,37 @@ io.on('connection', (socket) => {
     io.to(room.roomCode).emit('buzzResolved', { confirmed: false });
   });
 
+  // ── adjustScore (hôte corrige le score en fin de round) ──────────
+  socket.on('adjustScore', ({ team, delta }, cb) => {
+    const room = getRoomOf(socket.id);
+    if (!room) return cb?.({ error: 'Pas dans un salon.' });
+    if (socket.id !== room.hostId) return cb?.({ error: 'Hôte uniquement.' });
+    if (room.phase !== 'round_end') return cb?.({ error: 'Pas en fin de round.' });
+    if (!['A', 'B'].includes(team)) return cb?.({ error: 'Équipe invalide.' });
+    if (delta !== 1 && delta !== -1) return cb?.({ error: 'Delta invalide.' });
+    room.scores[team] = Math.max(0, room.scores[team] + delta);
+    io.to(room.roomCode).emit('scoreAdjusted', { scores: { ...room.scores } });
+    cb?.({ ok: true });
+  });
+
+  // ── confirmRound (hôte valide le score et passe au round suivant) ─
+  socket.on('confirmRound', (_, cb) => {
+    const room = getRoomOf(socket.id);
+    if (!room) return cb?.({ error: 'Pas dans un salon.' });
+    if (socket.id !== room.hostId) return cb?.({ error: 'Hôte uniquement.' });
+    if (room.phase !== 'round_end') return cb?.({ error: 'Pas en fin de round.' });
+    if (room._roundEndTimer) { clearTimeout(room._roundEndTimer); room._roundEndTimer = null; }
+    const next = room.advanceToNextRound();
+    startRound(room, next);
+    cb?.({ ok: true });
+  });
+
   // ── abandonGame (hôte abandonne la partie en cours) ─────────────
   socket.on('abandonGame', (_, cb) => {
     const room = getRoomOf(socket.id);
     if (!room) return cb?.({ error: 'Pas dans un salon.' });
     if (socket.id !== room.hostId) return cb?.({ error: 'Hôte uniquement.' });
+    if (room._roundEndTimer) { clearTimeout(room._roundEndTimer); room._roundEndTimer = null; }
     room.resetToLobby();
     cb?.({ ok: true });
     io.to(room.roomCode).emit('gameAbandoned');

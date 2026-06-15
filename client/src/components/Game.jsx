@@ -9,8 +9,13 @@ import HistorySidebar from './HistorySidebar';
 const TEAM_NAMES = { A: 'Équipe Rouge', B: 'Équipe Bleue' };
 
 export default function Game({ game }) {
-  const { scores, activeTeam, currentRound, totalRounds, roundDuration, timeLeft, paused, roundSummary, myRole, wordHistory, buzzPending, buzzTeam, buzzer, isHost, actions } = game;
+  const { scores, activeTeam, currentRound, totalRounds, roundDuration, timeLeft, paused,
+    roundSummary, myRole, wordHistory, buzzPending, buzzTeam, buzzer, currentBlacklist,
+    players, isHost, actions } = game;
   const [confirmAbandon, setConfirmAbandon] = useState(false);
+
+  const teamA = players.filter(p => p.team === 'A');
+  const teamB = players.filter(p => p.team === 'B');
 
   function handleAbandon() {
     actions.abandonGame();
@@ -54,6 +59,18 @@ export default function Game({ game }) {
         </div>
       </div>
 
+      {/* Strip équipes */}
+      <div className="team-strip">
+        <div className={`team-strip-side team-strip-side--A${activeTeam === 'A' ? ' team-strip-side--active' : ''}`}>
+          <span className="team-strip-name">Rouge</span>
+          <span className="team-strip-players">{teamA.map(p => p.pseudo).join(', ') || '—'}</span>
+        </div>
+        <div className={`team-strip-side team-strip-side--B${activeTeam === 'B' ? ' team-strip-side--active' : ''}`}>
+          <span className="team-strip-name">Bleue</span>
+          <span className="team-strip-players">{teamB.map(p => p.pseudo).join(', ') || '—'}</span>
+        </div>
+      </div>
+
       {paused && !buzzPending && <div className="pause-banner">⏸ Pause — joueur déconnecté</div>}
 
       {/* Corps : main + sidebar */}
@@ -67,7 +84,14 @@ export default function Game({ game }) {
         <HistorySidebar history={wordHistory} />
       </div>
 
-      {roundSummary && <RoundSummary summary={roundSummary} />}
+      {roundSummary && (
+        <RoundSummary
+          summary={roundSummary}
+          scores={scores}
+          isHost={isHost}
+          actions={actions}
+        />
+      )}
 
       {/* Buzz overlay */}
       {buzzPending && (
@@ -78,6 +102,16 @@ export default function Game({ game }) {
               <span className={`buzz-team-name buzz-team-name--${buzzTeam}`}>{TEAM_NAMES[buzzTeam]}</span>
               {' '}— {buzzer} signale un mot interdit.
             </p>
+            {currentBlacklist.length > 0 && (
+              <div className="buzz-blacklist">
+                <div className="blacklist-label">Mots interdits</div>
+                <div className="blacklist-grid">
+                  {currentBlacklist.map((word, i) => (
+                    <span key={i} className="blacklist-badge">{word.toUpperCase()}</span>
+                  ))}
+                </div>
+              </div>
+            )}
             {isHost ? (
               <div className="buzz-actions">
                 <button className="btn--confirm-buzz" onClick={actions.confirmBuzz}>

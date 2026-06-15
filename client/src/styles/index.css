@@ -631,6 +631,46 @@ html, body, #root {
   50%       { opacity: .6; }
 }
 
+/* ─── Strip équipes ─────────────────────────────────── */
+
+.team-strip {
+  display: flex;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+}
+.team-strip-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: .35rem .75rem;
+  gap: .1rem;
+  transition: background .25s;
+}
+.team-strip-side--A { border-right: 1px solid var(--border); }
+.team-strip-side--A.team-strip-side--active {
+  background: rgba(230,57,70,.12);
+  border-bottom: 2px solid var(--team-a);
+}
+.team-strip-side--B.team-strip-side--active {
+  background: rgba(58,134,255,.12);
+  border-bottom: 2px solid var(--team-b);
+}
+.team-strip-name {
+  font-size: .65rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.team-strip-side--A .team-strip-name { color: var(--team-a); }
+.team-strip-side--B .team-strip-name { color: var(--team-b); }
+.team-strip-players {
+  font-size: .75rem;
+  color: var(--grey);
+  text-align: center;
+}
+.team-strip-side--active .team-strip-players { color: var(--white); }
+
 /* ─── Corps du jeu : layout flex row ────────────────── */
 
 .game-layout {
@@ -1327,13 +1367,102 @@ html, body, #root {
 }
 .rs-sub { font-size: .85rem; color: var(--grey); margin-top: .3rem; }
 
+.rs-adjust {
+  margin-top: 1rem;
+  width: 100%;
+  border-top: 1px solid var(--border);
+  padding-top: .85rem;
+}
+.rs-adjust-label {
+  font-size: .65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--grey);
+  margin-bottom: .5rem;
+  text-align: center;
+}
+.rs-adjust-row {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  justify-content: center;
+  margin-bottom: .35rem;
+}
+.rs-adjust-team {
+  font-size: .75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  width: 3rem;
+  text-align: right;
+}
+.rs-adjust-team--A { color: var(--team-a); }
+.rs-adjust-team--B { color: var(--team-b); }
+.rs-adjust-val {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--white);
+  min-width: 2rem;
+  text-align: center;
+}
+.btn--adj {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--white);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: background .15s, border-color .15s;
+}
+.btn--adj:hover { background: var(--border); }
+.btn--adj-plus:hover { border-color: #4caf50; color: #4caf50; }
+.btn--adj-minus:hover { border-color: var(--red); color: var(--red); }
+
+.rs-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: .85rem;
+  border-top: 1px solid var(--border);
+  width: 100%;
+}
+.btn--confirm-round {
+  flex: 1;
+  padding: .65rem 1rem;
+  background: var(--white);
+  color: var(--bg);
+  border: none;
+  border-radius: var(--r-sm);
+  font-weight: 800;
+  font-size: .85rem;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+.btn--confirm-round:hover { opacity: .85; }
+.rs-waiting {
+  flex: 1;
+  font-size: .8rem;
+  color: var(--grey);
+  text-align: left;
+}
 .rs-countdown {
-  margin-top: 1.2rem;
-  font-size: 2.5rem;
+  font-size: 1.8rem;
   font-weight: 900;
   color: var(--grey);
   line-height: 1;
   transition: color .2s;
+  min-width: 2rem;
+  text-align: right;
 }
 .rs-countdown--urgent {
   color: var(--red);
@@ -1342,6 +1471,13 @@ html, body, #root {
 @keyframes countdown-pulse {
   from { transform: scale(1); }
   to   { transform: scale(1.15); }
+}
+
+.buzz-blacklist {
+  margin: .75rem 0;
+  padding: .65rem .75rem;
+  background: rgba(0,0,0,.2);
+  border-radius: var(--r-sm);
 }
 
 /* ═══════════════════════════════════════════════════════

@@ -58,7 +58,6 @@ function makeInitialState() {
     // État client
     currentWord: null,
     currentBlacklist: [],
-    devineurWordLength: null,
     currentExchange: [],
     lastGuessResult: null,
     clueError: null,
@@ -99,7 +98,7 @@ function reducer(state, action) {
         buzzTeam: action.data.buzzTeam ?? state.buzzTeam,
       };
     case 'GAME_STARTED':
-      return { ...state, screen: 'game', currentWord: null, currentBlacklist: [], devineurWordLength: null, lastGuessResult: null, roundSummary: null, gameResult: null, wordHistory: [], buzzPending: false, buzzTeam: null, buzzer: null };
+      return { ...state, screen: 'game', currentWord: null, currentBlacklist: [], lastGuessResult: null, roundSummary: null, gameResult: null, wordHistory: [], buzzPending: false, buzzTeam: null, buzzer: null };
     case 'ROUND_STARTED':
       return {
         ...state,
@@ -109,7 +108,6 @@ function reducer(state, action) {
         devineurId: action.data.devineurId,
         currentWord: null,
         currentBlacklist: [],
-        devineurWordLength: null,
         currentClue: null,
         currentExchange: [],
         clueError: null,
@@ -130,8 +128,6 @@ function reducer(state, action) {
       };
     case 'WORD_REVEALED':
       return { ...state, currentWord: action.word, currentBlacklist: action.blacklist ?? [], clueError: null, currentExchange: [], currentClue: null };
-    case 'DEVINEUR_HINT':
-      return { ...state, devineurWordLength: action.wordLength, currentBlacklist: action.blacklist ?? [] };
     case 'CLUE_REVEALED': {
       const newEntry = { clue: action.clue, guess: null };
       const updatedExchange = [...state.currentExchange];
@@ -177,6 +173,8 @@ function reducer(state, action) {
       return { ...state, timeLeft: action.timeLeft };
     case 'ROUND_ENDED':
       return { ...state, roundSummary: action.data, wordHistory: action.data.wordHistory ?? state.wordHistory };
+    case 'SCORE_ADJUSTED':
+      return { ...state, scores: action.scores };
     case 'GAME_ENDED':
       return { ...state, screen: 'gameover', gameResult: action.data };
     case 'GAME_PAUSED':
@@ -218,7 +216,6 @@ export function useGame() {
     socket.on('roundStarted', (data) => dispatch({ type: 'ROUND_STARTED', data }));
     socket.on('rolesSwapped', ({ indiceurId, devineurId }) => dispatch({ type: 'ROLES_SWAPPED', indiceurId, devineurId }));
     socket.on('wordRevealed', ({ word, blacklist }) => dispatch({ type: 'WORD_REVEALED', word, blacklist }));
-    socket.on('devineurHint', ({ wordLength, blacklist }) => dispatch({ type: 'DEVINEUR_HINT', wordLength, blacklist }));
     socket.on('clueRevealed', ({ clue }) => dispatch({ type: 'CLUE_REVEALED', clue }));
     socket.on('guessResult', ({ correct, word, scores, wordHistory, currentExchange }) => {
       if (correct) playDing(); else playWrong();
@@ -227,6 +224,7 @@ export function useGame() {
     socket.on('wordSkipped', ({ scores, wordHistory }) => dispatch({ type: 'WORD_SKIPPED', scores, wordHistory }));
     socket.on('timerTick', ({ timeLeft }) => dispatch({ type: 'TIMER_TICK', timeLeft }));
     socket.on('roundEnded', (data) => dispatch({ type: 'ROUND_ENDED', data }));
+    socket.on('scoreAdjusted', ({ scores }) => dispatch({ type: 'SCORE_ADJUSTED', scores }));
     socket.on('gameEnded', (data) => dispatch({ type: 'GAME_ENDED', data }));
     socket.on('gamePaused', () => dispatch({ type: 'GAME_PAUSED' }));
     socket.on('gameResumed', ({ timeLeft }) => dispatch({ type: 'GAME_RESUMED', timeLeft }));
@@ -301,6 +299,16 @@ export function useGame() {
   }, []);
   const confirmBuzz = useCallback(() => socket.emit('confirmBuzz', {}), []);
   const denyBuzz = useCallback(() => socket.emit('denyBuzz', {}), []);
+  const adjustScore = useCallback((team, delta) => {
+    socket.emit('adjustScore', { team, delta }, (res) => {
+      if (res?.error) dispatch({ type: 'SET_ERROR', message: res.error });
+    });
+  }, []);
+  const confirmRound = useCallback(() => {
+    socket.emit('confirmRound', {}, (res) => {
+      if (res?.error) dispatch({ type: 'SET_ERROR', message: res.error });
+    });
+  }, []);
   const clearError = useCallback(() => dispatch({ type: 'CLEAR_ERROR' }), []);
 
   const myId = state.myId || socket.id;
@@ -320,6 +328,6 @@ export function useGame() {
     myTeam,
     isHost,
     shareUrl,
-    actions: { createRoom, joinRoom, joinOrCreate, chooseTeam, updateSettings, startGame, submitClue, submitGuess, markResult, skipWord, swapRoles, setPreferredRole, playAgain, abandonGame, buzz, confirmBuzz, denyBuzz, clearError },
+    actions: { createRoom, joinRoom, joinOrCreate, chooseTeam, updateSettings, startGame, submitClue, submitGuess, markResult, skipWord, swapRoles, setPreferredRole, playAgain, abandonGame, buzz, confirmBuzz, denyBuzz, adjustScore, confirmRound, clearError },
   };
 }
