@@ -203,6 +203,21 @@
       "bande-annonce", "affiche", "oscar", "festival", "avant-premiere",
       "documentaire", "comedie", "thriller", "horreur", "western",
       "animation", "serie", "episode", "saison", "generique", "binge-watching"
-    ]
+    ],
+    "valorant": [
+    "jett", "raze", "reyna", "phoenix", "neon", "iso", "waylay",
+    "sova", "fade", "breach", "skye", "kayo", "gekko", "tejo",
+    "omen", "viper", "brimstone", "clove", "astra", "harbor", "miks",
+    "killjoy", "cypher", "sage", "chamber", "deadlock", "vyse", "veto",
+    "spike", "vandal", "phantom", "operator", "sheriff", "spectre",
+    "ghost", "classic", "odin", "stinger", "marshall", "judge"
+  ],
+  "streamers_fr": [
+    "kameto", "squeezie", "aminematue", "gotaga", "zerator", "domingo",
+    "jltomy", "etoiles", "antoinedaniel", "mistermv", "maghla", "ponce",
+    "locklear", "michou", "inoxtag", "chowh1", "sardoche", "bagherajones",
+    "ultia", "jeel", "deujna", "wankil", "terracid", "laink", "doigby",
+    "byilhan", "anyme", "nikof", "trayton", "joueur-du-grenier"
+  ]
   }
 }
