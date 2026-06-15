@@ -4,7 +4,7 @@ const { Server } = require('socket.io');
 const { GameRoom } = require('./game');
 
 const PORT = process.env.PORT || 3001;
-const ROUND_END_DELAY = 3000;
+const ROUND_END_DELAY = 5500;
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -65,13 +65,16 @@ function emitRoomUpdate(room) {
 
 // Révèle le mot selon le mode :
 // - texte : uniquement à l'indiceur
-// - tabou : à tout le monde sauf le devineur
+// - tabou : à tout le monde sauf le devineur ; envoie un hint au devineur (longueur + blacklist)
 function revealWord(room) {
   if (room.mode === 'tabou') {
     for (const socketId of Object.keys(room.players)) {
-      if (socketId !== room.devineurId) {
-        const s = io.sockets.sockets.get(socketId);
-        if (s) s.emit('wordRevealed', { word: room.currentWord, blacklist: room.currentBlacklist });
+      const s = io.sockets.sockets.get(socketId);
+      if (!s) continue;
+      if (socketId === room.devineurId) {
+        s.emit('devineurHint', { wordLength: room.currentWord.length, blacklist: room.currentBlacklist });
+      } else {
+        s.emit('wordRevealed', { word: room.currentWord, blacklist: room.currentBlacklist });
       }
     }
   } else {

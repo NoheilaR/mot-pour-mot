@@ -1052,6 +1052,7 @@ html, body, #root {
 .current-word--sm  { font-size: clamp(1.9rem, 7vw,  3rem); }
 .current-word--xs  { font-size: clamp(1.4rem, 5vw,  2.2rem); letter-spacing: -.02em; }
 .current-word--empty { color: var(--grey-dim); font-size: 3rem; }
+.current-word--blanks { font-family: monospace; letter-spacing: .25em; color: var(--white); }
 
 @keyframes wordPop {
   from { opacity: 0; transform: scale(.88); }
@@ -1326,6 +1327,23 @@ html, body, #root {
 }
 .rs-sub { font-size: .85rem; color: var(--grey); margin-top: .3rem; }
 
+.rs-countdown {
+  margin-top: 1.2rem;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--grey);
+  line-height: 1;
+  transition: color .2s;
+}
+.rs-countdown--urgent {
+  color: var(--red);
+  animation: countdown-pulse .5s ease-in-out infinite alternate;
+}
+@keyframes countdown-pulse {
+  from { transform: scale(1); }
+  to   { transform: scale(1.15); }
+}
+
 /* ═══════════════════════════════════════════════════════
    GAME OVER
    ═══════════════════════════════════════════════════════ */
@@ -1498,6 +1516,11 @@ html, body, #root {
   font-weight: 800;
   letter-spacing: .06em;
   text-transform: uppercase;
+}
+.blacklist-badge--hint {
+  background: rgba(255,255,255,.04);
+  border-color: rgba(255,255,255,.12);
+  color: var(--grey);
 }
 
 /* Bouton buzz */

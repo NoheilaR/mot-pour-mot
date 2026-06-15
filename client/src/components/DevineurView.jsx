@@ -3,7 +3,7 @@ import CurrentExchange from './CurrentExchange';
 import { wordSizeClass } from '../utils/wordSize';
 
 export default function DevineurView({ game }) {
-  const { currentClue, currentWord, mode, currentExchange, indiceurId, devineurId, players, actions } = game;
+  const { currentClue, currentWord, devineurWordLength, currentBlacklist, mode, currentExchange, indiceurId, devineurId, players, actions } = game;
   const [guess, setGuess] = useState('');
   const inputRef = useRef(null);
 
@@ -24,8 +24,11 @@ export default function DevineurView({ game }) {
   const indiceurPseudo = players.find(p => p.id === indiceurId)?.pseudo;
   const devineurPseudo = players.find(p => p.id === devineurId)?.pseudo;
 
-  // Mode tabou : devineur écoute sans voir le mot ni la blacklist
+  // Mode tabou : devineur écoute — voit la longueur du mot et les mots interdits (pour anticiper)
   if (mode === 'tabou') {
+    const blanks = devineurWordLength
+      ? Array(devineurWordLength).fill('_').join(' ')
+      : '?';
     return (
       <div className="game-card">
         <div className="role-strip">
@@ -35,8 +38,23 @@ export default function DevineurView({ game }) {
           </div>
         </div>
         <div className="word-area">
-          <div className="current-word current-word--empty">?</div>
+          <div className={`current-word ${devineurWordLength ? 'current-word--blanks' : 'current-word--empty'}`}>{blanks}</div>
           <p className="clue-waiting">Écoute bien et devine le mot…</p>
+        </div>
+        {currentBlacklist.length > 0 && (
+          <div className="blacklist-area">
+            <div className="blacklist-label">Mots que l'indiceur ne peut pas dire</div>
+            <div className="blacklist-grid">
+              {currentBlacklist.map((word, i) => (
+                <span key={i} className="blacklist-badge blacklist-badge--hint">{word.toUpperCase()}</span>
+              ))}
+            </div>
+          </div>
+        )}
+        <div className="action-area">
+          <div className="skip-btn-row">
+            <button className="btn--skip" onClick={actions.skipWord} disabled={!devineurWordLength}>Passer (−1)</button>
+          </div>
         </div>
       </div>
     );

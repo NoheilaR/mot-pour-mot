@@ -1,6 +1,7 @@
 import { useEffect, useReducer, useCallback } from 'react';
 import socket from '../socket';
 import { getDiscordInstanceId, getDiscordUser } from '../discord';
+import { playDing, playWrong, playBuzzer } from '../utils/sounds';
 
 function getRoomCodeFromURL() {
   const params = new URLSearchParams(window.location.search);
@@ -57,6 +58,7 @@ function makeInitialState() {
     // État client
     currentWord: null,
     currentBlacklist: [],
+    devineurWordLength: null,
     currentExchange: [],
     lastGuessResult: null,
     clueError: null,
@@ -97,7 +99,7 @@ function reducer(state, action) {
         buzzTeam: action.data.buzzTeam ?? state.buzzTeam,
       };
     case 'GAME_STARTED':
-      return { ...state, screen: 'game', currentWord: null, currentBlacklist: [], lastGuessResult: null, roundSummary: null, gameResult: null, wordHistory: [], buzzPending: false, buzzTeam: null, buzzer: null };
+      return { ...state, screen: 'game', currentWord: null, currentBlacklist: [], devineurWordLength: null, lastGuessResult: null, roundSummary: null, gameResult: null, wordHistory: [], buzzPending: false, buzzTeam: null, buzzer: null };
     case 'ROUND_STARTED':
       return {
         ...state,
@@ -107,6 +109,7 @@ function reducer(state, action) {
         devineurId: action.data.devineurId,
         currentWord: null,
         currentBlacklist: [],
+        devineurWordLength: null,
         currentClue: null,
         currentExchange: [],
         clueError: null,
@@ -127,6 +130,8 @@ function reducer(state, action) {
       };
     case 'WORD_REVEALED':
       return { ...state, currentWord: action.word, currentBlacklist: action.blacklist ?? [], clueError: null, currentExchange: [], currentClue: null };
+    case 'DEVINEUR_HINT':
+      return { ...state, devineurWordLength: action.wordLength, currentBlacklist: action.blacklist ?? [] };
     case 'CLUE_REVEALED': {
       const newEntry = { clue: action.clue, guess: null };
       const updatedExchange = [...state.currentExchange];
@@ -213,15 +218,19 @@ export function useGame() {
     socket.on('roundStarted', (data) => dispatch({ type: 'ROUND_STARTED', data }));
     socket.on('rolesSwapped', ({ indiceurId, devineurId }) => dispatch({ type: 'ROLES_SWAPPED', indiceurId, devineurId }));
     socket.on('wordRevealed', ({ word, blacklist }) => dispatch({ type: 'WORD_REVEALED', word, blacklist }));
+    socket.on('devineurHint', ({ wordLength, blacklist }) => dispatch({ type: 'DEVINEUR_HINT', wordLength, blacklist }));
     socket.on('clueRevealed', ({ clue }) => dispatch({ type: 'CLUE_REVEALED', clue }));
-    socket.on('guessResult', ({ correct, word, scores, wordHistory, currentExchange }) => dispatch({ type: 'GUESS_RESULT', correct, word, scores, wordHistory, currentExchange }));
+    socket.on('guessResult', ({ correct, word, scores, wordHistory, currentExchange }) => {
+      if (correct) playDing(); else playWrong();
+      dispatch({ type: 'GUESS_RESULT', correct, word, scores, wordHistory, currentExchange });
+    });
     socket.on('wordSkipped', ({ scores, wordHistory }) => dispatch({ type: 'WORD_SKIPPED', scores, wordHistory }));
     socket.on('timerTick', ({ timeLeft }) => dispatch({ type: 'TIMER_TICK', timeLeft }));
     socket.on('roundEnded', (data) => dispatch({ type: 'ROUND_ENDED', data }));
     socket.on('gameEnded', (data) => dispatch({ type: 'GAME_ENDED', data }));
     socket.on('gamePaused', () => dispatch({ type: 'GAME_PAUSED' }));
     socket.on('gameResumed', ({ timeLeft }) => dispatch({ type: 'GAME_RESUMED', timeLeft }));
-    socket.on('buzzStarted', ({ buzzTeam, buzzer }) => dispatch({ type: 'BUZZ_STARTED', buzzTeam, buzzer }));
+    socket.on('buzzStarted', ({ buzzTeam, buzzer }) => { playBuzzer(); dispatch({ type: 'BUZZ_STARTED', buzzTeam, buzzer }); });
     socket.on('buzzResolved', ({ confirmed, scores, buzzTeam }) => dispatch({ type: 'BUZZ_RESOLVED', confirmed, scores, buzzTeam }));
     socket.on('gameAbandoned', () => dispatch({ type: 'BACK_TO_LOBBY' }));
 
