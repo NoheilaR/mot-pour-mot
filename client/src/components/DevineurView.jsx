@@ -3,7 +3,7 @@ import CurrentExchange from './CurrentExchange';
 import { wordSizeClass } from '../utils/wordSize';
 
 export default function DevineurView({ game }) {
-  const { currentClue, mode, currentExchange, indiceurId, devineurId, players, actions } = game;
+  const { currentClue, currentWord, mode, currentExchange, indiceurId, devineurId, players, actions } = game;
   const [guess, setGuess] = useState('');
   const inputRef = useRef(null);
 
