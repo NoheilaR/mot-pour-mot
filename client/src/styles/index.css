@@ -779,9 +779,7 @@ html, body, #root {
   background: var(--card2);
   animation: historyIn .2s ease;
 }
-.history-entry--correct { border-left: 3px solid var(--green); }
-.history-entry--skip    { border-left: 3px solid var(--grey-dim); opacity: .65; }
-.history-entry--buzzed  { border-left: 3px solid var(--red); }
+.history-entry--skip { opacity: .65; }
 
 @keyframes historyIn {
   from { opacity: 0; transform: translateY(-4px); }
