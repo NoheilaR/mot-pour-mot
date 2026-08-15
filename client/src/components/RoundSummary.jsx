@@ -22,6 +22,7 @@ export default function RoundSummary({ summary, scores, isHost, actions }) {
 
   const correct = (wordHistory ?? []).filter(h => h.result === 'correct');
   const skipped = (wordHistory ?? []).filter(h => h.result === 'skip');
+  const buzzed = (wordHistory ?? []).filter(h => h.result === 'buzzed');
 
   return (
     <div className="round-summary-overlay">
@@ -32,6 +33,7 @@ export default function RoundSummary({ summary, scores, isHost, actions }) {
         <p className="rs-sub">
           {correct.length} trouvé{correct.length > 1 ? 's' : ''}
           {skipped.length > 0 && ` · ${skipped.length} passé${skipped.length > 1 ? 's' : ''}`}
+          {buzzed.length > 0 && ` · ${buzzed.length} buzzé${buzzed.length > 1 ? 's' : ''}`}
         </p>
 
         {/* Correction de score */}

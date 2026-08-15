@@ -21,6 +21,23 @@ function clearRoomFromURL() {
   window.history.replaceState({}, '', url);
 }
 
+// Persistance de session (survit à un refresh / une coupure réseau) pour
+// permettre une reconnexion automatique en cours de partie via rejoinRoom.
+const SESSION_KEY = 'motpourmot_session';
+
+function saveSession(session) {
+  try { localStorage.setItem(SESSION_KEY, JSON.stringify(session)); } catch { /* stockage indisponible */ }
+}
+function loadSession() {
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch { return null; }
+}
+function clearSession() {
+  try { localStorage.removeItem(SESSION_KEY); } catch { /* stockage indisponible */ }
+}
+
 // Lazy init — appelé au premier render (après initDiscord().finally()), pas à l'import du module
 function makeInitialState() {
   const discordInstanceId = getDiscordInstanceId();
@@ -41,6 +58,7 @@ function makeInitialState() {
     mode: 'text',
     totalRounds: 4,
     roundDuration: 30,
+    customWordsEnabled: false,
     phase: 'lobby',
     scores: { A: 0, B: 0 },
     currentRound: -1,
@@ -75,6 +93,19 @@ function reducer(state, action) {
       return { ...state, connected: false };
     case 'ROOM_JOINED':
       return { ...state, roomCode: action.roomCode, pseudo: action.pseudo, screen: 'lobby', error: null };
+    case 'REJOINED': {
+      const { phase, roundScore, scores, activeTeam, wordHistory, winner } = action.snapshot;
+      const screen = phase === 'lobby' ? 'lobby' : phase === 'game_end' ? 'gameover' : 'game';
+      return {
+        ...state,
+        roomCode: action.roomCode,
+        pseudo: action.pseudo,
+        screen,
+        error: null,
+        roundSummary: phase === 'round_end' ? { roundScore, scores, activeTeam, wordHistory } : null,
+        gameResult: phase === 'game_end' ? { scores, winner } : null,
+      };
+    }
     case 'ROOM_UPDATE':
       return {
         ...state,
@@ -83,6 +114,7 @@ function reducer(state, action) {
         mode: action.data.mode,
         totalRounds: action.data.totalRounds,
         roundDuration: action.data.roundDuration ?? state.roundDuration,
+        customWordsEnabled: action.data.customWordsEnabled ?? state.customWordsEnabled,
         phase: action.data.phase,
         scores: action.data.scores,
         currentRound: action.data.currentRound,
@@ -191,6 +223,7 @@ function reducer(state, action) {
         buzzer: null,
         paused: false,
         scores: action.confirmed ? (action.scores ?? state.scores) : state.scores,
+        wordHistory: action.confirmed ? (action.wordHistory ?? state.wordHistory) : state.wordHistory,
       };
     case 'BACK_TO_LOBBY':
       return { ...makeInitialState(), connected: state.connected, myId: state.myId, screen: 'lobby', roomCode: state.roomCode, pseudo: state.pseudo, discordInstanceId: state.discordInstanceId, discordUser: state.discordUser };
@@ -209,7 +242,21 @@ export function useGame() {
   useEffect(() => {
     socket.connect();
 
-    socket.on('connect', () => dispatch({ type: 'CONNECTED' }));
+    socket.on('connect', () => {
+      dispatch({ type: 'CONNECTED' });
+      // Reconnexion automatique après un refresh / une coupure réseau : si on
+      // a une session sauvegardée pour un salon, on retente d'y entrer avec
+      // le même sessionToken plutôt que de renvoyer sur l'écran d'accueil.
+      const saved = loadSession();
+      if (!saved) return;
+      socket.emit('rejoinRoom', { roomCode: saved.roomCode, sessionToken: saved.sessionToken }, (res) => {
+        if (res?.ok) {
+          dispatch({ type: 'REJOINED', roomCode: res.roomCode, pseudo: saved.pseudo, snapshot: res.snapshot });
+        } else {
+          clearSession();
+        }
+      });
+    });
     socket.on('disconnect', () => dispatch({ type: 'DISCONNECTED' }));
     socket.on('roomUpdate', (data) => dispatch({ type: 'ROOM_UPDATE', data }));
     socket.on('gameStarted', () => dispatch({ type: 'GAME_STARTED' }));
@@ -229,8 +276,9 @@ export function useGame() {
     socket.on('gamePaused', () => dispatch({ type: 'GAME_PAUSED' }));
     socket.on('gameResumed', ({ timeLeft }) => dispatch({ type: 'GAME_RESUMED', timeLeft }));
     socket.on('buzzStarted', ({ buzzTeam, buzzer }) => { playBuzzer(); dispatch({ type: 'BUZZ_STARTED', buzzTeam, buzzer }); });
-    socket.on('buzzResolved', ({ confirmed, scores, buzzTeam }) => dispatch({ type: 'BUZZ_RESOLVED', confirmed, scores, buzzTeam }));
+    socket.on('buzzResolved', ({ confirmed, scores, buzzTeam, wordHistory }) => dispatch({ type: 'BUZZ_RESOLVED', confirmed, scores, buzzTeam, wordHistory }));
     socket.on('gameAbandoned', () => dispatch({ type: 'BACK_TO_LOBBY' }));
+    socket.on('gameRestarted', () => dispatch({ type: 'BACK_TO_LOBBY' }));
 
     return () => socket.disconnect();
   }, []);
@@ -239,6 +287,7 @@ export function useGame() {
     socket.emit('createRoom', { pseudo }, (res) => {
       if (res.error) return dispatch({ type: 'SET_ERROR', message: res.error });
       setRoomInURL(res.roomCode);
+      saveSession({ roomCode: res.roomCode, sessionToken: res.sessionToken, pseudo });
       dispatch({ type: 'ROOM_JOINED', roomCode: res.roomCode, pseudo });
     });
   }, []);
@@ -247,6 +296,7 @@ export function useGame() {
     socket.emit('joinRoom', { roomCode, pseudo }, (res) => {
       if (res.error) return dispatch({ type: 'SET_ERROR', message: res.error });
       setRoomInURL(res.roomCode);
+      saveSession({ roomCode: res.roomCode, sessionToken: res.sessionToken, pseudo });
       dispatch({ type: 'ROOM_JOINED', roomCode: res.roomCode, pseudo });
     });
   }, []);
@@ -254,6 +304,7 @@ export function useGame() {
   const joinOrCreate = useCallback((roomCode, pseudo) => {
     socket.emit('joinOrCreate', { roomCode, pseudo }, (res) => {
       if (res.error) return dispatch({ type: 'SET_ERROR', message: res.error });
+      saveSession({ roomCode: res.roomCode, sessionToken: res.sessionToken, pseudo });
       dispatch({ type: 'ROOM_JOINED', roomCode: res.roomCode, pseudo });
     });
   }, []);
@@ -280,6 +331,11 @@ export function useGame() {
   }, []);
   const setPreferredRole = useCallback((role) => {
     socket.emit('setPreferredRole', { role });
+  }, []);
+  const setCustomWords = useCallback((words) => {
+    socket.emit('setCustomWords', { words }, (res) => {
+      if (res?.error) dispatch({ type: 'SET_ERROR', message: res.error });
+    });
   }, []);
   const playAgain = useCallback(() => {
     socket.emit('playAgain', {}, (res) => {
@@ -328,6 +384,6 @@ export function useGame() {
     myTeam,
     isHost,
     shareUrl,
-    actions: { createRoom, joinRoom, joinOrCreate, chooseTeam, updateSettings, startGame, submitClue, submitGuess, markResult, skipWord, swapRoles, setPreferredRole, playAgain, abandonGame, buzz, confirmBuzz, denyBuzz, adjustScore, confirmRound, clearError },
+    actions: { createRoom, joinRoom, joinOrCreate, chooseTeam, updateSettings, startGame, submitClue, submitGuess, markResult, skipWord, swapRoles, setPreferredRole, setCustomWords, playAgain, abandonGame, buzz, confirmBuzz, denyBuzz, adjustScore, confirmRound, clearError },
   };
 }

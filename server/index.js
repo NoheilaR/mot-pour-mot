@@ -1,5 +1,6 @@
 const express = require('express');
 const http = require('http');
+const { randomUUID } = require('crypto');
 const { Server } = require('socket.io');
 const { GameRoom } = require('./game');
 
@@ -128,11 +129,12 @@ io.on('connection', (socket) => {
     if (!pseudo?.trim()) return cb?.({ error: 'Pseudo requis.' });
     const code = generateRoomCode();
     const room = new GameRoom(code, socket.id);
-    room.addPlayer(socket.id, pseudo.trim());
+    const sessionToken = randomUUID();
+    room.addPlayer(socket.id, pseudo.trim(), sessionToken);
     rooms[code] = room;
     socketToRoom[socket.id] = code;
     socket.join(code);
-    cb?.({ roomCode: code });
+    cb?.({ roomCode: code, sessionToken });
     emitRoomUpdate(room);
   });
 
@@ -144,10 +146,11 @@ io.on('connection', (socket) => {
     if (room.phase !== 'lobby') return cb?.({ error: 'La partie a déjà commencé.' });
     if (!pseudo?.trim()) return cb?.({ error: 'Pseudo requis.' });
 
-    room.addPlayer(socket.id, pseudo.trim());
+    const sessionToken = randomUUID();
+    room.addPlayer(socket.id, pseudo.trim(), sessionToken);
     socketToRoom[socket.id] = code;
     socket.join(code);
-    cb?.({ roomCode: code });
+    cb?.({ roomCode: code, sessionToken });
     emitRoomUpdate(room);
   });
 
@@ -165,14 +168,15 @@ io.on('connection', (socket) => {
       return cb?.({ error: 'La partie a déjà commencé.' });
     }
 
-    room.addPlayer(socket.id, pseudo.trim());
+    const sessionToken = randomUUID();
+    room.addPlayer(socket.id, pseudo.trim(), sessionToken);
     const aCount = room.getTeamMembers('A').length;
     const bCount = room.getTeamMembers('B').length;
     room.setTeam(socket.id, aCount <= bCount ? 'A' : 'B');
 
     socketToRoom[socket.id] = code;
     socket.join(code);
-    cb?.({ roomCode: code });
+    cb?.({ roomCode: code, sessionToken });
     emitRoomUpdate(room);
   });
 
@@ -192,6 +196,17 @@ io.on('connection', (socket) => {
     const room = getRoomOf(socket.id);
     if (!room) return cb?.({ error: 'Pas dans un salon.' });
     room.setPreferredRole(socket.id, role ?? null);
+    cb?.({ ok: true });
+    emitRoomUpdate(room);
+  });
+
+  // ── setCustomWords ───────────────────────────────────────────────
+  socket.on('setCustomWords', ({ words }, cb) => {
+    const room = getRoomOf(socket.id);
+    if (!room) return cb?.({ error: 'Pas dans un salon.' });
+    if (room.phase !== 'lobby') return cb?.({ error: 'La partie a déjà commencé.' });
+    const res = room.setCustomWords(socket.id, words);
+    if (!res.ok) return cb?.({ error: res.reason });
     cb?.({ ok: true });
     emitRoomUpdate(room);
   });
@@ -330,7 +345,13 @@ io.on('connection', (socket) => {
     if (!res.ok) return cb?.({ error: 'Pas de buzz en cours.' });
 
     cb?.({ ok: true });
-    io.to(room.roomCode).emit('buzzResolved', { confirmed: true, scores: res.scores, buzzTeam: res.buzzTeam });
+    io.to(room.roomCode).emit('buzzResolved', {
+      confirmed: true,
+      scores: res.scores,
+      buzzTeam: res.buzzTeam,
+      wordHistory: res.wordHistory,
+    });
+    revealWord(room);
   });
 
   // ── denyBuzz (hôte refuse le buzz) ──────────────────────────────
@@ -390,6 +411,7 @@ io.on('connection', (socket) => {
     if (socket.id !== room.hostId) return cb?.({ error: 'Hôte uniquement.' });
     room.resetToLobby();
     cb?.({ ok: true });
+    io.to(room.roomCode).emit('gameRestarted');
     emitRoomUpdate(room);
   });
 
@@ -412,28 +434,45 @@ io.on('connection', (socket) => {
       }
     }
 
-    room.removePlayer(socket.id);
     delete socketToRoom[socket.id];
 
-    if (Object.keys(room.players).length === 0) {
-      delete rooms[room.roomCode];
+    // En lobby, une coupure vaut départ : pas de round en cours à préserver,
+    // et l'écran d'accueil permet de rejoindre à nouveau facilement.
+    if (room.phase === 'lobby') {
+      room.removePlayer(socket.id);
+      if (Object.keys(room.players).length === 0) { delete rooms[room.roomCode]; return; }
+      if (room.hostId === socket.id) room.hostId = Object.keys(room.players)[0];
+      emitRoomUpdate(room);
       return;
     }
 
+    // En cours de partie : on garde le joueur en mémoire (avec son
+    // sessionToken) pour qu'un refresh / une coupure réseau puisse se
+    // reconnecter via rejoinRoom sans perdre son équipe ni son rôle.
+    room.markDisconnected(socket.id);
     if (room.hostId === socket.id) {
-      room.hostId = Object.keys(room.players)[0];
+      const nextHost = Object.values(room.players).find(p => p.connected && p.id !== socket.id);
+      if (nextHost) room.hostId = nextHost.id;
+    }
+
+    if (!room.hasConnectedPlayers()) {
+      delete rooms[room.roomCode];
+      return;
     }
 
     emitRoomUpdate(room);
   });
 
-  // ── rejoinRoom ──────────────────────────────────────────────────
-  socket.on('rejoinRoom', ({ roomCode, pseudo }, cb) => {
+  // ── rejoinRoom (reconnexion via le sessionToken stocké côté client) ─
+  socket.on('rejoinRoom', ({ roomCode, sessionToken }, cb) => {
     const code = (roomCode || '').toUpperCase().trim();
     const room = rooms[code];
     if (!room) return cb?.({ error: 'Salon introuvable.' });
 
-    room.addPlayer(socket.id, pseudo.trim());
+    const oldSocketId = room.findSocketIdByToken(sessionToken);
+    if (!oldSocketId) return cb?.({ error: 'Session introuvable.' });
+
+    room.reconnectPlayer(oldSocketId, socket.id);
     socketToRoom[socket.id] = code;
     socket.join(code);
 
@@ -442,7 +481,8 @@ io.on('connection', (socket) => {
       io.to(room.roomCode).emit('gameResumed', { timeLeft: room.timeLeft });
     }
 
-    cb?.({ roomCode: code, snapshot: room.publicSnapshot() });
+    cb?.({ ok: true, roomCode: code, snapshot: room.publicSnapshot() });
+    revealWord(room);
     emitRoomUpdate(room);
   });
 });

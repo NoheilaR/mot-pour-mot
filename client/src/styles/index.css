@@ -454,6 +454,38 @@ html, body, #root {
 .btn--start-game:hover:not(:disabled) { opacity: .88; }
 .btn--start-game:disabled { opacity: .35; cursor: not-allowed; }
 
+.custom-words-panel {
+  background: var(--card);
+  border-radius: var(--r);
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: .7rem;
+}
+.custom-words-header .hint { margin-top: .2rem; }
+.custom-words-inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: .5rem;
+}
+.field-input--custom-word {
+  padding: .5rem .7rem;
+  font-size: .85rem;
+}
+.custom-words-others {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+}
+.custom-words-other-chip {
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--grey);
+  background: var(--card2);
+  padding: .25rem .6rem;
+  border-radius: 100px;
+}
+
 /* ═══════════════════════════════════════════════════════
    GAME
    ═══════════════════════════════════════════════════════ */
@@ -670,6 +702,8 @@ html, body, #root {
   text-align: center;
 }
 .team-strip-side--active .team-strip-players { color: var(--white); }
+.team-strip-player--offline { opacity: .6; }
+.team-strip-offline-pip { margin-left: .2rem; font-size: .7rem; }
 
 /* ─── Corps du jeu : layout flex row ────────────────── */
 
@@ -747,6 +781,7 @@ html, body, #root {
 }
 .history-entry--correct { border-left: 3px solid var(--green); }
 .history-entry--skip    { border-left: 3px solid var(--grey-dim); opacity: .65; }
+.history-entry--buzzed  { border-left: 3px solid var(--red); }
 
 @keyframes historyIn {
   from { opacity: 0; transform: translateY(-4px); }
@@ -766,6 +801,7 @@ html, body, #root {
 }
 .history-entry--correct .history-entry-result { color: var(--green); }
 .history-entry--skip    .history-entry-result { color: var(--grey); }
+.history-entry--buzzed  .history-entry-result { color: var(--red); }
 
 .history-entry-word {
   font-size: .9rem;
@@ -970,6 +1006,13 @@ html, body, #root {
 }
 .role-slot--active .role-slot-label { color: var(--red); }
 
+.role-slot-players {
+  display: flex;
+  align-items: baseline;
+  gap: .35rem;
+  overflow: hidden;
+  min-width: 0;
+}
 .role-slot-player {
   font-size: .9rem;
   font-weight: 700;
@@ -979,6 +1022,28 @@ html, body, #root {
   white-space: nowrap;
 }
 .role-slot-player--me { font-weight: 900; }
+.role-slot-players .role-slot-player:not(:last-child)::after {
+  content: ',';
+  margin-right: -.2rem;
+  color: var(--grey-dim);
+  font-weight: 500;
+}
+
+.role-slot--contested {
+  border-color: var(--grey-dim);
+  border-style: dashed;
+}
+.role-slot-contested-pip {
+  flex-shrink: 0;
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--grey);
+  background: var(--border);
+  padding: .15rem .45rem;
+  border-radius: 100px;
+}
 
 .unroled-list {
   display: flex;

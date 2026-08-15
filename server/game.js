@@ -6,14 +6,23 @@ const { validateClue } = require('./utils/validateClue');
 const ROUND_DURATION = 30;
 const TICK_INTERVAL = 1000;
 const SKIP_PENALTY = -1;
+const MAX_CUSTOM_WORDS = 5;
 
-function buildWordPool() {
-  const all = Object.values(wordsData.categories).flat();
-  for (let i = all.length - 1; i > 0; i--) {
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [all[i], all[j]] = [all[j], all[i]];
+    [arr[i], arr[j]] = [arr[j], arr[i]];
   }
-  return all;
+  return arr;
+}
+
+// Construit un pool de mots en excluant ceux déjà vus dans le salon.
+// Si l'exclusion vide le pool (tous les mots sont déjà passés), on repart
+// avec la liste complète pour continuer la partie plutôt que de bloquer.
+function buildWordPool(excludeSet = new Set()) {
+  const all = Object.values(wordsData.categories).flat();
+  const filtered = all.filter(w => !excludeSet.has(w));
+  return shuffle(filtered.length > 0 ? filtered : [...all]);
 }
 
 class GameRoom {
@@ -24,6 +33,7 @@ class GameRoom {
     this.mode = 'text';
     this.totalRounds = 4;
     this.roundDuration = 30;
+    this.customWordsEnabled = false;
     this.phase = 'lobby';
     this.scores = { A: 0, B: 0 };
     this.currentRound = -1;
@@ -41,6 +51,10 @@ class GameRoom {
     this.wordHistory = [];
     this.wordPool = [];
     this.wordPoolIndex = 0;
+    // Mots déjà tirés dans ce salon (toutes parties confondues) pour éviter
+    // les répétitions d'une partie à l'autre. Volontairement jamais réinitialisé
+    // par resetToLobby : la mémoire vit tant que le salon existe.
+    this.usedWords = new Set();
     this.timeLeft = ROUND_DURATION;
     this._timerInterval = null;
     this._paused = false;
@@ -49,10 +63,54 @@ class GameRoom {
     this.onRoundEnd = null;
   }
 
-  addPlayer(socketId, pseudo) {
-    this.players[socketId] = { id: socketId, pseudo, team: null, preferredRole: null };
+  addPlayer(socketId, pseudo, sessionToken) {
+    this.players[socketId] = { id: socketId, pseudo, team: null, preferredRole: null, customWords: [], sessionToken, connected: true };
   }
   removePlayer(socketId) { delete this.players[socketId]; }
+
+  // ─── Reconnexion (refresh / coupure réseau en cours de partie) ──
+  findSocketIdByToken(sessionToken) {
+    if (!sessionToken) return null;
+    const entry = Object.values(this.players).find(p => p.sessionToken === sessionToken);
+    return entry ? entry.id : null;
+  }
+
+  markDisconnected(socketId) {
+    if (this.players[socketId]) this.players[socketId].connected = false;
+  }
+
+  hasConnectedPlayers() {
+    return Object.values(this.players).some(p => p.connected !== false);
+  }
+
+  // Fait migrer un joueur déconnecté (identifié par son ancien socket.id) vers
+  // son nouveau socket.id, en réassignant hostId/indiceurId/devineurId au passage
+  // pour que la partie en cours reste jouable pour tout le monde.
+  reconnectPlayer(oldSocketId, newSocketId) {
+    const player = this.players[oldSocketId];
+    if (!player) return false;
+    delete this.players[oldSocketId];
+    player.id = newSocketId;
+    player.connected = true;
+    this.players[newSocketId] = player;
+    if (this.hostId === oldSocketId) this.hostId = newSocketId;
+    if (this.indiceurId === oldSocketId) this.indiceurId = newSocketId;
+    if (this.devineurId === oldSocketId) this.devineurId = newSocketId;
+    return true;
+  }
+
+  setCustomWords(socketId, words) {
+    const player = this.players[socketId];
+    if (!player) return { ok: false, reason: 'Joueur introuvable.' };
+    if (!Array.isArray(words)) return { ok: false, reason: 'Liste de mots invalide.' };
+    const cleaned = [...new Set(
+      words
+        .map(w => (typeof w === 'string' ? w.trim() : ''))
+        .filter(w => w.length > 0 && w.length <= 30)
+    )].slice(0, MAX_CUSTOM_WORDS);
+    player.customWords = cleaned;
+    return { ok: true };
+  }
 
   setTeam(socketId, team) {
     if (!['A', 'B', null].includes(team)) return false;
@@ -64,10 +122,11 @@ class GameRoom {
     return Object.values(this.players).filter(p => p.team === team);
   }
 
-  updateSettings({ mode, totalRounds, roundDuration }) {
+  updateSettings({ mode, totalRounds, roundDuration, customWordsEnabled }) {
     if (mode === 'text' || mode === 'tabou') this.mode = mode;
     if (Number.isInteger(totalRounds) && totalRounds >= 2 && totalRounds <= 12) this.totalRounds = totalRounds;
     if (Number.isInteger(roundDuration) && roundDuration >= 20 && roundDuration <= 180) this.roundDuration = roundDuration;
+    if (typeof customWordsEnabled === 'boolean') this.customWordsEnabled = customWordsEnabled;
   }
 
   setPreferredRole(socketId, role) {
@@ -90,13 +149,31 @@ class GameRoom {
         all[i].team = i % 2 === 0 ? 'A' : 'B';
       }
     }
-    this.wordPool = buildWordPool();
+    let custom = [];
+    if (this.customWordsEnabled) {
+      const raw = Object.values(this.players).flatMap(p => p.customWords || []);
+      custom = shuffle([...new Set(raw)]);
+    }
+    const exclude = new Set(this.usedWords);
+    custom.forEach(w => exclude.add(w));
+    this.wordPool = [...custom, ...buildWordPool(exclude)];
     this.wordPoolIndex = 0;
     this.scores = { A: 0, B: 0 };
     this.currentRound = -1;
     this.teamPlayCount = { A: 0, B: 0 };
     this.phase = 'playing';
     return this._nextRound();
+  }
+
+  // Choisit un partenaire pour excludeId parmi members, en tournant sur les
+  // autres membres au fil des rounds (au lieu de toujours retomber sur le
+  // même) — indispensable dès qu'une équipe a 3 joueurs ou plus, sinon les
+  // membres au-delà du 2e ne sont jamais devineur/indiceur.
+  _pickPartner(members, excludeId) {
+    const others = members.filter(p => p.id !== excludeId);
+    if (others.length === 0) return null;
+    const idx = this.teamPlayCount[this.activeTeam] % others.length;
+    return others[idx].id;
   }
 
   _nextRound() {
@@ -110,12 +187,16 @@ class GameRoom {
 
     if (members.length === 1) {
       this.indiceurId = members[0].id;
-      this.devineurId = opponents[0]?.id ?? null;
+      // Équipe seule : on emprunte un devineur en face, en tournant parmi
+      // les adversaires disponibles plutôt que de toujours prendre le même.
+      this.devineurId = opponents.length > 0
+        ? opponents[this.teamPlayCount[this.activeTeam] % opponents.length].id
+        : null;
     } else if (this.mode === 'tabou') {
       // Tabou : alternance forcée, on ignore les préférences de rôle
       const idx = this.teamPlayCount[this.activeTeam] % members.length;
       this.indiceurId = members[idx].id;
-      this.devineurId = members.find(p => p.id !== this.indiceurId)?.id ?? null;
+      this.devineurId = this._pickPartner(members, this.indiceurId);
     } else {
       const wantsIndiceur = members.find(p => p.preferredRole === 'indiceur');
       const wantsDevineur = members.find(p => p.preferredRole === 'devineur');
@@ -126,14 +207,14 @@ class GameRoom {
         this.devineurId = wantsDevineur.id;
       } else if (!conflict && wantsIndiceur) {
         this.indiceurId = wantsIndiceur.id;
-        this.devineurId = members.find(p => p.id !== wantsIndiceur.id)?.id ?? null;
+        this.devineurId = this._pickPartner(members, wantsIndiceur.id);
       } else if (!conflict && wantsDevineur) {
         this.devineurId = wantsDevineur.id;
-        this.indiceurId = members.find(p => p.id !== wantsDevineur.id)?.id ?? null;
+        this.indiceurId = this._pickPartner(members, wantsDevineur.id);
       } else {
         const idx = this.teamPlayCount[this.activeTeam] % members.length;
         this.indiceurId = members[idx].id;
-        this.devineurId = members.find(p => p.id !== this.indiceurId)?.id ?? null;
+        this.devineurId = this._pickPartner(members, this.indiceurId);
       }
     }
 
@@ -178,10 +259,11 @@ class GameRoom {
 
   _drawNextWord() {
     if (this.wordPoolIndex >= this.wordPool.length) {
-      this.wordPool = buildWordPool();
+      this.wordPool = buildWordPool(this.usedWords);
       this.wordPoolIndex = 0;
     }
     this.currentWord = this.wordPool[this.wordPoolIndex++];
+    this.usedWords.add(this.currentWord);
     this.currentClue = null;
     this.currentExchange = [];
     this.currentBlacklist = this.mode === 'tabou' ? this._getBlacklistFor(this.currentWord) : [];
@@ -252,10 +334,19 @@ class GameRoom {
     if (!this.buzzPending) return { ok: false };
     const buzzTeam = this.buzzTeam;
     this.scores[buzzTeam]++;
+
+    // Le mot est grillé (mot interdit prononcé) : on passe directement au
+    // suivant, sans pénalité de "passer" additionnelle — le point donné à
+    // l'équipe adverse est déjà la sanction, pas besoin d'un -1 en plus.
+    const prevWord = this.currentWord;
+    const exchange = [...this.currentExchange];
+    this.wordHistory.push({ word: prevWord, result: 'buzzed', exchange });
+    this._drawNextWord();
+
     this.buzzPending = false;
     this.buzzTeam = null;
     this._paused = false;
-    return { ok: true, scores: { ...this.scores }, buzzTeam };
+    return { ok: true, scores: { ...this.scores }, buzzTeam, wordHistory: [...this.wordHistory] };
   }
 
   denyBuzz() {
@@ -317,11 +408,14 @@ class GameRoom {
 
   advanceToNextRound() { return this._nextRound(); }
 
+  _computeWinner() {
+    return this.scores.A > this.scores.B ? 'A' : this.scores.B > this.scores.A ? 'B' : 'draw';
+  }
+
   _endGame() {
     this._clearTimer();
     this.phase = 'game_end';
-    const winner = this.scores.A > this.scores.B ? 'A' : this.scores.B > this.scores.A ? 'B' : 'draw';
-    return { scores: { ...this.scores }, winner };
+    return { scores: { ...this.scores }, winner: this._computeWinner() };
   }
 
   resetToLobby() {
@@ -355,6 +449,7 @@ class GameRoom {
       mode: this.mode,
       totalRounds: this.totalRounds,
       roundDuration: this.roundDuration,
+      customWordsEnabled: this.customWordsEnabled,
       phase: this.phase,
       scores: { ...this.scores },
       currentRound: this.currentRound,
@@ -368,6 +463,10 @@ class GameRoom {
       wordHistory: [...this.wordHistory],
       buzzPending: this.buzzPending,
       buzzTeam: this.buzzTeam,
+      // Pour permettre à un joueur qui se reconnecte en plein round_end / game_end
+      // de reconstruire l'écran correspondant sans dépendre d'un événement raté.
+      roundScore: this.roundScore,
+      winner: this.phase === 'game_end' ? this._computeWinner() : null,
     };
   }
 }

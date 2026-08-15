@@ -8,6 +8,16 @@ import HistorySidebar from './HistorySidebar';
 
 const TEAM_NAMES = { A: 'Équipe Rouge', B: 'Équipe Bleue' };
 
+function renderTeamStripPlayer(p, i) {
+  return (
+    <span key={p.id} className={`team-strip-player${p.connected === false ? ' team-strip-player--offline' : ''}`}>
+      {i > 0 && ', '}
+      {p.pseudo}
+      {p.connected === false && <span className="team-strip-offline-pip" title="Déconnecté — en attente de reconnexion">⚠</span>}
+    </span>
+  );
+}
+
 export default function Game({ game }) {
   const { scores, activeTeam, currentRound, totalRounds, roundDuration, timeLeft, paused,
     roundSummary, myRole, wordHistory, buzzPending, buzzTeam, buzzer, currentBlacklist,
@@ -63,11 +73,11 @@ export default function Game({ game }) {
       <div className="team-strip">
         <div className={`team-strip-side team-strip-side--A${activeTeam === 'A' ? ' team-strip-side--active' : ''}`}>
           <span className="team-strip-name">Rouge</span>
-          <span className="team-strip-players">{teamA.map(p => p.pseudo).join(', ') || '—'}</span>
+          <span className="team-strip-players">{teamA.length > 0 ? teamA.map(renderTeamStripPlayer) : '—'}</span>
         </div>
         <div className={`team-strip-side team-strip-side--B${activeTeam === 'B' ? ' team-strip-side--active' : ''}`}>
           <span className="team-strip-name">Bleue</span>
-          <span className="team-strip-players">{teamB.map(p => p.pseudo).join(', ') || '—'}</span>
+          <span className="team-strip-players">{teamB.length > 0 ? teamB.map(renderTeamStripPlayer) : '—'}</span>
         </div>
       </div>
 
@@ -100,7 +110,7 @@ export default function Game({ game }) {
             <div className="buzz-badge">BUZZ !</div>
             <p className="buzz-info">
               <span className={`buzz-team-name buzz-team-name--${buzzTeam}`}>{TEAM_NAMES[buzzTeam]}</span>
-              {' '}— {buzzer} signale un mot interdit.
+              {' '}— {buzzer || 'Un joueur'} signale un mot interdit.
             </p>
             {currentBlacklist.length > 0 && (
               <div className="buzz-blacklist">

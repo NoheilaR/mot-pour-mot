@@ -20,7 +20,7 @@ export default function HistorySidebar({ history }) {
           <div key={i} className={`history-entry history-entry--${item.result}`}>
             <div className="history-entry-header">
               <span className="history-entry-result">
-                {item.result === 'correct' ? '✓' : '✗'}
+                {item.result === 'correct' ? '✓' : item.result === 'buzzed' ? '🚨' : '✗'}
               </span>
               <span className="history-entry-word">{item.word.toUpperCase()}</span>
             </div>

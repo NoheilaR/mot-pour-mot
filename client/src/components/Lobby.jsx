@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+import CustomWordsPanel from './CustomWordsPanel';
 
 const TEAM_NAMES = { A: 'Équipe Rouge', B: 'Équipe Bleue' };
 const DURATIONS = [30, 45, 60, 90, 120];
 
 export default function Lobby({ game }) {
-  const { roomCode, players, mode, totalRounds, roundDuration, isHost, myId, shareUrl, discordInstanceId, actions } = game;
+  const { roomCode, players, mode, totalRounds, roundDuration, customWordsEnabled, isHost, myId, shareUrl, discordInstanceId, actions } = game;
   const [copied, setCopied] = useState(false);
   const isDiscord = !!discordInstanceId;
 
@@ -53,8 +54,8 @@ export default function Lobby({ game }) {
         <div className="teams-grid">
           {['A', 'B'].map(team => {
             const members = players.filter(p => p.team === team);
-            const indiceur = members.find(p => p.preferredRole === 'indiceur');
-            const devineur = members.find(p => p.preferredRole === 'devineur');
+            const indiceurCandidates = members.filter(p => p.preferredRole === 'indiceur');
+            const devineurCandidates = members.filter(p => p.preferredRole === 'devineur');
             // Joueurs sans préférence de rôle
             const unroled = members.filter(p => !p.preferredRole);
 
@@ -62,10 +63,11 @@ export default function Lobby({ game }) {
               <div key={team} className={`team-col team-col--${team}`}>
                 <div className="team-col-title">{TEAM_NAMES[team]}</div>
 
-                {/* Slot Indiceur */}
+                {/* Slot Indiceur — plusieurs joueurs peuvent le revendiquer en même temps,
+                    le conflit se résout automatiquement au lancement. */}
                 <RoleSlot
                   label="Indiceur"
-                  player={indiceur}
+                  candidates={indiceurCandidates}
                   myId={myId}
                   onClick={() => claimSlot(team, 'indiceur')}
                   isActive={me?.team === team && me?.preferredRole === 'indiceur'}
@@ -74,7 +76,7 @@ export default function Lobby({ game }) {
                 {/* Slot Devineur */}
                 <RoleSlot
                   label="Devineur"
-                  player={devineur}
+                  candidates={devineurCandidates}
                   myId={myId}
                   onClick={() => claimSlot(team, 'devineur')}
                   isActive={me?.team === team && me?.preferredRole === 'devineur'}
@@ -132,6 +134,13 @@ export default function Lobby({ game }) {
                 ))}
               </div>
             </div>
+            <div className="settings-row">
+              <span className="settings-label">Mots personnalisés</span>
+              <div className="pill-group">
+                <button className={`pill${!customWordsEnabled ? ' pill--active' : ''}`} onClick={() => actions.updateSettings({ customWordsEnabled: false })}>Non</button>
+                <button className={`pill${customWordsEnabled ? ' pill--active' : ''}`} onClick={() => actions.updateSettings({ customWordsEnabled: true })}>Oui</button>
+              </div>
+            </div>
             <button className="btn--start-game" onClick={actions.startGame} disabled={!canStart(players)}>
               {canStart(players) ? '▶ Lancer la partie' : '2 joueurs min.'}
             </button>
@@ -147,6 +156,8 @@ export default function Lobby({ game }) {
             <p className="hint">En attente que l'hôte lance la partie…</p>
           </div>
         )}
+
+        {customWordsEnabled && <CustomWordsPanel game={game} />}
       </div>
     </div>
   );
@@ -156,21 +167,31 @@ function canStart(players) {
   return players.length >= 2;
 }
 
-function RoleSlot({ label, player, myId, onClick, isActive }) {
-  const isEmpty = !player;
-  const isMe = player?.id === myId;
+// Plusieurs joueurs peuvent revendiquer le même rôle en même temps pendant
+// le pick (jamais désactivé à cause d'un autre joueur) — le conflit est
+// résolu automatiquement au lancement de la partie, côté serveur.
+function RoleSlot({ label, candidates, myId, onClick, isActive }) {
+  const isEmpty = candidates.length === 0;
+  const isContested = candidates.length > 1;
 
   return (
     <button
-      className={`role-slot${isActive ? ' role-slot--active' : ''}${isEmpty ? ' role-slot--empty' : ''}`}
+      className={`role-slot${isActive ? ' role-slot--active' : ''}${isEmpty ? ' role-slot--empty' : ''}${isContested ? ' role-slot--contested' : ''}`}
       onClick={onClick}
-      // Désactivé si quelqu'un d'autre occupe déjà ce slot
-      disabled={!isEmpty && !isMe}
     >
       <span className="role-slot-label">{label}</span>
-      <span className={`role-slot-player${isMe ? ' role-slot-player--me' : ''}`}>
-        {player ? player.pseudo : 'Libre'}
-      </span>
+      {isEmpty ? (
+        <span className="role-slot-player">Libre</span>
+      ) : (
+        <span className="role-slot-players">
+          {candidates.map(p => (
+            <span key={p.id} className={`role-slot-player${p.id === myId ? ' role-slot-player--me' : ''}`}>
+              {p.pseudo}
+            </span>
+          ))}
+        </span>
+      )}
+      {isContested && <span className="role-slot-contested-pip" title="Sera réparti automatiquement au lancement">à trancher</span>}
     </button>
   );
 }
