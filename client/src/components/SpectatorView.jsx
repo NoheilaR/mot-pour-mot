@@ -8,7 +8,8 @@ export default function SpectatorView({ game }) {
   const indiceurPseudo = players.find(p => p.id === indiceurId)?.pseudo ?? '?';
   const devineurPseudo = players.find(p => p.id === devineurId)?.pseudo ?? '?';
 
-  const canBuzz = mode === 'tabou' && !buzzPending && myTeam !== null && myTeam !== activeTeam;
+  const isPlayingTeam = myTeam !== null && myTeam !== 'spectator';
+  const canBuzz = mode === 'tabou' && !buzzPending && isPlayingTeam && myTeam !== activeTeam;
 
   if (mode === 'tabou') {
     return (
@@ -43,7 +44,7 @@ export default function SpectatorView({ game }) {
         )}
 
         {/* Bouton buzz pour l'équipe adverse */}
-        {myTeam !== null && myTeam !== activeTeam && (
+        {isPlayingTeam && myTeam !== activeTeam && (
           <div className="action-area">
             <button
               className={`btn--buzz${buzzPending ? ' btn--buzz--disabled' : ''}`}

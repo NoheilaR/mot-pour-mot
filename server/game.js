@@ -113,7 +113,7 @@ class GameRoom {
   }
 
   setTeam(socketId, team) {
-    if (!['A', 'B', null].includes(team)) return false;
+    if (!['A', 'B', 'spectator', null].includes(team)) return false;
     if (this.players[socketId]) { this.players[socketId].team = team; return true; }
     return false;
   }
@@ -136,17 +136,27 @@ class GameRoom {
   }
 
   canStart() {
-    const total = Object.keys(this.players).length;
-    if (total < 2) return { ok: false, reason: 'Il faut au moins 2 joueurs.' };
+    const active = Object.values(this.players).filter(p => p.team !== 'spectator').length;
+    if (active < 2) return { ok: false, reason: 'Il faut au moins 2 joueurs (hors spectateurs).' };
     return { ok: true };
   }
 
   startGame() {
-    const a = this.getTeamMembers('A'), b = this.getTeamMembers('B');
+    // Les spectateurs (choix explicite) ne jouent jamais et ne sont donc
+    // jamais répartis dans une équipe.
+    const players = Object.values(this.players).filter(p => p.team !== 'spectator');
+    const a = players.filter(p => p.team === 'A');
+    const b = players.filter(p => p.team === 'B');
     if (a.length === 0 || b.length === 0) {
-      const all = Object.values(this.players);
-      for (let i = 0; i < all.length; i++) {
-        all[i].team = i % 2 === 0 ? 'A' : 'B';
+      // Personne n'a choisi de camp (ou tout le monde est du même côté) :
+      // on répartit tous les joueurs actifs en alternance.
+      players.forEach((p, i) => { p.team = i % 2 === 0 ? 'A' : 'B'; });
+    } else {
+      // Complète les indécis en équilibrant les deux équipes.
+      for (const p of players) {
+        if (p.team !== 'A' && p.team !== 'B') {
+          p.team = this.getTeamMembers('A').length <= this.getTeamMembers('B').length ? 'A' : 'B';
+        }
       }
     }
     let custom = [];
@@ -323,7 +333,9 @@ class GameRoom {
     if (this.buzzPending) return { ok: false, reason: 'Un buzz est déjà en cours.' };
     const player = this.players[socketId];
     if (!player) return { ok: false };
-    if (!player.team || player.team === this.activeTeam) return { ok: false, reason: 'Seule l\'équipe adverse peut buzzer.' };
+    if (!player.team || player.team === 'spectator' || player.team === this.activeTeam) {
+      return { ok: false, reason: 'Seule l\'équipe adverse peut buzzer.' };
+    }
     this.buzzPending = true;
     this.buzzTeam = player.team;
     this._paused = true;

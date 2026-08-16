@@ -395,6 +395,57 @@ html, body, #root {
   color: var(--white);
 }
 
+.spectator-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .6rem;
+  background: var(--card);
+  border-radius: var(--r);
+  padding: .7rem 1rem;
+}
+.spectator-bar-list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .4rem;
+  font-size: .85rem;
+  color: var(--grey);
+}
+.spectator-bar-label {
+  font-weight: 700;
+  color: var(--white);
+  margin-right: .2rem;
+}
+.spectator-bar-empty { color: var(--grey-dim); font-style: italic; }
+.spectator-chip {
+  background: var(--card2);
+  padding: .2rem .6rem;
+  border-radius: calc(var(--r) - 4px);
+  font-weight: 600;
+  color: var(--white);
+}
+.spectator-chip--me { color: var(--red); }
+
+.btn--spectate {
+  padding: .5rem .9rem;
+  border: 2px solid var(--border);
+  border-radius: 100px;
+  background: transparent;
+  color: var(--grey);
+  font-family: var(--f);
+  font-size: .78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  cursor: pointer;
+  transition: .15s;
+  white-space: nowrap;
+}
+.btn--spectate:hover { border-color: var(--grey-dim); color: var(--white); }
+.btn--spectate--active { border-color: var(--red); color: var(--red); background: var(--red-dim); }
+
 .settings-panel {
   background: var(--card);
   border-radius: var(--r);

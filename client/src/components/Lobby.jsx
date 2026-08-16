@@ -10,7 +10,9 @@ export default function Lobby({ game }) {
   const isDiscord = !!discordInstanceId;
 
   const unassigned = players.filter(p => !p.team);
+  const spectators = players.filter(p => p.team === 'spectator');
   const me = players.find(p => p.id === myId);
+  const isSpectator = me?.team === 'spectator';
 
   function copyLink() {
     navigator.clipboard.writeText(shareUrl).then(() => {
@@ -108,6 +110,28 @@ export default function Lobby({ game }) {
           </div>
         )}
 
+        {/* Spectateurs — choix explicite, ils ne jouent pas cette partie */}
+        <div className="spectator-bar">
+          <div className="spectator-bar-list">
+            <span className="spectator-bar-label">👀 Spectateurs</span>
+            {spectators.length === 0 ? (
+              <span className="spectator-bar-empty">Aucun</span>
+            ) : (
+              spectators.map(p => (
+                <span key={p.id} className={`spectator-chip${p.id === myId ? ' spectator-chip--me' : ''}`}>
+                  {p.pseudo}
+                </span>
+              ))
+            )}
+          </div>
+          <button
+            className={`btn--spectate${isSpectator ? ' btn--spectate--active' : ''}`}
+            onClick={() => actions.chooseTeam(isSpectator ? null : 'spectator')}
+          >
+            {isSpectator ? '↩ Rejoindre une équipe' : '👀 Regarder en spectateur'}
+          </button>
+        </div>
+
         {/* Settings (host only) */}
         {isHost && (
           <div className="settings-panel">
@@ -164,7 +188,7 @@ export default function Lobby({ game }) {
 }
 
 function canStart(players) {
-  return players.length >= 2;
+  return players.filter(p => p.team !== 'spectator').length >= 2;
 }
 
 // Plusieurs joueurs peuvent revendiquer le même rôle en même temps pendant
