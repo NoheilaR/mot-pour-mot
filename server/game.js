@@ -208,14 +208,22 @@ class GameRoom {
     const regularPool = buildWordPool(exclude);
 
     if (custom.length > 0) {
-      // Les mots persos ne doivent pas tomber systématiquement en tout début
-      // de partie : on les répartit au hasard dans une fenêtre de mots assez
-      // large pour être sûr de les atteindre pendant la partie (estimation
-      // généreuse selon le nombre de rounds), mélangés à des mots normaux.
-      const windowSize = Math.min(regularPool.length, Math.max(custom.length * 2, this.totalRounds * 10));
-      const windowRegular = regularPool.slice(0, Math.max(0, windowSize - custom.length));
-      const rest = regularPool.slice(windowRegular.length);
-      this.wordPool = [...shuffle([...custom, ...windowRegular]), ...rest];
+      // Les mots persos doivent pouvoir tomber à n'importe quel round, pas
+      // juste en début de partie : on répartit un par un les mots persos sur
+      // les rounds (round-robin), chacun mélangé avec un lot de mots normaux
+      // de la taille d'un round — le pool suit ensuite l'ordre des rounds.
+      const WORDS_PER_ROUND_ESTIMATE = 10;
+      const segmentSize = Math.min(regularPool.length, WORDS_PER_ROUND_ESTIMATE);
+      const segments = [];
+      let regularIdx = 0;
+      for (let round = 0; round < this.totalRounds; round++) {
+        const segmentCustom = custom.filter((_, i) => i % this.totalRounds === round);
+        const segmentRegular = regularPool.slice(regularIdx, regularIdx + segmentSize);
+        regularIdx += segmentRegular.length;
+        segments.push(shuffle([...segmentCustom, ...segmentRegular]));
+      }
+      const rest = regularPool.slice(regularIdx);
+      this.wordPool = [...segments.flat(), ...rest];
     } else {
       this.wordPool = regularPool;
     }
