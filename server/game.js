@@ -205,7 +205,20 @@ class GameRoom {
     }
     const exclude = new Set(this.usedWords);
     custom.forEach(w => exclude.add(w));
-    this.wordPool = [...custom, ...buildWordPool(exclude)];
+    const regularPool = buildWordPool(exclude);
+
+    if (custom.length > 0) {
+      // Les mots persos ne doivent pas tomber systématiquement en tout début
+      // de partie : on les répartit au hasard dans une fenêtre de mots assez
+      // large pour être sûr de les atteindre pendant la partie (estimation
+      // généreuse selon le nombre de rounds), mélangés à des mots normaux.
+      const windowSize = Math.min(regularPool.length, Math.max(custom.length * 2, this.totalRounds * 10));
+      const windowRegular = regularPool.slice(0, Math.max(0, windowSize - custom.length));
+      const rest = regularPool.slice(windowRegular.length);
+      this.wordPool = [...shuffle([...custom, ...windowRegular]), ...rest];
+    } else {
+      this.wordPool = regularPool;
+    }
     this.wordPoolIndex = 0;
     this.scores = { A: 0, B: 0 };
     this.currentRound = -1;
@@ -491,6 +504,11 @@ class GameRoom {
     this.wordPoolIndex = 0;
     this._paused = false;
     this._pausedBy = null;
+    this.customBlacklist = {};
+    // On efface les mots persos de la partie précédente : on ne veut pas
+    // qu'ils retombent automatiquement à la prochaine partie sans que les
+    // joueurs les aient reconfirmés.
+    for (const p of Object.values(this.players)) p.customWords = [];
   }
 
   publicSnapshot() {

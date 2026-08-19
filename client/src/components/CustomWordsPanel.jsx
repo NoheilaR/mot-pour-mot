@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 const MAX_WORDS = 5;
+const MAX_FORBIDDEN = 5;
+
+function countForbidden(str) {
+  return str.split(',').map(f => f.trim()).filter(Boolean).length;
+}
 
 export default function CustomWordsPanel({ game }) {
   const { players, myId, mode, actions } = game;
@@ -21,7 +26,7 @@ export default function CustomWordsPanel({ game }) {
       const payload = next
         .map(e => ({
           word: e.word.trim(),
-          forbidden: e.forbidden.split(',').map(f => f.trim()).filter(Boolean).slice(0, 5),
+          forbidden: e.forbidden.split(',').map(f => f.trim()).filter(Boolean).slice(0, MAX_FORBIDDEN),
         }))
         .filter(e => e.word);
       actions.setCustomWords(payload);
@@ -50,7 +55,7 @@ export default function CustomWordsPanel({ game }) {
         <span className="settings-label">Tes mots ({myCount}/{MAX_WORDS})</span>
         <p className="hint">
           Ils apparaîtront forcément pendant la partie.
-          {isTabou && ' Ajoute aussi ses mots interdits pour une vraie carte Tabou (optionnel).'}
+          {isTabou && ' Ajoute aussi ses mots interdits, séparés par une virgule, pour une vraie carte Tabou (optionnel).'}
         </p>
       </div>
       <div className="custom-words-list">
@@ -66,15 +71,23 @@ export default function CustomWordsPanel({ game }) {
               onChange={ev => updateWord(i, ev.target.value)}
             />
             {isTabou && e.word.trim() && (
-              <input
-                className="field-input field-input--custom-forbidden"
-                type="text"
-                value={e.forbidden}
-                placeholder="Mots interdits, séparés par une virgule (optionnel)"
-                maxLength={120}
-                autoComplete="off"
-                onChange={ev => updateForbidden(i, ev.target.value)}
-              />
+              <div className="custom-forbidden-field">
+                <div className="custom-forbidden-label">
+                  <span>Mots interdits</span>
+                  <span className={`custom-forbidden-count${countForbidden(e.forbidden) > MAX_FORBIDDEN ? ' custom-forbidden-count--over' : ''}`}>
+                    {Math.min(countForbidden(e.forbidden), MAX_FORBIDDEN)}/{MAX_FORBIDDEN}
+                  </span>
+                </div>
+                <input
+                  className="field-input field-input--custom-forbidden"
+                  type="text"
+                  value={e.forbidden}
+                  placeholder="ex : peur, sombre, nuit"
+                  maxLength={120}
+                  autoComplete="off"
+                  onChange={ev => updateForbidden(i, ev.target.value)}
+                />
+              </div>
             )}
           </div>
         ))}
