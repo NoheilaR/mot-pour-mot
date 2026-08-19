@@ -514,14 +514,24 @@ html, body, #root {
   gap: .7rem;
 }
 .custom-words-header .hint { margin-top: .2rem; }
-.custom-words-inputs {
+.custom-words-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: .5rem;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: .6rem;
+}
+.custom-word-card {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
 }
 .field-input--custom-word {
   padding: .5rem .7rem;
   font-size: .85rem;
+}
+.field-input--custom-forbidden {
+  padding: .4rem .6rem;
+  font-size: .72rem;
+  color: var(--grey);
 }
 .custom-words-others {
   display: flex;
@@ -1771,6 +1781,30 @@ html, body, #root {
   background: rgba(255,255,255,.04);
   border-color: rgba(255,255,255,.12);
   color: var(--grey);
+}
+
+/* Mot cible révélé aux spectateurs / à l'équipe adverse (mode texte) */
+.spectator-secret {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: .6rem 1.2rem;
+  border-top: 1px solid var(--border);
+  background: var(--card2);
+}
+.spectator-secret-label {
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--grey-dim);
+}
+.spectator-secret-value {
+  font-size: .95rem;
+  font-weight: 900;
+  letter-spacing: .04em;
+  color: var(--green);
 }
 
 /* Bouton buzz */

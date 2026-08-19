@@ -64,23 +64,20 @@ function emitRoomUpdate(room) {
   io.to(room.roomCode).emit('roomUpdate', room.publicSnapshot());
 }
 
-// Révèle le mot selon le mode :
-// - texte : uniquement à l'indiceur
-// - tabou : à tout le monde sauf le devineur ; envoie un hint au devineur (longueur + blacklist)
+// Révèle le mot à tout le monde SAUF le devineur (seul rôle qui doit deviner
+// à l'aveugle) — indiceur, équipe adverse et spectateurs voient le mot dans
+// les deux modes, pour que ceux qui ne jouent pas ce tour-ci ne s'ennuient
+// pas et puissent suivre/deviner en même temps. Seul le mode tabou envoie
+// en plus la blacklist des mots interdits.
 function revealWord(room) {
-  if (room.mode === 'tabou') {
-    for (const socketId of Object.keys(room.players)) {
-      const s = io.sockets.sockets.get(socketId);
-      if (!s) continue;
-      if (socketId === room.devineurId) {
-        // le devineur ne voit rien en tabou
-      } else {
-        s.emit('wordRevealed', { word: room.currentWord, blacklist: room.currentBlacklist });
-      }
-    }
-  } else {
-    const indiceurSocket = io.sockets.sockets.get(room.indiceurId);
-    if (indiceurSocket) indiceurSocket.emit('wordRevealed', { word: room.currentWord, blacklist: [] });
+  for (const socketId of Object.keys(room.players)) {
+    if (socketId === room.devineurId) continue;
+    const s = io.sockets.sockets.get(socketId);
+    if (!s) continue;
+    s.emit('wordRevealed', {
+      word: room.currentWord,
+      blacklist: room.mode === 'tabou' ? room.currentBlacklist : [],
+    });
   }
 }
 

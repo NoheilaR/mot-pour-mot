@@ -55,6 +55,10 @@ class GameRoom {
     // les répétitions d'une partie à l'autre. Volontairement jamais réinitialisé
     // par resetToLobby : la mémoire vit tant que le salon existe.
     this.usedWords = new Set();
+    // Blacklist tabou pour les mots personnalisés (word -> mots interdits),
+    // reconstruite à chaque startGame() à partir des cartes soumises par les
+    // joueurs. Vide pour un mot perso si le joueur n'a rien précisé.
+    this.customBlacklist = {};
     this.timeLeft = ROUND_DURATION;
     this._timerInterval = null;
     this._paused = false;
@@ -99,15 +103,41 @@ class GameRoom {
     return true;
   }
 
+  // Chaque entrée peut être une simple chaîne, ou { word, forbidden } pour
+  // fournir sa propre carte façon Tabou (mots interdits choisis par le
+  // joueur qui a proposé le mot).
   setCustomWords(socketId, words) {
     const player = this.players[socketId];
     if (!player) return { ok: false, reason: 'Joueur introuvable.' };
     if (!Array.isArray(words)) return { ok: false, reason: 'Liste de mots invalide.' };
-    const cleaned = [...new Set(
-      words
-        .map(w => (typeof w === 'string' ? w.trim() : ''))
-        .filter(w => w.length > 0 && w.length <= 30)
-    )].slice(0, MAX_CUSTOM_WORDS);
+
+    const cleaned = [];
+    const seen = new Set();
+    for (const entry of words) {
+      if (cleaned.length >= MAX_CUSTOM_WORDS) break;
+      const word = typeof entry === 'string' ? entry.trim()
+        : typeof entry?.word === 'string' ? entry.word.trim() : '';
+      if (!word || word.length > 30) continue;
+      const key = word.toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+
+      let forbidden = [];
+      if (entry && typeof entry === 'object' && Array.isArray(entry.forbidden)) {
+        const fSeen = new Set();
+        forbidden = entry.forbidden
+          .map(f => (typeof f === 'string' ? f.trim() : ''))
+          .filter(f => f.length > 0 && f.length <= 30 && f.toLowerCase() !== key)
+          .filter(f => {
+            const k = f.toLowerCase();
+            if (fSeen.has(k)) return false;
+            fSeen.add(k);
+            return true;
+          })
+          .slice(0, 5);
+      }
+      cleaned.push({ word, forbidden });
+    }
     player.customWords = cleaned;
     return { ok: true };
   }
@@ -160,9 +190,18 @@ class GameRoom {
       }
     }
     let custom = [];
+    this.customBlacklist = {};
     if (this.customWordsEnabled) {
-      const raw = Object.values(this.players).flatMap(p => p.customWords || []);
-      custom = shuffle([...new Set(raw)]);
+      const entries = Object.values(this.players).flatMap(p => p.customWords || []);
+      const seen = new Set();
+      for (const e of entries) {
+        const key = e.word.toLowerCase();
+        if (seen.has(key)) continue;
+        seen.add(key);
+        custom.push(e.word);
+        if (e.forbidden && e.forbidden.length > 0) this.customBlacklist[e.word] = e.forbidden;
+      }
+      shuffle(custom);
     }
     const exclude = new Set(this.usedWords);
     custom.forEach(w => exclude.add(w));
@@ -253,6 +292,7 @@ class GameRoom {
 
   _getBlacklistFor(word) {
     if (blacklistData[word]) return [...blacklistData[word]];
+    if (this.customBlacklist[word]?.length > 0) return [...this.customBlacklist[word]];
     // Fallback : 5 mots de la même catégorie (aléatoirement)
     for (const words of Object.values(wordsData.categories)) {
       if (words.includes(word)) {

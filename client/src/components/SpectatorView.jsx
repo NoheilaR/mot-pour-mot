@@ -71,6 +71,15 @@ export default function SpectatorView({ game }) {
         </div>
       </div>
 
+      {/* Le mot cible est révélé à tout le monde sauf au devineur, comme en
+          mode tabou — histoire de suivre la partie sans s'ennuyer. */}
+      {currentWord && (
+        <div className="spectator-secret">
+          <span className="spectator-secret-label">Le mot à deviner</span>
+          <span className="spectator-secret-value">{currentWord.toUpperCase()}</span>
+        </div>
+      )}
+
       <div className="word-area">
         {currentClue ? (
           <div className={`current-word ${wordSizeClass(currentClue)}`} key={currentClue}>{currentClue.toUpperCase()}</div>
