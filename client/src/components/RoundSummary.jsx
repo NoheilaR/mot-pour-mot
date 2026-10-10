@@ -5,7 +5,7 @@ const TEAM_NAMES = { A: 'Équipe Rouge', B: 'Équipe Bleue' };
 const COUNTDOWN_FROM = 15;
 
 export default function RoundSummary({ summary, scores, isHost, actions }) {
-  const { roundScore, activeTeam, wordHistory } = summary;
+  const { roundScore, activeTeam, wordHistory, lastWord } = summary;
   const pts = Math.max(0, roundScore);
   const [count, setCount] = useState(COUNTDOWN_FROM);
 
@@ -35,6 +35,13 @@ export default function RoundSummary({ summary, scores, isHost, actions }) {
           {skipped.length > 0 && ` · ${skipped.length} passé${skipped.length > 1 ? 's' : ''}`}
           {buzzed.length > 0 && ` · ${buzzed.length} buzzé${buzzed.length > 1 ? 's' : ''}`}
         </p>
+
+        {lastWord && (
+          <div className="rs-last-word">
+            <span className="rs-last-word-label">Le dernier mot était</span>
+            <span className="rs-last-word-val">{lastWord.toUpperCase()}</span>
+          </div>
+        )}
 
         {/* Correction de score */}
         <div className="rs-adjust">

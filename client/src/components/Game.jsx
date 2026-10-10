@@ -19,7 +19,7 @@ function renderTeamStripPlayer(p, i) {
 }
 
 export default function Game({ game }) {
-  const { scores, activeTeam, currentRound, totalRounds, roundDuration, timeLeft, paused,
+  const { scores, activeTeam, currentRound, totalRounds, roundDuration, timeLeft, paused, pausedManually,
     roundSummary, myRole, wordHistory, buzzPending, buzzTeam, buzzer, currentBlacklist,
     players, isHost, actions } = game;
   const [confirmAbandon, setConfirmAbandon] = useState(false);
@@ -53,6 +53,15 @@ export default function Game({ game }) {
 
         <div className="header-right">
           <Timer timeLeft={timeLeft} roundDuration={roundDuration} />
+          {isHost && !roundSummary && !buzzPending && (
+            <button
+              className={`btn--pause${pausedManually ? ' btn--pause--active' : ''}`}
+              onClick={actions.togglePause}
+              title={pausedManually ? 'Reprendre' : 'Mettre en pause'}
+            >
+              {pausedManually ? '▶' : '⏸'}
+            </button>
+          )}
           {isHost && (
             confirmAbandon ? (
               <div className="abandon-confirm">
@@ -81,7 +90,11 @@ export default function Game({ game }) {
         </div>
       </div>
 
-      {paused && !buzzPending && <div className="pause-banner">⏸ Pause — joueur déconnecté</div>}
+      {paused && !buzzPending && (
+        <div className="pause-banner">
+          {pausedManually ? '⏸ Pause — l\'hôte a mis la partie en pause' : '⏸ Pause — joueur déconnecté'}
+        </div>
+      )}
 
       {/* Corps : main + sidebar */}
       <div className="game-layout">

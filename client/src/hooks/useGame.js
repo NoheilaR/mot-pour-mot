@@ -68,6 +68,7 @@ function makeInitialState() {
     currentClue: null,
     timeLeft: 30,
     paused: false,
+    pausedManually: false,
     wordHistory: [],
     buzzPending: false,
     buzzTeam: null,
@@ -94,7 +95,7 @@ function reducer(state, action) {
     case 'ROOM_JOINED':
       return { ...state, roomCode: action.roomCode, pseudo: action.pseudo, screen: 'lobby', error: null };
     case 'REJOINED': {
-      const { phase, roundScore, scores, activeTeam, wordHistory, winner } = action.snapshot;
+      const { phase, roundScore, scores, activeTeam, wordHistory, winner, lastWord } = action.snapshot;
       const screen = phase === 'lobby' ? 'lobby' : phase === 'game_end' ? 'gameover' : 'game';
       return {
         ...state,
@@ -102,7 +103,7 @@ function reducer(state, action) {
         pseudo: action.pseudo,
         screen,
         error: null,
-        roundSummary: phase === 'round_end' ? { roundScore, scores, activeTeam, wordHistory } : null,
+        roundSummary: phase === 'round_end' ? { roundScore, scores, activeTeam, wordHistory, lastWord } : null,
         gameResult: phase === 'game_end' ? { scores, winner } : null,
       };
     }
@@ -125,6 +126,7 @@ function reducer(state, action) {
         currentExchange: action.data.currentExchange ?? state.currentExchange,
         timeLeft: action.data.timeLeft,
         paused: action.data.paused,
+        pausedManually: action.data.pausedManually ?? false,
         wordHistory: action.data.wordHistory ?? state.wordHistory,
         buzzPending: action.data.buzzPending ?? state.buzzPending,
         buzzTeam: action.data.buzzTeam ?? state.buzzTeam,
@@ -360,6 +362,11 @@ export function useGame() {
       if (res?.error) dispatch({ type: 'SET_ERROR', message: res.error });
     });
   }, []);
+  const togglePause = useCallback(() => {
+    socket.emit('togglePause', {}, (res) => {
+      if (res?.error) dispatch({ type: 'SET_ERROR', message: res.error });
+    });
+  }, []);
   const confirmRound = useCallback(() => {
     socket.emit('confirmRound', {}, (res) => {
       if (res?.error) dispatch({ type: 'SET_ERROR', message: res.error });
@@ -384,6 +391,6 @@ export function useGame() {
     myTeam,
     isHost,
     shareUrl,
-    actions: { createRoom, joinRoom, joinOrCreate, chooseTeam, updateSettings, startGame, submitClue, submitGuess, markResult, skipWord, swapRoles, setPreferredRole, setCustomWords, playAgain, abandonGame, buzz, confirmBuzz, denyBuzz, adjustScore, confirmRound, clearError },
+    actions: { createRoom, joinRoom, joinOrCreate, chooseTeam, updateSettings, startGame, submitClue, submitGuess, markResult, skipWord, swapRoles, setPreferredRole, setCustomWords, playAgain, abandonGame, buzz, confirmBuzz, denyBuzz, adjustScore, togglePause, confirmRound, clearError },
   };
 }

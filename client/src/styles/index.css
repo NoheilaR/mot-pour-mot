@@ -1977,3 +1977,41 @@ html, body, #root {
     animation: none !important;
   }
 }
+
+/* Bouton pause manuelle (hôte) */
+.btn--pause {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--grey-dim);
+  border-radius: var(--r);
+  font-family: var(--f);
+  font-size: .85rem;
+  font-weight: 800;
+  padding: .3rem .6rem;
+  cursor: pointer;
+}
+.btn--pause--active {
+  border-color: #ff9900;
+  color: #ff9900;
+}
+
+/* Récap fin de round : mot en cours au gong */
+.rs-last-word {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .2rem;
+  margin: .6rem 0 .8rem;
+}
+.rs-last-word-label {
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--grey-dim);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.rs-last-word-val {
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: .04em;
+}

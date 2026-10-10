@@ -364,6 +364,19 @@ io.on('connection', (socket) => {
     io.to(room.roomCode).emit('buzzResolved', { confirmed: false });
   });
 
+  // ── togglePause (hôte : pause manuelle pendant un débat) ────────
+  socket.on('togglePause', (_, cb) => {
+    const room = getRoomOf(socket.id);
+    if (!room) return cb?.({ error: 'Pas dans un salon.' });
+    if (socket.id !== room.hostId) return cb?.({ error: 'Hôte uniquement.' });
+
+    const res = room.togglePause();
+    if (!res.ok) return cb?.({ error: res.reason });
+
+    cb?.({ ok: true });
+    emitRoomUpdate(room);
+  });
+
   // ── adjustScore (hôte corrige le score en fin de round) ──────────
   socket.on('adjustScore', ({ team, delta }, cb) => {
     const room = getRoomOf(socket.id);
@@ -473,8 +486,7 @@ io.on('connection', (socket) => {
     socketToRoom[socket.id] = code;
     socket.join(code);
 
-    if (room._paused && !room.buzzPending) {
-      room.resumeTimer();
+    if (!room.buzzPending && room.resumeTimer()) {
       io.to(room.roomCode).emit('gameResumed', { timeLeft: room.timeLeft });
     }
 

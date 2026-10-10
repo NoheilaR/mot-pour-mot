@@ -7,6 +7,9 @@ const ROUND_DURATION = 30;
 const TICK_INTERVAL = 1000;
 const SKIP_PENALTY = -1;
 const MAX_CUSTOM_WORDS = 5;
+// Valeur de _pausedBy quand l'hôte met en pause à la main (débat, etc.),
+// pour la distinguer d'une pause automatique sur déconnexion.
+const MANUAL_PAUSE = 'host';
 
 function shuffle(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
@@ -305,6 +308,7 @@ class GameRoom {
 
   swapRoles(socketId) {
     if (this.phase !== 'round_active') return { ok: false, reason: 'Pas en cours de round.' };
+    if (this.isManuallyPaused()) return { ok: false, reason: 'Partie en pause.' };
     if (socketId !== this.indiceurId && socketId !== this.devineurId) return { ok: false, reason: 'Tu n\'es pas dans l\'équipe active.' };
     if (this.currentExchange.length > 0) return { ok: false, reason: 'L\'échange a déjà commencé.' };
     [this.indiceurId, this.devineurId] = [this.devineurId, this.indiceurId];
@@ -356,17 +360,34 @@ class GameRoom {
 
   pauseTimer(socketId) {
     if (this.phase !== 'round_active') return false;
+    // Une pause manuelle de l'hôte prime : seule l'hôte peut la lever.
+    if (this._pausedBy === MANUAL_PAUSE) return false;
     this._paused = true; this._pausedBy = socketId; return true;
   }
 
   resumeTimer() {
-    if (!this._paused) return false;
+    if (!this._paused || this._pausedBy === MANUAL_PAUSE) return false;
     this._paused = false; this._pausedBy = null; return true;
+  }
+
+  isManuallyPaused() { return this._pausedBy === MANUAL_PAUSE; }
+
+  // ─── Pause manuelle (hôte) ──────────────────────────────────────
+  togglePause() {
+    if (this.phase !== 'round_active') return { ok: false, reason: 'Pas en cours de round.' };
+    if (this.buzzPending) return { ok: false, reason: 'Un buzz est en cours.' };
+    if (this._pausedBy === MANUAL_PAUSE) {
+      this._paused = false; this._pausedBy = null;
+    } else {
+      this._paused = true; this._pausedBy = MANUAL_PAUSE;
+    }
+    return { ok: true, paused: this._paused };
   }
 
   // ─── Mode texte : soumettre un indice ───────────────────────────
   submitClue(socketId, clue) {
     if (this.phase !== 'round_active') return { ok: false, reason: 'Pas en cours de round.' };
+    if (this.isManuallyPaused()) return { ok: false, reason: 'Partie en pause.' };
     if (socketId !== this.indiceurId) return { ok: false, reason: 'Tu n\'es pas l\'indiceur.' };
     if (this.mode !== 'text') return { ok: false, reason: 'Réservé au mode texte.' };
     if (this.currentClue !== null) return { ok: false, reason: 'Attends la tentative du devineur.' };
@@ -382,6 +403,7 @@ class GameRoom {
   // ─── Mode tabou : indiceur valide le mot deviné ─────────────────
   markResult(socketId, result) {
     if (this.phase !== 'round_active') return { ok: false, reason: 'Pas en cours de round.' };
+    if (this.isManuallyPaused()) return { ok: false, reason: 'Partie en pause.' };
     if (socketId !== this.indiceurId) return { ok: false, reason: 'Seul l\'indiceur peut valider.' };
     if (this.mode !== 'tabou') return { ok: false, reason: 'Réservé au mode tabou.' };
     return this._applyResult(result === 'correct', '[tabou]');
@@ -390,6 +412,7 @@ class GameRoom {
   // ─── Buzz (équipe adverse signale un mot interdit) ───────────────
   buzz(socketId) {
     if (this.phase !== 'round_active') return { ok: false, reason: 'Pas en cours de round.' };
+    if (this.isManuallyPaused()) return { ok: false, reason: 'Partie en pause.' };
     if (this.mode !== 'tabou') return { ok: false, reason: 'Réservé au mode tabou.' };
     if (this.buzzPending) return { ok: false, reason: 'Un buzz est déjà en cours.' };
     const player = this.players[socketId];
@@ -433,6 +456,7 @@ class GameRoom {
   // ─── Passer ─────────────────────────────────────────────────────
   skipWord(socketId) {
     if (this.phase !== 'round_active') return { ok: false, reason: 'Pas en cours de round.' };
+    if (this.isManuallyPaused()) return { ok: false, reason: 'Partie en pause.' };
     if (socketId !== this.indiceurId && socketId !== this.devineurId) return { ok: false, reason: 'Seul un joueur actif peut passer.' };
 
     const prevWord = this.currentWord;
@@ -448,6 +472,7 @@ class GameRoom {
   // ─── Mode texte : devineur soumet une réponse ───────────────────
   submitGuess(socketId, guess) {
     if (this.phase !== 'round_active') return { ok: false, reason: 'Pas en cours de round.' };
+    if (this.isManuallyPaused()) return { ok: false, reason: 'Partie en pause.' };
     if (socketId !== this.devineurId) return { ok: false, reason: 'Tu n\'es pas le devineur.' };
     if (this.mode !== 'text') return { ok: false, reason: 'Mode texte uniquement.' };
     if (!this.currentClue) return { ok: false, reason: 'En attente de l\'indice.' };
@@ -476,7 +501,10 @@ class GameRoom {
   endCurrentRound() {
     this._clearTimer();
     this.phase = 'round_end';
-    return { roundScore: this.roundScore, scores: { ...this.scores }, activeTeam: this.activeTeam, wordHistory: [...this.wordHistory] };
+    this._paused = false;
+    this._pausedBy = null;
+    // lastWord : le mot en cours au gong, que le devineur n'a jamais vu.
+    return { lastWord: this.currentWord, roundScore: this.roundScore, scores: { ...this.scores }, activeTeam: this.activeTeam, wordHistory: [...this.wordHistory] };
   }
 
   advanceToNextRound() { return this._nextRound(); }
@@ -538,12 +566,14 @@ class GameRoom {
       currentExchange: [...this.currentExchange],
       timeLeft: this.timeLeft,
       paused: this._paused,
+      pausedManually: this._pausedBy === MANUAL_PAUSE,
       wordHistory: [...this.wordHistory],
       buzzPending: this.buzzPending,
       buzzTeam: this.buzzTeam,
       // Pour permettre à un joueur qui se reconnecte en plein round_end / game_end
       // de reconstruire l'écran correspondant sans dépendre d'un événement raté.
       roundScore: this.roundScore,
+      lastWord: this.phase === 'round_end' ? this.currentWord : null,
       winner: this.phase === 'game_end' ? this._computeWinner() : null,
     };
   }
