@@ -202,6 +202,10 @@ function reducer(state, action) {
         currentBlacklist: [],
         currentExchange: [],
         lastGuessResult: null,
+        // L'hôte peut lancer le round suivant depuis une pause de fin de round :
+        // le serveur repart sans pause, on aligne l'état local.
+        paused: false,
+        pausedManually: false,
       };
     case 'TIMER_TICK':
       return { ...state, timeLeft: action.timeLeft };

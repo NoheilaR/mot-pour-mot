@@ -373,8 +373,10 @@ class GameRoom {
   isManuallyPaused() { return this._pausedBy === MANUAL_PAUSE; }
 
   // ─── Pause manuelle (hôte) ──────────────────────────────────────
+  // Possible pendant un round ET sur l'écran de fin de round (pour geler
+  // l'enchaînement automatique quand ça débat sur le score).
   togglePause() {
-    if (this.phase !== 'round_active') return { ok: false, reason: 'Pas en cours de round.' };
+    if (this.phase !== 'round_active' && this.phase !== 'round_end') return { ok: false, reason: 'Pas en cours de partie.' };
     if (this.buzzPending) return { ok: false, reason: 'Un buzz est en cours.' };
     if (this._pausedBy === MANUAL_PAUSE) {
       this._paused = false; this._pausedBy = null;

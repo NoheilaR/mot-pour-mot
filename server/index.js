@@ -107,13 +107,27 @@ function startRound(room, roundInfo) {
     const summary = room.endCurrentRound();
     io.to(room.roomCode).emit('roundEnded', summary);
 
-    room._roundEndTimer = setTimeout(() => {
-      room._roundEndTimer = null;
-      if (!rooms[room.roomCode]) return;
-      const next = room.advanceToNextRound();
-      startRound(room, next);
-    }, ROUND_END_DELAY);
+    scheduleRoundAdvance(room, ROUND_END_DELAY);
   };
+}
+
+// Enchaînement automatique vers le round suivant après l'écran de fin de
+// round. On mémorise l'échéance pour pouvoir la geler (pause) puis repartir
+// avec le temps restant.
+function scheduleRoundAdvance(room, delay) {
+  clearRoundAdvance(room);
+  room._roundEndDeadline = Date.now() + delay;
+  room._roundEndTimer = setTimeout(() => {
+    room._roundEndTimer = null;
+    room._roundEndDeadline = null;
+    if (!rooms[room.roomCode]) return;
+    const next = room.advanceToNextRound();
+    startRound(room, next);
+  }, delay);
+}
+
+function clearRoundAdvance(room) {
+  if (room._roundEndTimer) { clearTimeout(room._roundEndTimer); room._roundEndTimer = null; }
 }
 
 // ─── Socket.IO ──────────────────────────────────────────────────────────────
@@ -373,6 +387,15 @@ io.on('connection', (socket) => {
     const res = room.togglePause();
     if (!res.ok) return cb?.({ error: res.reason });
 
+    if (room.phase === 'round_end') {
+      if (res.paused) {
+        room._roundEndRemaining = Math.max(0, (room._roundEndDeadline ?? Date.now()) - Date.now());
+        clearRoundAdvance(room);
+      } else {
+        scheduleRoundAdvance(room, room._roundEndRemaining ?? ROUND_END_DELAY);
+      }
+    }
+
     cb?.({ ok: true });
     emitRoomUpdate(room);
   });
@@ -396,7 +419,7 @@ io.on('connection', (socket) => {
     if (!room) return cb?.({ error: 'Pas dans un salon.' });
     if (socket.id !== room.hostId) return cb?.({ error: 'Hôte uniquement.' });
     if (room.phase !== 'round_end') return cb?.({ error: 'Pas en fin de round.' });
-    if (room._roundEndTimer) { clearTimeout(room._roundEndTimer); room._roundEndTimer = null; }
+    clearRoundAdvance(room);
     const next = room.advanceToNextRound();
     startRound(room, next);
     cb?.({ ok: true });
@@ -407,7 +430,7 @@ io.on('connection', (socket) => {
     const room = getRoomOf(socket.id);
     if (!room) return cb?.({ error: 'Pas dans un salon.' });
     if (socket.id !== room.hostId) return cb?.({ error: 'Hôte uniquement.' });
-    if (room._roundEndTimer) { clearTimeout(room._roundEndTimer); room._roundEndTimer = null; }
+    clearRoundAdvance(room);
     room.resetToLobby();
     cb?.({ ok: true });
     io.to(room.roomCode).emit('gameAbandoned');

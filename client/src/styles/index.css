@@ -1995,6 +1995,19 @@ html, body, #root {
   color: #ff9900;
 }
 
+/* Récap fin de round : pause manuelle de l'hôte */
+.rs-host-actions {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.rs-paused {
+  margin: .25rem 0 .5rem;
+  font-size: .8rem;
+  font-weight: 700;
+  color: #ff9900;
+}
+
 /* Récap fin de round : mot en cours au gong */
 .rs-last-word {
   display: flex;

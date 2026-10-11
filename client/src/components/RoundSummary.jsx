@@ -4,12 +4,15 @@ import { playCountdownBeep } from '../utils/sounds';
 const TEAM_NAMES = { A: 'Équipe Rouge', B: 'Équipe Bleue' };
 const COUNTDOWN_FROM = 15;
 
-export default function RoundSummary({ summary, scores, isHost, actions }) {
+export default function RoundSummary({ summary, scores, isHost, paused, actions }) {
   const { roundScore, activeTeam, wordHistory, lastWord } = summary;
   const pts = Math.max(0, roundScore);
   const [count, setCount] = useState(COUNTDOWN_FROM);
 
+  // Le compte à rebours est gelé pendant la pause (le serveur suspend aussi
+  // l'enchaînement automatique vers le round suivant).
   useEffect(() => {
+    if (paused) return;
     const id = setInterval(() => {
       setCount(c => {
         const next = c - 1;
@@ -18,7 +21,7 @@ export default function RoundSummary({ summary, scores, isHost, actions }) {
       });
     }, 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [paused]);
 
   const correct = (wordHistory ?? []).filter(h => h.result === 'correct');
   const skipped = (wordHistory ?? []).filter(h => h.result === 'skip');
@@ -28,6 +31,7 @@ export default function RoundSummary({ summary, scores, isHost, actions }) {
     <div className="round-summary-overlay">
       <div className="round-summary-card">
         <p className="rs-label">Fin du round</p>
+        {paused && <div className="rs-paused">⏸ Pause — l'hôte a mis la partie en pause</div>}
         <p className={`rs-team rs-team--${activeTeam}`}>{TEAM_NAMES[activeTeam]}</p>
         <div className="rs-score">{pts}</div>
         <p className="rs-sub">
@@ -70,13 +74,24 @@ export default function RoundSummary({ summary, scores, isHost, actions }) {
 
         <div className="rs-footer">
           {isHost ? (
-            <button className="btn--confirm-round" onClick={actions.confirmRound}>
-              Lancer le round suivant →
-            </button>
+            <div className="rs-host-actions">
+              <button className="btn--confirm-round" onClick={actions.confirmRound}>
+                Lancer le round suivant →
+              </button>
+              <button
+                className={`btn--pause${paused ? ' btn--pause--active' : ''}`}
+                onClick={actions.togglePause}
+                title={paused ? 'Reprendre le compte à rebours' : 'Mettre en pause'}
+              >
+                {paused ? '▶' : '⏸'}
+              </button>
+            </div>
           ) : (
             <p className="rs-waiting">L'hôte examine le score…</p>
           )}
-          <div className={`rs-countdown${count <= 5 ? ' rs-countdown--urgent' : ''}`}>{count > 0 ? count : '!'}</div>
+          <div className={`rs-countdown${!paused && count <= 5 ? ' rs-countdown--urgent' : ''}`}>
+            {paused ? '⏸' : count > 0 ? count : '!'}
+          </div>
         </div>
       </div>
     </div>

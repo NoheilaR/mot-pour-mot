@@ -112,6 +112,7 @@ export default function Game({ game }) {
           summary={roundSummary}
           scores={scores}
           isHost={isHost}
+          paused={pausedManually}
           actions={actions}
         />
       )}
